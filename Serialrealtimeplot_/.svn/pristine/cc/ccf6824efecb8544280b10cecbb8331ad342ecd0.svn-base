@@ -1,0 +1,28 @@
+#ifndef CALIBRATIONDIALOG_H
+#define CALIBRATIONDIALOG_H
+
+#include <QDialog>
+
+namespace Ui {
+class calibrationDialog;
+}
+
+class calibrationDialog : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit calibrationDialog(QWidget *parent = 0);
+    void readinput(float BBmagn[3], float MMmagn[3][3], float BBaccn[3], float MMaccn[3][3], float BBgyrn[3], float MMgyrn[3][3]);
+    ~calibrationDialog();
+
+private slots:
+    void on_pushButtonIMU1_clicked();
+
+    void on_pushButtonIMU2_clicked();
+
+private:
+    Ui::calibrationDialog *ui;
+};
+
+#endif // CALIBRATIONDIALOG_H
