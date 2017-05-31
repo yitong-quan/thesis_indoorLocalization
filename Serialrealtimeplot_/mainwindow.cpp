@@ -418,7 +418,6 @@ void MainWindow::realtimeDataSlotuwb()
             /*
             if (valuenew[0] == 68 && valuenew[1] == 73 && valuenew[2] == 83 && valuenew[3] == 84){
                 dist[]
-
                 nodeid[nodepoint*4+0] = valuenew[6];
                 nodeid[nodepoint*4+1] = valuenew[7];
                 nodeid[nodepoint*4+2] = valuenew[8];
@@ -770,35 +769,30 @@ void MainWindow::on_pushButton_clicked()
 			serial->setBaudRate(BAUD_RATE);
 			//serial->setBaudRate(QSerialPort::Baud115200);
 			serial->setDataBits(QSerialPort::Data8);
-            serial->setParity(QSerialPort::EvenParity); //Even
+            serial->setParity(QSerialPort::EvenParity); //Even  //TODO, might need to be changed here, Yitong
 			serial->setStopBits(QSerialPort::OneStop);
-            serial->setFlowControl((QSerialPort::NoFlowControl));   //TODO check parameters here, Yitong
+            serial->setFlowControl((QSerialPort::NoFlowControl));   //TODO, check parameters here, Yitong
             if(serial->open(QIODevice::ReadWrite)){
                //serial->write("ok*");
                start_com = 1;
-
                setGeometry(800, 250, 810, 640);
-
                setupDemo();
 
               //start_record = 1;
-
               // output = "find 0x310F, 5\r\n";
               // serial->write(output);
               // serial->flush();
               // serial->waitForBytesWritten(100000);
-
               // ba.append(serial->readAll());
               /*
                out << "   time stamp     "
-                   << "  Dist of 0x1C1C    "
+                   << "  Dist of 0x1C1C    "                //TODO, check if it is needed here, Yitong
                    << "  Dist of 0x2020    "
                    << "  Dist of 0x3E3E    "
                    << "  Dist of 0x4141    "
                    << "  Dist of 0x5A5A    "
                    << "\n";
             */
-
             }
             else
             {
@@ -1050,7 +1044,7 @@ void MainWindow::on_setnodeno_clicked()
 {
     ba.clear();
 
-    output = "setNUMBER: 5\r\n";
+    output = "setNUMBER: 5\r\n";         //NODES_NUMBER, Yitong
     serial->write(output);
     serial->flush();
 
@@ -1071,7 +1065,7 @@ void MainWindow::on_setnodeno_clicked()
 void MainWindow::on_setnodeID_clicked()
 {
     ba.clear();
-    output = "setNODES: [0x1C1C, 0x2020, 0x3E3E, 0x4141, 0x5A5A]\r\n";
+    output = "setNODES: [0x1C1C, 0x2020, 0x3E3E, 0x4141, 0x5A5A]\r\n"; //NODES_ID, Yitong
     //output = "setNODES: [0x2020, 0x4141]\r\n";
     serial->write(output);
     serial->flush();
