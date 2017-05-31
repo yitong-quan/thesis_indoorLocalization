@@ -966,7 +966,9 @@ void MainWindow::on_getdist_clicked()
         //TODO, check class 'QSerialPortInfo', Yitong...You can get information about the available serial ports using the QSerialPortInfo helper class, which allows an enumeration of all the serial ports in the system. This is useful to obtain the correct name of the serial port you want to use.
 
         ba.append(serial->readAll()); //TODO, check what's contained in the 'ba' before and after this moment, Yitong
-        //TODO, try 'ba.append(serial->read(qint64 maxSize));'
+
+        //TODO, try 'ba.append(serial->read(qint64 maxSize));', Yitong
+
         QString ts = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
 
         //out << ts << " " << "\n";
