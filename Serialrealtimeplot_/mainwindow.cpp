@@ -964,7 +964,7 @@ void MainWindow::on_getdist_clicked()
         output = "find 0x310D, 1\r\n";  // changed by Yitong, 30,May,2017
         serial->write(output);
         serial->flush();
-        serial->waitForBytesWritten(1000);
+        serial->waitForBytesWritten(1000); //TODO: 1/frequency to be changed. Yitong
 
         ba.append(serial->readAll());
         QString ts = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
@@ -1000,8 +1000,6 @@ void MainWindow::on_getdist_clicked()
             valuenew[9] = (uint8_t) ba.at(i-2);
             valuenew[10] = (uint8_t) ba.at(i-1);
             valuenew[11] = (uint8_t) ba.at(i);
-
-
 
             if (valuenew[0] == 78 && valuenew[1] == 79 && valuenew[2] == 68 && valuenew[3] == 69){
                 nodeid[nodepoint*4+0] = valuenew[8];
