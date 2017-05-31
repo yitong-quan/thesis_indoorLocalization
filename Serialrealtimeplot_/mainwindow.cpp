@@ -961,7 +961,7 @@ void MainWindow::on_getdist_clicked()
         output = "find 0x310D, 1\r\n";  // changed by Yitong, 30,May,2017
         serial->write(output);
         serial->flush();
-        serial->waitForBytesWritten(1000); //TODO: 1/frequency to be changed. Yitong
+        serial->waitForBytesWritten(1000); //This function blocks until at least one byte has been written to the serial port and the bytesWritten() signal has been emitted. The function will timeout after msecs milliseconds; the default timeout is 30000 milliseconds.
 
         ba.append(serial->readAll());
         QString ts = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
