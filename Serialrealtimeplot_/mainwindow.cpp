@@ -840,7 +840,7 @@ void MainWindow::on_recordstart_clicked()
                     << "    magnetic field x-y-z     "
                     << "\n";
 
-             out << "0000000000 \n";         // TODO,delete. here is for debugging, Yitong
+             out << "   !!!!!0000000000 \n";         // TODO,delete. here is for debugging, Yitong
 
                     //<< "    orientation roll-pitch-yaw [deg]" << "\n";
         }
@@ -978,14 +978,15 @@ void MainWindow::on_getdist_clicked()
             if (valuenew[0] == 82 && valuenew[1] == 101 && valuenew[2] == 99 && valuenew[3] == 101 && valuenew[4] == 105 && valuenew[5] == 118 && valuenew[6] == 101){
                 //out << ts << " " << "\n";
                 ba = ba.append(ts);
-                ba = ba.append(QString("111111111111")); // TODO,delete. here is for debugging, Yitong
+                ba = ba.append(QString("    !!!!!111111111111")); // TODO,delete. here is for debugging, Yitong
                 ba = ba.append(QString("\n"));
                 file.write(ba);
                 //out << "\n";
             }
         }else{          // TODO, delete. this else is added by Yitong for debugging, no use at all.Yitong
+                        // in 'home.txt' the string in this else{} is printed out
             ba = ba.append(ts);
-            ba = ba.append(QString("2222222222")); // TODO,delete. here is for debugging, Yitong
+            ba = ba.append(QString("    !!!!!2222222222")); // TODO,delete. here is for debugging, Yitong
             ba = ba.append(QString("\n"));
             file.write(ba);
         }
