@@ -967,7 +967,6 @@ void MainWindow::on_getdist_clicked()
         QString ts = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
 
         //out << ts << " " << "\n";
-
         //std::string message(usb_data.constData(), usb_data.length());
         //QString qmessage = QString::fromStdString(message);
 
