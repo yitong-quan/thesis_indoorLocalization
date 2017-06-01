@@ -1058,7 +1058,8 @@ void MainWindow::on_setnodeno_clicked()
 {
     ba.clear();
 
-    output = "setNUMBER: 5\r\n";         //NODES_NUMBER, Yitong
+    //output = "setNUMBER: 5\r\n";         //NODES_NUMBER, Yitong
+    output = "setNUMBER: 1\r\n";         //NODES_NUMBER, Yitong
     serial->write(output);
     serial->flush();
 
@@ -1079,7 +1080,8 @@ void MainWindow::on_setnodeno_clicked()
 void MainWindow::on_setnodeID_clicked()
 {
     ba.clear();
-    output = "setNODES: [0x1C1C, 0x2020, 0x3E3E, 0x4141, 0x5A5A]\r\n"; //NODES_ID, Yitong
+    //output = "setNODES: [0x1C1C, 0x2020, 0x3E3E, 0x4141, 0x5A5A]\r\n"; //NODES_ID, Yitong
+    output = "setNODES: [0x6E6E]\r\n"; //NODES_ID, Yitong
     //output = "setNODES: [0x2020, 0x4141]\r\n";
     serial->write(output);
     serial->flush();
