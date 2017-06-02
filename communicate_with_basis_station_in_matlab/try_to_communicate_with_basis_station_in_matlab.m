@@ -34,7 +34,7 @@ for i = 1:numberSend
     dt(i) = datestr(now,'mmmm dd, yyyy HH:MM:SS.FFF');
 end    
 data = [NodeID, dist, dt];
-data
+data = regexprep(data,'\r\n|\n|\r',''); % remone '\r\n' from all the strings
 fclose(s)
 delete(s)
 clear s
