@@ -16,6 +16,7 @@ A = [1 0 dt 0; 0 1 0 dt; 0 0 1 0; 0 0 0 1];
 % control-input model matrix B, control-input is zero
 B = ones(4, 4);
 u = zeros(4, 1);
+H = ; %TODO H matrix
 % process noise covariance Q 
 G = [dt^2/2*eye(2);dt*eye(2)];
 sigma = 0.1;

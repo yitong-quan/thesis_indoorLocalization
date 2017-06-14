@@ -7,7 +7,7 @@ delete(instrfindall)
 %s = serial('COM10'); set(s,'BaudRate',115200);
 s=serial('COM24', 'BaudRate', 115200);
 set(s,'Parity', 'even');
-set(s,'Timeout', 0.7); % TODO: adjust. sampling rate is 1.5, 0.66s <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+set(s,'Timeout', 0.2); % TODO: adjust. sampling rate is 1.5, 0.66s <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 s.Terminator = 'CR/LF';
 fopen(s);
 %[out, count] = fscanf(s, '%s', 300); [out1, count1] = fscanf(s); [out2, count2] = fscanf(s);
@@ -19,9 +19,10 @@ fprintf(s, 'setNUMBER: %d\n', nodeNumber); % '\n' is important here, since...
 [out3, count3, msg3] = fscanf(s); % out3 should be 'Write down the 16 bit IDs of 1 Nodes in HEX'
 fprintf(s, 'setNODES: [0x2020, 0x4D4D, 0x1C1C]'); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 fprintf(s, 'find 0x310D, 1');
+fscanf(s);
 pause(1); % TODO: for the first time wake up, will need more time>> non fixed time needed
 
-numberSend = 28;
+numberSend = 30;
 
 % construct the data
 id_dist = strings([numberSend,nodeNumber]); % returns an m-by-n array of strings with no characters
@@ -36,14 +37,23 @@ for i = 1:numberSend
     fprintf(s, 'find 0x310D, 1');
     timeStamp(i) = datestr(now,'SS.FFF');
     %timeStamp(i) = datestr(now,'HH:MM:SS.FFF mmm dd yyyy');
-    for j = 1:nodeNumber
+    for j = 1:1
+    % for j = 1:nodeNumber
         %pause(0.02);
         [id_dist(i,j), count_data(i,j), msg_data(i,j)] = fscanf(s);
         % add this if() to keep the data structure in right order when the
         % communication with nodes are not achieved
         if (msg_data(i,j) == 'A timeout occurred before the Terminator was reached.')
-            %pause(0.1);
-            id_dist(i,j) = fscanf(s);
+            pause(0.05);
+            [id_dist(i,j), count_data(i,j), msg_data(i,j)] = fscanf(s);
+            if (msg_data(i,j) == 'A timeout occurred before the Terminator was reached.')
+                pause(0.05);
+                [id_dist(i,j), count_data(i,j), msg_data(i,j)] = fscanf(s);
+                if (msg_data(i,j) == 'A timeout occurred before the Terminator was reached.')
+                    pause(0.05);
+                    id_dist(i,j) = fscanf(s);
+                end
+            end
         end
         %[dist(i,j), count_data(2,i,j), msg_data(2,i,j)] = fscanf(s);
     end
