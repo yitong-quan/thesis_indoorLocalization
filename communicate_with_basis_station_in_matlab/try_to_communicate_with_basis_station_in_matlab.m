@@ -13,18 +13,19 @@ fopen(s);
 %[out, count] = fscanf(s, '%s', 300); [out1, count1] = fscanf(s); [out2, count2] = fscanf(s);
 
 % set nodeNumber & nodeID
-nodeNumber = 5; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+nodeNumber = 1; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 fprintf(s, 'setNUMBER: %d\n', nodeNumber); % '\n' is important here, since... 
 % ...'%s'Specify a format for the data that does not include the terminator, or configure the terminator to empty.  
 [out3, count3, msg3] = fscanf(s); % out3 should be 'Write down the 16 bit IDs of 1 Nodes in HEX'
-fprintf(s, 'setNODES: [0x1C1C, 0x2020, 0x3E3E, 0x4D4D, 0x6E6E]'); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-%fprintf(s, 'setNODES: [0x4D4D]');
+%fprintf(s, 'setNODES: [0x1C1C, 0x2020, 0x3E3E, 0x4D4D, 0x6E6E]'); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+fprintf(s, 'setNODES: [0x6E6E]');
 %fprintf(s, 'setNODES: [0x1C1C, 0x2020, 0x3E3E]');
-fprintf(s, 'find 0x310D, 1');
+FindCommand = 'find 0x310D, 1'; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+fprintf(s, FindCommand);
 [out0, count0, msg0] = fscanf(s);
 pause(2); % TODO: for the first time wake up, will need more time>> non fixed time needed
 
-numberSend = 100;
+numberSend = 10;
 
 % construct the data
 id_dist = strings([numberSend,nodeNumber]); % returns an m-by-n array of strings with no characters
@@ -37,7 +38,7 @@ msg_data = strings([numberSend,nodeNumber]); % msg_data = strings([2,numberSend,
 for i = 1:numberSend
     fprintf('i=%d ', i); %disp(i);%i %display(i);
     %pause(0.01); %% each loop cost time +0.6
-    fprintf(s, 'find 0x310D, 1');
+    fprintf(s, FindCommand);
     timeStamp(i) = datestr(now,'SS.FFF');
     %timeStamp(i) = datestr(now,'HH:MM:SS.FFF mmm dd yyyy');
     for j = 1:1

@@ -1,0 +1,1 @@
+\quad \quad \quad Q\quad =\quad G\quad *\quad (sigma*randn(2,1))^{ 2\quad  }*{ \quad G }^{ T }\\ \qquad \qquad =G\quad *\quad (sigma)^{ 2 }\quad *\quad { { diag(randn(2,1)) }^{ 2 }\quad *\quad G }^{ T }\\ 

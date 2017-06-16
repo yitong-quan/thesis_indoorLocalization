@@ -1,2 +1,4 @@
 MATLAB:
 	dofixrpt
+
+	A = diag([100 200 300])
