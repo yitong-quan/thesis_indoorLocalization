@@ -64,8 +64,11 @@ Z_e = [     % [numNodes 1]<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
        sqrt( (N_x_n(1,3) - x_m(1))^2 + (N_x_n(2,3) - x_m(2))^2 )
        ]
 H2 = jacobian(Z_e, x_m)
-
-
+A = [5; 4; 0; 0]
+B = [-50 -50;100 -50; 100 100]'
+%H2_evulation = subs(H2, [x_m, N_x_n], [A, B]);
+H2_evulation = eval(subs( subs(H2, x_m, A), N_x_n, B))
+%eval(H2_evulation)
 
 
 
