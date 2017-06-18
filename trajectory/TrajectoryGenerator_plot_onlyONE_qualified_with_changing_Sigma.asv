@@ -33,7 +33,7 @@ while sigma > 0.01
                 %subplot(5, 6, j);
                 figure()
                 plot(pdata(1,:),pdata(2,:), 'y+');
-                title(['sigma:', num2str(sigma), '; j: ', num2str(j),'; sampleNum: ', num2str(sampleNum); ';randomNum:', randomNum(1), randomNum(2)]);
+                title(['sigma:', num2str(sigma), '; j: ', num2str(j),'; sampleNum: ', num2str(sampleNum); 'randomNum:', ]);
                 GoodTrajFound = 1;
                 allData = [allData ;[ [sigma, j, TrialNum - LastTrialNum, 0]', pdata ] ];
                 %sigma = sigma - 0.1;
