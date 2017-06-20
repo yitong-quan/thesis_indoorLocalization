@@ -85,7 +85,7 @@ function KF_traj_noisy_meas_3nodes(factor_Q, factor_R)
     end
 
     plot(X(1,:), X(2,:), '-o');
-    str = ['R:',num2str(factor_R), ';Q:', num2str(factor_Q)];
+    str = ['R:',num2str(factor_R), 'Q:1:', num2str(factor_Q];
     title(str);
     % load real positions
     real_X = importdata('..\..\trajectory\goodTraj01\position01.mat'); 

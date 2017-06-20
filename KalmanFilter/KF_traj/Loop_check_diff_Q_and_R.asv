@@ -1,0 +1,6 @@
+for i = 1:10:50
+    for
+        figure();
+        KF_traj_noisy_meas_3nodes(i);
+    end
+end    
