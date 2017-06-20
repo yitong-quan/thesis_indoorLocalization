@@ -84,11 +84,21 @@ function KF_traj_noisy_meas_3nodes(factor_Q, factor_R)
         K(:, :, i) = K_k; 
     end
 
-    plot(X(1,:), X(2,:), '-o');
-    str = ['R:',num2str(factor_R), ';Q:', num2str(factor_Q)];
-    title(str);
+    h = figure;
+    plot(X(1,:), X(2,:), '-ob');
     % load real positions
     real_X = importdata('..\..\trajectory\goodTraj01\position01.mat'); 
     hold on;plot(real_X(1,:), real_X(2,:), '-*r');
+    % calculate the mis_match of the estimation of EKF
+    % TODO: how to determine the performance of the EKF, should P also be taken into account?
+    mis_pos = X(1:2,:) - real_X(1:2,:);
+    area_of_map = (positionOfNodes(1,2) - positionOfNodes(1,1))^2 + (positionOfNodes(2,3) - positionOfNodes(2,1))^2;
+    mis_match = sum(mis_pos(1,:).^2 + mis_pos(2,:).^2) / size(X,2) / area_of_map;
+    %str_mismatch = sprintf('%0.15f', mis_match);
+    str = sprintf('%0.20f mismatch   R %0.6f   Q %0.6f    numNodes %d ', mis_match, factor_R, factor_Q, numNodes);
+    %str = [str_mismatch, ' mis match   ','R ',num2str(factor_R), '   Q ', num2str(factor_Q), '   numNodes',num2str(numNodes),  ];
+    title(str);
+    str = [str, '   .fig'];
+    savefig(h,str);
 
 end
