@@ -2,3 +2,5 @@ MATLAB:
 	dofixrpt
 
 	A = diag([100 200 300])
+
+	vpa(); % Increase Precision of Numeric Calculations
