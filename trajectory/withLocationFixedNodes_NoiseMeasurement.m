@@ -1,4 +1,4 @@
-%clear; close all;
+clear; close all;
 %% import data with a good trajectory. plot positions and velocity
 traj = importdata('goodTraj01\position01.mat');
 % plot velocities in x&y directions and the differenet of these 2 and the
@@ -26,6 +26,12 @@ end
 %% add randem noise to the distsances to produce noisy measuremnts data: 'noisy_measuremnts_data'
 noiseLevelForMeasurement = 1.0;
 noisy_measuremnts_data = distances2all_abs + noiseLevelForMeasurement * randn(size(distances2all_abs));
+
+index_NaN = randi([1 size(noisy_measuremnts_data,2)] ,1,size(noisy_measuremnts_data,2)/5);
+figure;histogram(index_NaN,size(noisy_measuremnts_data,2));
+noisy_missing_measuremnts_data = noisy_measuremnts_data;
+noisy_missing_measuremnts_data(:,index_NaN) = NaN;
+
 % axis square; %axis([-100 150 -200 200]);
 %% make circles with Radius noisy_measuremnts_data
 for j = 1:size(traj, 2)
