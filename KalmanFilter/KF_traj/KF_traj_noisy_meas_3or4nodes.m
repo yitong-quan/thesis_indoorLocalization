@@ -1,4 +1,4 @@
-function KF_traj_noisy_meas_3nodes(factor_Q, factor_R)
+function KF_traj_noisy_meas_3or4nodes(factor_Q, factor_R, nodes_Nums)
 
     %% nodes position 
     % [4 3
@@ -17,7 +17,7 @@ function KF_traj_noisy_meas_3nodes(factor_Q, factor_R)
 
     %% initiation
     x_0 = [0 0 1.0 1.0]';
-    P_0 = eye(4, 4); % TODO, make eye(), & choose to be all one, a litle too big, but it should converge at the end if the KF work 
+    P_0 = eye(4, 4); % TODO, choose to be all one, a litle too big, but it should converge at the end if the KF work 
     % sampling time interval
     dt = 2/3;
     % state transition model matrix A
@@ -28,40 +28,50 @@ function KF_traj_noisy_meas_3nodes(factor_Q, factor_R)
 
     % H matrix
     syms N_xy x_m Z_e
-    numNodes = 3; % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    numNodes = nodes_Nums; % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     N_x_n = sym('N_x_n%d%d', [2 numNodes]); % posNodes %[n_x1 n_x2 n_x3; n_y1 n_y2 n_y3]. i.e. 'N_x_n21' means the y_posi of the ist node 
     x_m = sym('x_m%d', [4 1]); % time_updated state vector
-    Z_e = [     % Z_e: expected measurements [numNodes 1]<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    if  nodes_Nums == 4
+            Z_e = [     % Z_e: expected measurements [numNodes 1]<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
            sqrt( (N_x_n(1,1) - x_m(1))^2 + (N_x_n(2,1) - x_m(2))^2 );
            sqrt( (N_x_n(1,2) - x_m(1))^2 + (N_x_n(2,2) - x_m(2))^2 );
-           sqrt( (N_x_n(1,3) - x_m(1))^2 + (N_x_n(2,3) - x_m(2))^2 )
+           sqrt( (N_x_n(1,3) - x_m(1))^2 + (N_x_n(2,3) - x_m(2))^2 );
+           sqrt( (N_x_n(1,4) - x_m(1))^2 + (N_x_n(2,4) - x_m(2))^2 )
            ];
+    end
+    if  nodes_Nums == 3
+            Z_e = [     % Z_e: expected measurements [numNodes 1]<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            sqrt( (N_x_n(1,1) - x_m(1))^2 + (N_x_n(2,1) - x_m(2))^2 );
+            sqrt( (N_x_n(1,2) - x_m(1))^2 + (N_x_n(2,2) - x_m(2))^2 );
+            sqrt( (N_x_n(1,3) - x_m(1))^2 + (N_x_n(2,3) - x_m(2))^2 )
+            ];
+    end
     H_symbolic = jacobian(Z_e, x_m);
 
     % process noise covariance Q 
     G = [dt^2/2*eye(2);dt*eye(2)];
     sigma = 0.1;
-    %RandnForGenTracj = randn(2, 1); % TODO: an besten, the randn(2, 1) should be the same as the one generated the traj
+    %RandnForGenTracj = randn(2, 1); 
     %Q = G * (sigma * diag(RandnForGenTracj))^2 * G'; %since displacement cause by acceleration is G * sigma * randn(2,1) {acceleration is  sigma * randn(2,1)}
     %Q = G * sigma^2 * G';
     Q = factor_Q * G * sigma^2 * G';
     % measurement noise covariance R
     %R = 0.1 * eye(3); % shoule be relative to the value of 'noiseLevelForMeasurements.mat' in folder 'goodTraj01'
-    R = factor_R * eye(3);
+    R = factor_R * eye(nodes_Nums);
     % TODO, correct Q & R, they are square matrices
     %% Kalman Filter
      % notation symbols please check Page 30 in 'An Intro to the Kalman Filter, G. Welch G. Bishop' 
     X = zeros(4, size(measurements_data_noisy,2)); % state matrix
     P = zeros(4, 4, size(measurements_data_noisy,2)); % state covariance matrix
-    K = zeros(4, 3, size(measurements_data_noisy,2)); % Kalman Gain matrix
+    K = zeros(4, nodes_Nums, size(measurements_data_noisy,2)); % Kalman Gain matrix
     X(:, 1) = x_0;
     P(:, :, 1) = P_0;
-    % take only 3 out of 4 sets measurements, for KF here. TODO later do 4 sets
-    z = measurements_data_noisy(1:3,:);
+    % take 4 out of 4 sets measurements, for KF here.
+    z = measurements_data_noisy(1:nodes_Nums,:);
     % for loop, and plot position on map
     for i = 2:size(measurements_data_noisy,2)
         % time update
-        x_minus= A * X(:, i - 1) + B * u; % TODO, think about if the accelerations should be included into state vectors
+        x_minus= A * X(:, i - 1); %  + B * u; % TODO, think about if the accelerations should be included into state vectors
         P_minus = vpa(A * P(:, :, i-1) * A' + Q); 
         % measurement update
             % Never use the inverse of a matrix to solve a linear system Ax=b with 
@@ -76,10 +86,10 @@ function KF_traj_noisy_meas_3nodes(factor_Q, factor_R)
     %                     sqrt( (positionOfNodes(1,3) - x_minus(1))^2 + (positionOfNodes(2,3) - x_minus(2))^2 )
     %                  ];
     %     H = vpa(z_expected/x_minus);
-        H = vpa(eval(subs( subs(H_symbolic, x_m, x_minus), N_x_n, positionOfNodes(:,1:3))));
+        H = vpa(eval(subs( subs(H_symbolic, x_m, x_minus), N_x_n, positionOfNodes(:,1:nodes_Nums))));
         K_k = P_minus * H' / (H * P_minus * H' + R);
         %X(:, i) = x_minus + K_k * (z(:, i) - H * x_minus); % <<<<<<<<<book<<<<<<<<<<<<<<<<<<<<<<<<<
-        X(:, i) = x_minus + K_k * (z(:, i) - eval(subs( subs(Z_e, x_m, x_minus), N_x_n, positionOfNodes(:,1:3)))); % <<<<<<wikipedia<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        X(:, i) = x_minus + K_k * (z(:, i) - eval(subs( subs(Z_e, x_m, x_minus), N_x_n, positionOfNodes(:,1:nodes_Nums)))); % <<<<<<wikipedia<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         P(:, :, i) = vpa((eye(length(x_0)) - K_k * H) * P_minus);
         K(:, :, i) = K_k; 
     end
@@ -95,7 +105,7 @@ function KF_traj_noisy_meas_3nodes(factor_Q, factor_R)
     area_of_map = (positionOfNodes(1,2) - positionOfNodes(1,1))^2 + (positionOfNodes(2,3) - positionOfNodes(2,1))^2;
     mis_match = sum(mis_pos(1,:).^2 + mis_pos(2,:).^2) / size(X,2) / area_of_map;
     %str_mismatch = sprintf('%0.15f', mis_match);
-    str = sprintf('%0.20f mismatch   R %0.6f   Q %0.6f    numNodes %d ', mis_match, factor_R, factor_Q, numNodes);
+    str = sprintf('%0.20f mismatch   R %0.6f   Q %0.6f    numNodes %d ', mis_match, factor_R, factor_Q, nodes_Nums);
     %str = [str_mismatch, ' mis match   ','R ',num2str(factor_R), '   Q ', num2str(factor_Q), '   numNodes',num2str(numNodes),  ];
     title(str);
     str = [str, '   .fig'];

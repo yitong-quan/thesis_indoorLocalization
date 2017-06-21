@@ -8,7 +8,7 @@ function KF_traj_noisy_meas_4nodes(factor_Q, factor_R)
     %close all;
     format longG
     %% import measuremnets data from recording
-    measurements_data_noisy = importdata('..\..\trajectory\goodTraj01\noisy_measuremnts_data.mat'); % load noisy_measurements
+    measurements_data_noisy = importdata('..\..\trajectory\goodTraj01\noisy_measuremnts_data2.mat'); % load noisy_measurements
     %measurements_data_noisy = importdata('..\..\trajectory\goodTraj01\distances2all_abs_without_noise.mat'); % load measurements without noise
     positionOfNodes = [-50 -50; 100 -50; 100 100; -50 100]'; % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
