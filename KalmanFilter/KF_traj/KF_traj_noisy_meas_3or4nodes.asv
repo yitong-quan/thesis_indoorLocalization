@@ -10,7 +10,7 @@ function KF_traj_noisy_meas_3or4nodes(factor_Q, factor_R, nodes_Nums, measuremen
     %% import measuremnets data from recording
     %measurements_data_noisy = importdata('..\..\trajectory\goodTraj01\noisy_measuremnts_data2.mat'); % load noisy_measurements
     distances2all_abs = importdata('..\..\trajectory\goodTraj01\distances2all_abs_without_noise.mat'); % load measurements without noise
-    measurements_data_noisy = distances2all_abs + factor_R * randn(size(distances2all_abs));
+    noisy_measuremnts_data = distances2all_abs + noiseLevelForMeasurement * randn(size(distances2all_abs));
     positionOfNodes = [-50 -50; 100 -50; 100 100; -50 100]'; % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     %% for small test, use a series measurements data generate when Tag stays at origin all the time
@@ -47,9 +47,7 @@ function KF_traj_noisy_meas_3or4nodes(factor_Q, factor_R, nodes_Nums, measuremen
             sqrt( (N_x_n(1,3) - x_m(1))^2 + (N_x_n(2,3) - x_m(2))^2 )
             ];
     end
-    Z_e = simplify(Z_e);
     H_symbolic = jacobian(Z_e, x_m);
-    %H_symbolic = simplify(jacobian(Z_e, x_m));
 
     % process noise covariance Q 
     G = [dt^2/2*eye(2);dt*eye(2)];
@@ -117,7 +115,7 @@ function KF_traj_noisy_meas_3or4nodes(factor_Q, factor_R, nodes_Nums, measuremen
         mis_pos = X(1:2,:) - real_X(1:2,:);
         area_of_map = (positionOfNodes(1,2) - positionOfNodes(1,1))^2 + (positionOfNodes(2,3) - positionOfNodes(2,1))^2;
         mis_match = sum(mis_pos(1,:).^2 + mis_pos(2,:).^2) / size(X,2) / area_of_map;
-        str = sprintf('%0.20f mismatch   R %0.6f   Q %0.6f    numNodes %d    meas missing rate %0.5f', mis_match, factor_R, factor_Q, nodes_Nums, meas_missing_rate);
+        str = sprintf('%0.20f mismatch   R %0.6f   Q %0.6f    numNodes %d    meas"missing"rate %0.5f', mis_match, factor_R, factor_Q, nodes_Nums, meas_missing_rate);
         title(str);
         str = [str, '   .fig'];
         savefig(h,str);
