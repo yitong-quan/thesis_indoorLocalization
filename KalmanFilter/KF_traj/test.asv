@@ -1,0 +1,24 @@
+%% 
+
+% % test for plot color shade
+% A = 1:0.1:20;
+% B = sin (A);
+% plot(A,B);
+
+% test for randomly generate NaN in a matrix
+clear all; close all;
+A = ones(6);
+index1_NaN = randi([1 size(A,2)] ,1,6);
+figure;histogram(index1_NaN,size(A,2));
+index2_NaN = randi([1 size(A,2)] ,1,6);
+figure;histogram(index2_NaN,size(A,2));
+index_NaN = [index1_NaN; index2_NaN];
+ind = [];
+A(3,3) = NaN; 
+
+%         z(:,index_NaN) = NaN;
+% 
+% 
+%         index_NaN = randi([1 size(z,2)] ,1,ceil(size(z,2)*meas_missing_rate));
+%         figure;histogram(index_NaN,size(z,2));
+%         z(:,index_NaN) = NaN;

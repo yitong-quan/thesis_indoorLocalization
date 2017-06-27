@@ -1,4 +1,4 @@
-function KF_traj_noisy_meas_3or4nodes(factor_Q, factor_R, nodes_Nums, measurements_missing, meas_missing_rate)
+function KF_traj_noisy_meas_missing_data_within_each_set(factor_Q, factor_R, nodes_Nums, measurements_missing, meas_missing_rate)
 
     %% nodes position 
     % [4 3
@@ -26,6 +26,15 @@ function KF_traj_noisy_meas_3or4nodes(factor_Q, factor_R, nodes_Nums, measuremen
     % control-input model matrix B, control-input is zero
     B = ones(4, 4);
     u = zeros(4, 1);
+    
+    % process noise covariance Q 
+    G = [dt^2/2*eye(2);dt*eye(2)];
+    sigma = 0.1; %sigma should be the same as the title of the traj_plot
+    %since displacement cause by acceleration is G * sigma * randn(2,1) {acceleration is  sigma * randn(2,1)}
+    Q = G * sigma^2 * G'; % I think the factor_Q should be deleted here.TODO: factor_Q^2 ???  factor_Q ???
+    % measurement noise covariance R
+    R = factor_R * eye(nodes_Nums);
+    % TODO, correct Q & R, they are square matrices
 
     % H matrix
     syms N_xy x_m Z_e
@@ -51,17 +60,6 @@ function KF_traj_noisy_meas_3or4nodes(factor_Q, factor_R, nodes_Nums, measuremen
     H_symbolic = jacobian(Z_e, x_m);
     %H_symbolic = simplify(jacobian(Z_e, x_m));
 
-    % process noise covariance Q 
-    G = [dt^2/2*eye(2);dt*eye(2)];
-    sigma = 0.1;
-    %RandnForGenTracj = randn(2, 1); 
-    %Q = G * (sigma * diag(RandnForGenTracj))^2 * G'; %since displacement cause by acceleration is G * sigma * randn(2,1) {acceleration is  sigma * randn(2,1)}
-    %Q = G * sigma^2 * G';
-    Q = factor_Q * G * sigma^2 * G';
-    % measurement noise covariance R
-    %R = 0.1 * eye(3); % shoule be relative to the value of 'noiseLevelForMeasurements.mat' in folder 'goodTraj01'
-    R = factor_R * eye(nodes_Nums);
-    % TODO, correct Q & R, they are square matrices
     
     %% Kalman Filter
      % notation symbols please check Page 30 in 'An Intro to the Kalman Filter, G. Welch G. Bishop' 
@@ -72,13 +70,14 @@ function KF_traj_noisy_meas_3or4nodes(factor_Q, factor_R, nodes_Nums, measuremen
     P(:, :, 1) = P_0;
     % take 4 out of 4 sets measurements, for KF here.
     z = measurements_data_noisy(1:nodes_Nums,:);
-    if measurements_missing % here the whole set data are missing
-        % delete randomly some colums to simulate missing data
-        index_NaN = randi([1 size(z,2)] ,1,ceil(size(z,2)*meas_missing_rate));
-        figure;histogram(index_NaN,size(z,2));
-        z(:,index_NaN) = NaN;
+    if measurements_missing % here each colimn misses a certain numbers of data
+        % delete randomly some elements in each column to simulate missing data
+        index_NaN_in_each_column = randi([1 size(z,1)] ,1,size(z,2));
+        figure;histogram(index_NaN_in_each_column,size(index_NaN_in_each_column,2));
+        for i = 1:size(z,2)
+            z(index_NaN_in_each_column(i),i) = NaN;
+        end 
     end
-
     
     % EKF loop
     for i = 2:size(measurements_data_noisy,2)
