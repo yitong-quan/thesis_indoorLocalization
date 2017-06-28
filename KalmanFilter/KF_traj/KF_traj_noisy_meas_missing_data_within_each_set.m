@@ -1,6 +1,6 @@
-%% TODO: take 'nodes_Nums' out from input arg
+%%
 
-function KF_traj_noisy_meas_missing_data_within_each_set(factor_Q, factor_R, nodes_Nums, measurements_missing, meas_missing_rate)
+function [X, P] = KF_traj_noisy_meas_missing_data_within_each_set(factor_Q, factor_R, measurements_missing, meas_missing_rate)
 
     %% nodes position 
     % [4 3
@@ -13,6 +13,7 @@ function KF_traj_noisy_meas_missing_data_within_each_set(factor_Q, factor_R, nod
     %measurements_data_noisy = importdata('..\..\trajectory\goodTraj01\noisy_measuremnts_data2.mat'); % load noisy_measurements
     distances2all_abs = importdata('..\..\trajectory\goodTraj01\distances2all_abs_without_noise.mat'); % load measurements without noise
     measurements_data_noisy = distances2all_abs + factor_R * randn(size(distances2all_abs));
+    nodes_Nums = 4;
     positionOfNodes = [-50 -50; 100 -50; 100 100; -50 100]'; % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     %% for small test, use a series measurements data generate when Tag stays at origin all the time
