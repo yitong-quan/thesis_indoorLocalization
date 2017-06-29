@@ -102,13 +102,34 @@ function [X, P] = KF_traj_noisy_meas_missing_data_within_each_set(factor_Q, fact
     z_all = measurements_data_noisy;
     if measurements_missing % here each colimn misses a certain numbers of data
         % delete(replaced with NaN) randomly some elements in each column to simulate missing data
-        for ii = 1:numOfMeasMissingWithinEachSet
-            index_NaN_in_each_column = randi([1 size(z_all,1)] ,1,size(z_all,2));
-            figure;histogram(index_NaN_in_each_column,12);
-            for jj = 1:size(z_all,2)
-                z_all(index_NaN_in_each_column(jj),jj) = NaN;
-            end 
+        if numOfMeasMissingWithinEachSet < 0 %  delete random numbers of elements in each set
+%{            
+%             for kk = 1:size(z_all,2)  %<<<<<<<<<<<<<<<<<<<<NOT GOOD TODO: IMPROVE
+%                 index_NaN_in_each_column = randi([1 size(z_all,1)] ,1, 4);
+%                 %figure;histogram(index_NaN_in_each_column, 4);
+%                 for ll = 1: size(index_NaN_in_each_column,2)
+%                     z_all(index_NaN_in_each_column(ll),kk) = NaN;
+%                 end
+%             end
+%}
+            for kk = 1:size(z_all,2)  
+                num_NaN_in_each_column = randi([0 size(z_all,1)], 1,1);
+                index_NaN_in_each_column = randi([1 size(z_all,1)] ,1, num_NaN_in_each_column);
+                %figure;histogram(index_NaN_in_each_column, 4);
+                for ll = 1: size(index_NaN_in_each_column,2)
+                    z_all(index_NaN_in_each_column(ll),kk) = NaN;
+                end
+            end            
+        else %  delete the same max numbers of elements in each set
+            for ii = 1:numOfMeasMissingWithinEachSet 
+                index_NaN_in_each_column = randi([1 size(z_all,1)] ,1,size(z_all,2));
+                figure;histogram(index_NaN_in_each_column,12);
+                for jj = 1:size(z_all,2)
+                    z_all(index_NaN_in_each_column(jj),jj) = NaN;
+                end
+            end
         end
+
     end
     
     % EKF loop
@@ -165,7 +186,7 @@ function [X, P] = KF_traj_noisy_meas_missing_data_within_each_set(factor_Q, fact
         mis_pos = X(1:2,:) - real_X(1:2,:);
         area_of_map = (positionOfNodes(1,2) - positionOfNodes(1,1))^2 + (positionOfNodes(2,3) - positionOfNodes(2,1))^2;
         mis_match = sum(mis_pos(1,:).^2 + mis_pos(2,:).^2) / size(X,2) / area_of_map;
-        str = sprintf('%0.20f misMatch   R %0.6f   Q %0.6f    sigma %0.3f    trajName %s    numNodes %d    MaxNumOfMeasMissingWithinEachSet %d', mis_match, factor_R, factor_Q, sigma, traj_name, nodes_Nums, numOfMeasMissingWithinEachSet);
+        str = sprintf('%0.20f misMatch   R %0.6f   Q %0.6f    sigma %0.3f    trajName %s    numNodes %d    MaxMeasMissedWithinSet%d', mis_match, factor_R, factor_Q, sigma, traj_name, nodes_Nums, numOfMeasMissingWithinEachSet);
         title(str);
         str = [str, '   .fig'];
         savefig(h,str);
