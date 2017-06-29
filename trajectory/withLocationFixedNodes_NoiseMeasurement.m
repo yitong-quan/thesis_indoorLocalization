@@ -1,6 +1,7 @@
 clear; close all;
 %% import data with a good trajectory. plot positions and velocity
-traj = importdata('goodTraj01\position01.mat');
+% traj = importdata('goodTraj01\position01.mat'); 
+traj = importdata('goodTraj05\position05.mat');
 % plot velocities in x&y directions and the differenet of these 2 and the
 % absolute velocity
 plot(traj(3,:), 'r.');hold on; plot(traj(4,:), '.');hold on; 
