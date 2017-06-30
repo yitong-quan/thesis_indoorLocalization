@@ -127,10 +127,7 @@ function [X, P, z_all] = KF_traj_noisy_meas_missing_data_within_each_set(factor_
         elseif MaxNumMeasMissedWithinSet == 100
                 index_not_NaN_in_each_column = repmat( linspace(1, nodes_Nums, nodes_Nums), [1 ceil(size(measurements_data_noisy,2)/nodes_Nums)]);
                 index_not_NaN_in_each_column = index_not_NaN_in_each_column(1:size(measurements_data_noisy,2));
-                temp_matrix = NaN(size(measurements_data_noisy));
-                for iii = 1:size(measurements_data_noisy,2)
-                    
-                end
+                NaN_matrix = NaN(4,)
                 % TODO: to be finished
                 
                 
