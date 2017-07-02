@@ -1,4 +1,4 @@
-% instrhwinfo('serial') % to find available serial ports
+ % instrhwinfo('serial') % to find available serial ports
 % instrfind
 close all; clear all;
 delete(instrfindall)

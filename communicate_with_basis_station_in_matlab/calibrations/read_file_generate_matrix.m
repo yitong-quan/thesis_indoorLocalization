@@ -1,4 +1,6 @@
-fileID = fopen('0x1C1C-2m.log');
+fileID = fopen('0x1C1C-2m.log'); %'0x2020, 0x3E3E, 0x4D4D, 0x6E6E-2m.log'
+%fileID = fopen('0x2020, 0x3E3E, 0x4D4D, 0x6E6E-2m.log'); 
+
 
 % tline = fgetl(fid);
 % while ischar(tline)
@@ -11,13 +13,37 @@ fileID = fopen('0x1C1C-2m.log');
 % A1 = fscanf(fileID,formatSpec,sizeA)
 
 A = textscan(fileID,'%s %c %d'); % '0x1C1C' ',' '235'
+id = [A{1,1}];
+dist = [A{1,3}];
 %
-% %dist1 %dist2 ... %time 
-% %dist1 %dist2 ... %time
+% %time %dist1 %dist2 ... 
+% %time %dist1 %dist2 ...
 % ...
-for i = 1:size(A)
-    if A(i,1) == '0x1C1C'
-        
+i1=1; i2=1; i3=1; i4=1; i6=1;
+for i = 1:size(id)
+    if strcmp(id(i),'0x1C1C') 
+        M(i1,1) = dist(i);
+        i1 = i1 + 1;
+    elseif strcmp(id(i),'0x2020') 
+        M(i2,2) = dist(i);
+        i2 = i2 + 1;
+    elseif strcmp(id(i),'0x3E3E') 
+        M(i3,3) = dist(i);
+        i3 = i3 + 1;
+    elseif strcmp(id(i),'0x4D4D') 
+        M(i4,4) = dist(i);
+        i4 = i4 + 1;
+    elseif strcmp(id(i),'0x6E6E')
+        M(i6,5) = dist(i);
+        i6 = i6 + 1;
     end        
 end    
 fclose(fileID);
+
+for ii = 1:size(M,1)
+    for jj = 1:size(M,2)
+        if M(ii,jj) < 100
+            sprintf('suspicious index [%d %d]', ii, jj)
+        end
+    end
+end

@@ -14,12 +14,13 @@ or 100, for missing with a pattern, 1st, 2nd, 3rd, 4th, 1st, 2nd, 3rd...
 %           traj_num: string : '01'
 %}
 %%
-function [X, P, z_all] = KF_traj_noisy_meas_missing_data_within_each_set(factor_Q, factor_R, measurements_missing, MaxNumMeasMissedWithinSet, traj_name)
+function [X, P, z_all] = KF_traj_noisy_meas_missing_data_within_each_set(factor_Q, factor_R, measurements_missing, ...
+    MaxNumMeasMissedWithinSet, traj_name)
 
-    %% nodes position 
+%% nodes position 
     % [4 3
     %  1 2]
-    %%
+%%
     % clear;
     % close all;
     format longG
@@ -46,7 +47,7 @@ function [X, P, z_all] = KF_traj_noisy_meas_missing_data_within_each_set(factor_
     rng(1,'twister');s = rng;rng(s); % Save and Restore the Generator Settings, this make the measurements_data_noisy will always be the same
     measurements_data_noisy = distances2all_abs + factor_R * randn(size(distances2all_abs));    
     
-    %% for small test, use a series measurements data generate when Tag stays at origin all the time
+   %% for small test, use a series measurements data generate when Tag stays at origin all the time
     % measurements_data_noisy = repmat([sqrt(50^2 + 50^2); sqrt(100^2 + 50^2); sqrt(100^2 + 100^2); sqrt(50^2 + 100^2)], 1, size(measurements_data_noisy, 2));  
 
     %% initiation
@@ -124,16 +125,14 @@ function [X, P, z_all] = KF_traj_noisy_meas_missing_data_within_each_set(factor_
                     z_all(index_NaN_in_each_column(ll),kk) = NaN;
                 end
             end   
-        elseif MaxNumMeasMissedWithinSet == 100
+        elseif MaxNumMeasMissedWithinSet == 100 % for missing with a pattern, 1st, 2nd, 3rd, 4th, 1st, 2nd, 3rd...
                 index_not_NaN_in_each_column = repmat( linspace(1, nodes_Nums, nodes_Nums), [1 ceil(size(measurements_data_noisy,2)/nodes_Nums)]);
                 index_not_NaN_in_each_column = index_not_NaN_in_each_column(1:size(measurements_data_noisy,2));
                 temp_matrix = NaN(size(measurements_data_noisy));
                 for iii = 1:size(measurements_data_noisy,2)
-                    
+                    temp_matrix(index_not_NaN_in_each_column(iii),iii) = z_all(index_not_NaN_in_each_column(iii),iii);                   
                 end
-                % TODO: to be finished
-                
-                
+                z_all = temp_matrix;
         else %  delete the same max numbers of elements in each set
             for ii = 1:MaxNumMeasMissedWithinSet 
                 index_NaN_in_each_column = randi([1 size(z_all,1)] ,1,size(z_all,2));
