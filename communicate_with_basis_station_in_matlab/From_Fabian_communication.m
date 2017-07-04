@@ -8,13 +8,13 @@ A=[];
 t=[];
 tic;
 for n=1:10000
-% [A2(n,1),count] = fscanf(s2,'%d');
-[A(n,1),count] = fscanf(s,'%d');
-t(n,1)=toc;
-D=(A2-A);
-plot(t,D)
-drawnow
-pause(0.01);
+    % [A2(n,1),count] = fscanf(s2,'%d');
+    [A(n,1),count] = fscanf(s,'%d');
+    t(n,1)=toc;
+    D=(A2-A);
+    plot(t,D)
+    drawnow
+    pause(0.01);
 end
 fclose(s)
 fclose(s2)

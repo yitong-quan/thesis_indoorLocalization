@@ -1,7 +1,7 @@
-fileID = fopen('0x1C1C-2m.log'); %'0x2020, 0x3E3E, 0x4D4D, 0x6E6E-2m.log'
+clear;
+fileID = fopen('0x1C1C-10m.log'); %'0x2020, 0x3E3E, 0x4D4D, 0x6E6E-2m.log'
 %fileID = fopen('0x2020, 0x3E3E, 0x4D4D, 0x6E6E-2m.log'); 
-
-
+%{
 % tline = fgetl(fid);
 % while ischar(tline)
 %     disp(tline);
@@ -11,6 +11,7 @@ fileID = fopen('0x1C1C-2m.log'); %'0x2020, 0x3E3E, 0x4D4D, 0x6E6E-2m.log'
 % formatSpec = '%s, %d';
 % sizeA = [2 Inf];
 % A1 = fscanf(fileID,formatSpec,sizeA)
+%}
 
 A = textscan(fileID,'%s %c %d'); % '0x1C1C' ',' '235'
 id = [A{1,1}];
@@ -40,10 +41,25 @@ for i = 1:size(id)
 end    
 fclose(fileID);
 
+nn=0; 
 for ii = 1:size(M,1)
     for jj = 1:size(M,2)
-        if M(ii,jj) < 100
+        if M(ii,jj) < 200
             sprintf('suspicious index [%d %d]', ii, jj)
+            nn = nn+1;
         end
     end
 end
+
+iii = size(M,1); jjj=0;
+while iii >0 
+        if M(iii,1) < 200
+            M(iii,:) = [];
+            jjj = jjj+1;
+        end
+        iii = iii-1;
+end
+
+M = double(M);
+mean(M)
+var(M)
