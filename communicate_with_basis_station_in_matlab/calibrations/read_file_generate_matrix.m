@@ -1,6 +1,6 @@
 clear;
 %fileID = fopen('0x1C1C-10m.log'); %'0x2020, 0x3E3E, 0x4D4D, 0x6E6E-2m.log'
-fileID = fopen('0x2020, 0x3E3E, 0x4D4D, 0x6E6E-2m.log'); 
+fileID = fopen('0x2020, 0x3E3E, 0x4D4D, 0x6E6E-4m.log'); 
 %{
 % tline = fgetl(fid);
 % while ischar(tline)
@@ -64,7 +64,7 @@ end
 %}
 
 % for more than one node
-data = nan(size(M,1)+2, size(M,2));
+data = nan(size(M,1)+3, size(M,2));
   
 for jjj = 1:size(M,2)
     C = M(:,jjj);
@@ -82,6 +82,6 @@ for jjj = 1:size(M,2)
         data(end,jjj) = var(C);
     end
 end
-M = double(M);
-mean(M)
-var(M)
+% M = double(M);
+% mean(M)
+% var(M)
