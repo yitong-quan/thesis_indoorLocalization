@@ -1,6 +1,8 @@
+%% output: data
+%%
 clear;
 %fileID = fopen('0x1C1C-10m.log'); %'0x2020, 0x3E3E, 0x4D4D, 0x6E6E-2m.log'
-fileID = fopen('0x2020, 0x3E3E, 0x4D4D, 0x6E6E-5m.log'); 
+fileID = fopen('0x4D4D-3m.log'); 
 %{
 % tline = fgetl(fid);
 % while ischar(tline)
