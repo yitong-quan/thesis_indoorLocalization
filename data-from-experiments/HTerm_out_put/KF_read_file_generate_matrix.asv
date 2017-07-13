@@ -1,4 +1,5 @@
-%% Pseudocode
+%% output: data_t_dist : (1.time, 2.3.4.5...dist of nodes used)
+%% Pseudocode 
 %{ 
 read i_th line >> content
 	if time_format
@@ -12,7 +13,7 @@ read i_th line >> content
 %}
 %%
 clear;
-fileID = fopen('1st_output_2017-07-07_14-45-55_copy_refined.log'); 
+fileID = fopen('6th_3D_output_2017-07-07_15-06-08_copy_refined.log'); 
 %{
 % tline = fgetl(fid);
 % while ischar(tline)
@@ -28,7 +29,7 @@ time_format = '^[0-9]+:[0-9]+:[0-9]+\.[0-9]+';
 i = 0; % package index
 tline = fgetl(fileID); % format char
 while ischar(tline)
-    disp('!');disp(tline);disp('!');
+    % disp('!');disp(tline);disp('!');
     if ~isempty(tline)
         if regexp(tline, time_format) == 1 % begin with 'time_format'
             i = i+1;
@@ -49,10 +50,21 @@ time_starting_ponit = package(1).time_stamp;
 for j = 1:length(package)
     package(j).timeFromStartingPointInSec = etime(package(j).time_stamp, time_starting_ponit);
 end
-data_t_id_dist = zeros(length(package), 1+length(package(1).dist));
+data_t_dist = zeros(length(package), 1+length(package(1).dist));
 for ii = 1:length(package)
-    data_t_id_dist(ii,:) = [package(ii).timeFromStartingPointInSec, double(package(ii).dist)];
+    data_t_dist(ii,:) = [package(ii).timeFromStartingPointInSec, double(package(ii).dist)];
 end
+disp('ID used are followed: ')
+disp(package(1).ID)
+%base on the nodes used, add up columns for data 'from' nonused nodes
+data_t_dist_full = [data_t_dist(:,1:2)  zeros(length(data_t_dist),1) data_t_dist(:,3:end)];
+x1C1C_cal = (data_t_dist(:,2)  + 5)/ 100 / 0.9925;
+%x2020_cal = (data_t_dist(:,3)  + 0) / 100 / 0.9993;
+x3E3E_cal = (data_t_dist_full(:,4)  + 14) / 100 / 1.00547;
+data_t_dist_full(:,4) = x3E3E_cal;
+x4D4D_cal = (data_t_dist_full(:,5)   + 8) / 100 / 1.01452;
+x6E6E_cal = (data_t_dist_full(:,6)   + 0) / 100 / 0.9993;
+     
 %{
 A = textscan(fileID,'%s %c %d'); % '0x1C1C' ',' '235'
 id = [A{1,1}];

@@ -25,7 +25,7 @@ end
 % 0x3E3E   what is shown in HTerm is: 1.00547 * UWB_data[n] * 100 - 14.103
 x3E3E = [276.232558139534                         0          534.739130434783          683.708333333333];
 Tag_0x3E3E = (x3E3E + 14.103) / 100 / 1.00547; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% try Tag_0x3E3E = (x3E3E + 14) / 100 / 1.00547; since 0.103 is already wraped up in Hterm
+% try Tag_0x2020 = (x2020 + 0.24217) / 100 / 0.9993; since 0.24217 is already wraped up in Hterm
 HTermShouldBe = 1.00547 * Tag_0x3E3E * 100 - 14.103;
 if all((HTermShouldBe - x3E3E) < 0.000001)
     disp('0x3E3E calibration good')
@@ -36,7 +36,6 @@ end
 % 0x4D4D   what is shown in HTerm is: 1.01452 * UWB_data[n] * 100 - 8.1253
 x4D4D = [273.558139534883          317.622641509434           483.95652173913          661.583333333333];
 Tag_0x4D4D = (x4D4D + 8.1253) / 100 / 1.01452; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% try Tag_0x4D4D = (x4D4D + 8.1253) / 100 / 1.01452; since 0.01452 is already wraped up in Hterm
 HTermShouldBe = 1.01452 * Tag_0x4D4D * 100 - 8.1253;
 if all((HTermShouldBe - x4D4D) < 0.000001)
     disp('0x4D4D calibration good')
