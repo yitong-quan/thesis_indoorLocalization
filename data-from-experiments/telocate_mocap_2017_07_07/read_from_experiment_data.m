@@ -42,4 +42,5 @@ position = posi(6:end,:);
 position(isnan(position)) = 0 ; % replace NaN with 0, due to data missing
 time_stamp = CameraRate(6:end);
 Time_Position = [time_stamp position];
-plot(position(:,1), position(:,2), '-*')
+%plot(position(:,1), position(:,2), '-*');
+plot(Time_Position(:,2), Time_Position(:,3), '-*');

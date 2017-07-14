@@ -28,8 +28,8 @@
 %%
 clear;
 last_time = '00:00:00.000:';
-fileID_r = fopen('6th_3D_output_2017-07-07_15-06-08_copy.log', 'r');
-fileID_w = fopen('6th_3D_output_2017-07-07_15-06-08_copy_refined.log', 'w');
+fileID_r = fopen('2nd_move_stop_output_2017-07-07_14-50-15_copy.log', 'r');
+fileID_w = fopen('2nd_move_stop_output_2017-07-07_14-50-15_copy_refined.log', 'w');
 tline = fgetl(fileID_r); % format char
 time_format = '^[0-9]+:[0-9]+:[0-9]+\.[0-9]+';
 flag_combination = 0

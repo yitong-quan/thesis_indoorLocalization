@@ -13,7 +13,8 @@ read i_th line >> content
 %}
 %%
 clear;
-fileID = fopen('6th_3D_output_2017-07-07_15-06-08_copy_refined.log'); 
+%fileID = fopen('6th_3D_output_2017-07-07_15-06-08_copy_refined.log'); 
+fileID = fopen('3rd_8_slow_output_2017-07-07_14-53-42_copy_refined.log'); 
 %{
 % tline = fgetl(fid);
 % while ischar(tline)

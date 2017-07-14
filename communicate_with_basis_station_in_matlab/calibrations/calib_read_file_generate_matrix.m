@@ -2,7 +2,7 @@
 %%
 clear;
 %fileID = fopen('0x1C1C-10m.log'); %'0x2020, 0x3E3E, 0x4D4D, 0x6E6E-2m.log'
-fileID = fopen('all_3m_2.log'); 
+fileID = fopen('all_3m_sum.log'); 
 %{
 % tline = fgetl(fid);
 % while ischar(tline)
@@ -83,15 +83,16 @@ for jjj = 1:size(M,2)
     if length(C) > 0  
         C = double(C);
         data(1:length(C),jjj) = C;
-%         data(end-1,jjj) = mean(C);
-%         data(end,jjj) = var(C);
-        data(end-1,jjj) = trimmean(C,30);
-        data(end,jjj) = mad(C);        
+        data(end-1,jjj) = mean(C);
+        data(end,jjj) = var(C);
+%         data(end-1,jjj) = trimmean(C,10);
+%         data(end,jjj) = mad(C);        
     end
     str_title = sprintf('0x%d. trimmean:%f,  mad:%f', jjj, data(end-1,jjj), data(end,jjj));
     figure; hist(C);title(str_title);
 end
 data(end-2:end,:)
+data_T = data'; % only for making copy into Excel easier
 % M = double(M);
 % mean(M)
 % var(M)
