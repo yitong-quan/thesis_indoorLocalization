@@ -14,7 +14,7 @@ read i_th line >> content
 %%
 clear;
 %fileID = fopen('6th_3D_output_2017-07-07_15-06-08_copy_refined.log'); 
-fileID = fopen('3rd_8_slow_output_2017-07-07_14-53-42_copy_refined.log'); 
+fileID = fopen('2nd_move_stop_output_2017-07-07_14-50-15_copy_refined.log'); 
 %{
 % tline = fgetl(fid);
 % while ischar(tline)
@@ -55,13 +55,18 @@ data_t_dist = zeros(length(package), 1+length(package(1).dist));
 for ii = 1:length(package)
     data_t_dist(ii,:) = [package(ii).timeFromStartingPointInSec, double(package(ii).dist)];
 end
-disp('ID used are followed: ')
-disp(package(1).ID)
+disp('ID used are followed: ');
+disp(package(1).ID);
+if length(package(1).ID) < 5
+    error('Error. package#<5, not all the nodes are used, please change code and add in a column to the coresponding ndoes')
+end    
 %base on the nodes used, add up columns for data 'from' nonused nodes
-data_t_dist_full_raw = [data_t_dist(:,1:2)  zeros(length(data_t_dist),1) data_t_dist(:,3:end)];
+%data_t_dist_full_raw = [data_t_dist(:,1:2)  zeros(length(data_t_dist),1) data_t_dist(:,3:end)];
+data_t_dist_full_raw = [data_t_dist(:,1:2)  data_t_dist(:,3:end)];
 x1C1C_raw = (data_t_dist(:,2)  + 5)/ 100 / 0.9925;
 data_t_dist_full_raw(:,2) = x1C1C_raw;
-%x2020_cal = (data_t_dist(:,3)  + 0) / 100 / 0.9993;
+x2020_raw = (data_t_dist(:,3)  + 0) / 100 / 0.9993;
+data_t_dist_full_raw(:,3) = x2020_raw;
 x3E3E_raw = (data_t_dist_full_raw(:,4)  + 14) / 100 / 1.00547;
 data_t_dist_full_raw(:,4) = x3E3E_raw;
 x4D4D_raw = (data_t_dist_full_raw(:,5)   + 8) / 100 / 1.01452;
