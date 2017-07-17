@@ -15,15 +15,11 @@ or 100, for missing with a pattern, 1st, 2nd, 3rd, 4th, 1st, 2nd, 3rd...
 %}
 %%
 function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R) %, measurements_missing, MaxNumMeasMissedWithinSet, traj_name
-
+    format longG
 %% nodes position 
     % [6    3
     %    2
     %  4    1 ]
-%%
-    % clear;
-    % close all;
-    format longG
 %{    
 %     %% import measuremnets data from recording
 %     %measurements_data_noisy = importdata('..\..\trajectory\goodTraj01\noisy_measuremnts_data2.mat'); % load noisy_measurements

@@ -14,7 +14,12 @@ read i_th line >> content
 %%
 clear;
 %fileID = fopen('6th_3D_output_2017-07-07_15-06-08_copy_refined.log'); 
-fileID = fopen('2nd_move_stop_output_2017-07-07_14-50-15_copy_refined.log'); 
+%fileID = fopen('2nd_move_stop_output_2017-07-07_14-50-15_copy_refined.log'); 
+%fileID = fopen('3rd_8_slow_output_2017-07-07_14-53-42_copy_refined.log'); 
+%fileID = fopen('4th_8_fast_output_2017-07-07_14-55-46_copy_refined.log'); 
+fileID = fopen('5th_4nodes_output_2017-07-07_15-01-39_copy_refined.log'); 
+
+
 %{
 % tline = fgetl(fid);
 % while ischar(tline)
