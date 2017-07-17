@@ -14,12 +14,12 @@ or 100, for missing with a pattern, 1st, 2nd, 3rd, 4th, 1st, 2nd, 3rd...
 %           traj_num: string : '01'
 %}
 %%
-function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, measurements_missing, ...
-    MaxNumMeasMissedWithinSet, traj_name)
+function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R) %, measurements_missing, MaxNumMeasMissedWithinSet, traj_name
 
 %% nodes position 
-    % [4 3
-    %  1 2]
+    % [6    3
+    %    2
+    %  4    1 ]
 %%
     % clear;
     % close all;
@@ -37,13 +37,14 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, measurements_mi
     % file_name = ['..\..\trajectory\goodTraj' traj_name '\position' traj_name '.mat']; 
 %     file_name = ['position' traj_name '.mat']; 
 %     real_X = importdata(file_name); 
-    measurements_data_noisy = importdata('data_t_dist1_HTerm_temp.mat');
-    measurements_data_noisy = measurements_data_noisy(:,2:end)';
+    data = importdata('data_t_dist_HTerm_temp.mat');
+    timeStamp = data(:,1);
+    measurements_data_noisy = data(:,2:end)';
     measurements_data_noisy = measurements_data_noisy/100;
     nodes_Nums = 5;    
     %positionOfNodes = [-5 -5; 5 -5; 5 5; -5 5]'; % <<<<<<<<<<<<<<<<<<
     positionOfNodes = [2938.41844377029,-3013.26989169788; [184.822603869210,-143.127276884650];...
-        [4161.77182689655,2235.61214448276]; [-1396.30540772784,-2433.57009459426]; [184.822603869210,-143.127276884650]]'/1000;
+        [4161.77182689655,2235.61214448276]; [-1396.30540772784,-2433.57009459426]; [-1741.84732630000,2032.12649985000]]'/1000;
     %{
     distances2all_abs = zeros(size(positionOfNodes, 2), size(real_X, 2));
     for i = 1 : size(positionOfNodes, 2)
@@ -60,16 +61,12 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, measurements_mi
     %% initiation
     x_0 = [[4161.77182689655,2235.61214448276]/1000 1.0 1.0]';
     P_0 = eye(4, 4); % TODO, choose to be all one, a litle too big, but it should converge at the end if the KF work 
-    % sampling time interval
-    dt = 2/3;
-    % state transition model matrix A
-    A = [1 0 dt 0; 0 1 0 dt; 0 0 1 0; 0 0 0 1];
+
     % control-input model matrix(control matrix) B, control-input(control vector) is zero
     B = ones(4, 4);
     u = zeros(4, 1);
     
-    % process noise covariance Q 
-    G = [dt^2/2*eye(2);dt*eye(2)];
+
  %{   
     switch traj_name %sigma should be the same as the title of the traj_plot
         case '1' 
@@ -136,9 +133,6 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, measurements_mi
             error('>>>by programmer<<< !!! sigma unspecified, please check the simga value in traj_plot; <<<<<!!!!!!!<<<<< ')
     end
  %}   
-    sigma = 0.5;
-    %since displacement cause by acceleration is G * sigma * randn(2,1) {acceleration is  sigma * randn(2,1)}
-    Q = factor_Q * G * sigma^2 * G'; % I think the factor_Q should be deleted here.TODO: factor_Q^2 ???  factor_Q ???
     % measurement noise covariance R
     R_all = factor_R * eye(nodes_Nums);
     % TODO, correct Q & R, they are square matrices
@@ -211,8 +205,18 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, measurements_mi
     % EKF loop
     for i = 2:size(measurements_data_noisy,2)
         % time update
+        % sampling time interval
+        dt = timeStamp(i) - timeStamp(i-1);
+        % state transition model matrix A
+        A = [1 0 dt 0; 0 1 0 dt; 0 0 1 0; 0 0 0 1];
+        % process noise covariance Q
+        G = [dt^2/2*eye(2);dt*eye(2)];
+        sigma = 0.5;
+        %since displacement cause by acceleration is G * sigma * randn(2,1) {acceleration is  sigma * randn(2,1)}
+        Q = factor_Q * G * sigma^2 * G'; % I think the factor_Q should be deleted here.TODO: factor_Q^2 ???  factor_Q ???
+        
         x_minus= A * X(:, i - 1); %  + B * u; % TODO, think about if the accelerations should be included into state vectors
-        P_minus = vpa(A * P(:, :, i-1) * A' + Q); 
+        P_minus = vpa(A * P(:, :, i-1) * A' + Q);
         
         % measurement update
         R = R_all;

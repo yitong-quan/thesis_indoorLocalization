@@ -73,6 +73,17 @@ x4D4D_raw = (data_t_dist_full_raw(:,5)   + 8) / 100 / 1.01452;
 data_t_dist_full_raw(:,5) = x4D4D_raw;
 x6E6E_raw = (data_t_dist_full_raw(:,6)   + 0) / 100 / 0.9993;
 data_t_dist_full_raw(:,6) = x6E6E_raw;
+data_t_dist_full_raw(data_t_dist_full_raw <= 0) = NaN;
+data_t_dist_full_raw(1,1) = 0;
+
+data_t_dist_calied = data_t_dist_full_raw;
+data_t_dist_calied(:,2) = data_t_dist_full_raw(:,2)*89.73+25.4;
+data_t_dist_calied(:,3) = data_t_dist_full_raw(:,3)*90.42+5.531;
+data_t_dist_calied(:,4) = data_t_dist_full_raw(:,4)*91.91+23.44;
+data_t_dist_calied(:,5) = data_t_dist_full_raw(:,5)*89.84+21.37;
+data_t_dist_calied(:,6) = data_t_dist_full_raw(:,6)*91.74+15.89;
+save('data_t_dist_HTerm_temp.mat','data_t_dist_calied');
+disp('data_t_dist_calied are saved as ,data_t_dist_HTerm_temp.mat, ad the same folder');
 
 
 %{
