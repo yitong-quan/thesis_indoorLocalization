@@ -133,7 +133,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, data) %, measur
  %}   
     % measurement noise covariance R
     %R_all = factor_R * eye(nodes_Nums);
-    R_all = factor_R * diag(([3.900095115, 3.83763106, 4.0818845734, 2.7939164184, 2.9198114402]/100).^2);
+    R_all = factor_R * diag(([3.900095115, 3.83763106, 4.0818845734, 2.7939164184, 2.9198114402]/100).^2); % base on calibration analysis
     % TODO, correct Q & R, they are square matrices
 
     % H matrix
