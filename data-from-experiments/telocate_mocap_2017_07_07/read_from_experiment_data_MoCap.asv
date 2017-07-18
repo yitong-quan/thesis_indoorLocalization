@@ -43,14 +43,12 @@ position(isnan(position)) = 0 ; % replace NaN with 0, due to data missing
 time_stamp = CameraRate(6:end);
 Time_Position = [time_stamp position];
 %plot(position(:,1), position(:,2), '-*');
-plot(Time_Position(:,2), Time_Position(:,3), '.');
-%{
+%plot(Time_Position(:,2), Time_Position(:,3), '.');
 for iii = 1: size(Time_Position,1)
     hold on; plot(Time_Position(iii,2), Time_Position(iii,3), '.');
-    disp(iii);
-    pause(0.00000001);
+    sprintf('')
+    pause(0.01);
 end
-%}
 figure; plot(Time_Position(:,2), '.');
 hold on; plot(Time_Position(:,3), '.');
 hold on; plot(Time_Position(:,4), '.');

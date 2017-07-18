@@ -14,10 +14,11 @@ read i_th line >> content
 %%
 clear;
 %fileID = fopen('6th_3D_output_2017-07-07_15-06-08_copy_refined.log'); 
-%fileID = fopen('2nd_move_stop_output_2017-07-07_14-50-15_copy_refined.log'); 
+fileID = fopen('2nd_move_stop_output_2017-07-07_14-50-15_copy_refined.log'); 
 %fileID = fopen('3rd_8_slow_output_2017-07-07_14-53-42_copy_refined.log'); 
 %fileID = fopen('4th_8_fast_output_2017-07-07_14-55-46_copy_refined.log'); 
-fileID = fopen('5th_4nodes_output_2017-07-07_15-01-39_copy_refined.log'); 
+%fileID = fopen('5th_4nodes_output_2017-07-07_15-01-39_copy_refined.log'); 
+%fileID = fopen('1st_output_2017-07-07_14-45-55_copy_refined.log'); 
 
 
 %{
@@ -63,11 +64,12 @@ end
 disp('ID used are followed: ');
 disp(package(1).ID);
 if length(package(1).ID) < 5
-    error('Error. package#<5, not all the nodes are used, please change code and add in a column to the coresponding ndoes')
+    warning('Warning. package#<5, not all the nodes are used, please change code and add in a column to the coresponding ndoes')
+    %base on the nodes used, add up columns for data 'from' nonused nodes
+	data_t_dist = [data_t_dist(:,1:2)  nan(length(data_t_dist),1) data_t_dist(:,3:end)];
 end    
-%base on the nodes used, add up columns for data 'from' nonused nodes
-%data_t_dist_full_raw = [data_t_dist(:,1:2)  zeros(length(data_t_dist),1) data_t_dist(:,3:end)];
-data_t_dist_full_raw = [data_t_dist(:,1:2)  data_t_dist(:,3:end)];
+
+data_t_dist_full_raw = data_t_dist;
 x1C1C_raw = (data_t_dist(:,2)  + 5)/ 100 / 0.9925;
 data_t_dist_full_raw(:,2) = x1C1C_raw;
 x2020_raw = (data_t_dist(:,3)  + 0) / 100 / 0.9993;

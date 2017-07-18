@@ -37,8 +37,6 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, data) %, measur
     timeStamp = data(:,1);
     measurements_data_noisy = data(:,2:end)';
     measurements_data_noisy = measurements_data_noisy/100;
-    % substract the height, we get the horizontal distances
-    measurements_data_noisy = sqrt(measurements_data_noisy.^2 - 1.20274960392966^2); 
     nodes_Nums = 5;    
     %positionOfNodes = [-5 -5; 5 -5; 5 5; -5 5]'; % <<<<<<<<<<<<<<<<<<
     positionOfNodes = [2938.41844377029,-3013.26989169788; [184.822603869210,-143.127276884650];...
@@ -132,8 +130,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, data) %, measur
     end
  %}   
     % measurement noise covariance R
-    %R_all = factor_R * eye(nodes_Nums);
-    R_all = factor_R * diag(([3.900095115, 3.83763106, 4.0818845734, 2.7939164184, 2.9198114402]/100).^2);
+    R_all = factor_R * eye(nodes_Nums);
     % TODO, correct Q & R, they are square matrices
 
     % H matrix
