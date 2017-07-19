@@ -1,0 +1,13 @@
+//calib the experiment data frome HTerm back to true value
+
+//dist from HTerm shoild substract the height from the ground
+
+debug the hardware ,looks like I have only changed the waitiong time from 6 to 2s in the basis, should also chang somewhere in the nodes 
+find out the location of the nodes
+calibration is good- only seems changing from time to time
+
+
+design the location to place the nodes, the dist among them should be different, so that it is easier to be recgonized
+dt too big, try to seperate dt into smaller ddt
+
+find out the respond_time stamp in each output(HTerm & MoCap)

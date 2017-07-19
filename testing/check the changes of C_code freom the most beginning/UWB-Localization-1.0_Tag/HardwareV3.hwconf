@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ASCII"?>
+<device:XMLDevice xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:device="http://www.silabs.com/sls/hc/document/device.ecore" name="EFM32HG322F64" partId="com.silabs.mcu.si32.efm32.efm32hg.efm32hg322f64">
+  <mode name="DefaultMode">
+    <property object="ADC0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="ADC0" propertyId="adc.inputsettings.ch5" value="Enabled"/>
+    <property object="ADC0" propertyId="scanmode.scanmodesettings.scaninput" value="ADC_SCANCTRL_INPUTMASK_CH5"/>
+    <property object="ADC0" propertyId="singlesamplemode.singlesamplemodesettings.input" value="Channel 5 (PD5)"/>
+    <property object="ADC0" propertyId="singlesamplemode.singlesamplemodesettings.reference" value="Buffered VDD"/>
+    <property object="ADC0" propertyId="singlesamplemode.singlesamplemodesettings.singlesamplemode" value="Enabled"/>
+    <property object="AES" propertyId="ABPeripheral.included" value="true"/>
+    <property object="DMA" propertyId="ABPeripheral.included" value="true"/>
+    <property object="DefaultMode" propertyId="mode.diagramLocation" value="100, 100"/>
+    <property object="GPIO" propertyId="ABPeripheral.included" value="true"/>
+    <property object="HFXO" propertyId="hfxo.circuitcharacteristics.calculatedclpf" value="12.50"/>
+    <property object="HFXO" propertyId="hfxo.result.rnegesrmaxratio" value="28.819"/>
+    <property object="LEUART0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="LEUART0" propertyId="leuart.settings.baudrate" value="1200"/>
+    <property object="LEUART0" propertyId="leuart.settings.enableafterinit" value="Enable RX after init"/>
+    <property object="LEUART0" propertyId="leuart.settings.enabledmatransfersinem2" value="Enable RX LEUART DMA in EM2"/>
+    <property object="LEUART0" propertyId="leuart.settings.parity" value="Even parity"/>
+    <property object="LFXO" propertyId="lfxo.circuitcharacteristics.calculatedclpf" value="12.50"/>
+    <property object="LFXO" propertyId="lfxo.recommendedoscillatorboostsettings.lfxoboostpercent" value="100%"/>
+    <property object="LFXO" propertyId="lfxo.result.rnegesrmaxratio" value="15.574"/>
+    <property object="PA0" propertyId="ports.settings.pinmode" value="Input"/>
+    <property object="PA1" propertyId="ports.settings.pinmode" value="Input"/>
+    <property object="PA2" propertyId="ports.settings.pinmode" value="Push-pull"/>
+    <property object="PB11" propertyId="ports.settings.pinmode" value="Push-pull"/>
+    <property object="PB13" propertyId="ports.settings.pinmode" value="Push-pull"/>
+    <property object="PB14" propertyId="ports.settings.pinmode" value="Push-pull"/>
+    <property object="PC0" propertyId="ports.settings.pinmode" value="Input"/>
+    <property object="PC1" propertyId="ports.settings.pinmode" value="Input"/>
+    <property object="PC14" propertyId="ports.settings.pinmode" value="Input"/>
+    <property object="PC15" propertyId="ports.settings.pinmode" value="Input"/>
+    <property object="PD6" propertyId="ports.settings.pinmode" value="Input"/>
+    <property object="PD7" propertyId="ports.settings.pinmode" value="Push-pull"/>
+    <property object="PE10" propertyId="ports.settings.pinmode" value="Push-pull"/>
+    <property object="PE11" propertyId="ports.settings.pinmode" value="Input"/>
+    <property object="PE12" propertyId="ports.settings.pinmode" value="Push-pull"/>
+    <property object="PE13" propertyId="ports.settings.pinmode" value="Push-pull"/>
+    <property object="PF2" propertyId="ports.settings.pinmode" value="Push-pull"/>
+    <property object="PORTIO" propertyId="portio.adc0.enable.ch5" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.leuart0.enable.rx" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.leuart0.location.leuart0" value="4"/>
+    <property object="PORTIO" propertyId="portio.lfxo.enable.n" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.lfxo.enable.p" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.usart0.enable.clk" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.usart0.enable.rx" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.usart0.enable.tx" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.usart1.enable.rx" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.usart1.enable.tx" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.usart1.location.usart1" value="2"/>
+    <property object="RTC" propertyId="ABPeripheral.included" value="true"/>
+    <property object="TIMER0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="TIMER0" propertyId="timer.clocksettings.hfperprescaler" value="Divide by 1024"/>
+    <property object="TIMER0" propertyId="timer.settings.enable" value="Disable timer after initialization"/>
+    <property object="TIMER0" propertyId="timer.timerbehavior.oneshot" value="One-shot timer"/>
+    <property object="TIMER1" propertyId="ABPeripheral.included" value="true"/>
+    <property object="TIMER1" propertyId="timer.clocksettings.hfperprescaler" value="Divide by 1024"/>
+    <property object="TIMER1" propertyId="timer.settings.enable" value="Disable timer after initialization"/>
+    <property object="TIMER1" propertyId="timer.timerbehavior.oneshot" value="One-shot timer"/>
+    <property object="TIMER2" propertyId="ABPeripheral.included" value="true"/>
+    <property object="USART0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="USART0" propertyId="usart.mode.usartmode" value="Synchronous Mode (SPI / I2S)"/>
+    <property object="USART0" propertyId="usart.synchronoussettings.baudrate" value="16000000"/>
+    <property object="USART1" propertyId="ABPeripheral.included" value="true"/>
+    <property object="USART1" propertyId="usart.asynchronoussettings.paritybits" value="Even parity"/>
+    <property object="WDOG" propertyId="ABPeripheral.included" value="true"/>
+    <property object="WDOG" propertyId="wdog.cmu.cmuoscenableclock" value="ULFRCO"/>
+    <property object="WDOG" propertyId="wdog.settings.timeoutperiod" value="8k clock cycles"/>
+  </mode>
+  <modeTransition>
+    <property object="RESET &#x2192; DefaultMode" propertyId="modeTransition.target" value="DefaultMode"/>
+    <property object="RESET &#x2192; DefaultMode" propertyId="modeTransition.source" value="RESET"/>
+  </modeTransition>
+</device:XMLDevice>
