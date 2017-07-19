@@ -186,6 +186,14 @@ uint8_t RFPacket_check_and_remove_header(uint8_t *data, uint32_t *SOURCE, uint32
 		*SOURCE = source_address;
 	} else { // If Source is NOT empty, compare it
 		if (source_address != *SOURCE) {
+			/*
+            for(int nn = 0; nn< 2; nn++){
+                    LED_setLED(COL_RED);
+                    RTC_delay_ms(20);
+                    LED_clearLED();
+                    RTC_delay_ms(20);//++++++++++++++++++++++!!!!!!!!!!!!!!!!!!!!!!!!!!Yitong
+            }
+			*/
 			return 0;
 		}
 	}
@@ -196,6 +204,14 @@ uint8_t RFPacket_check_and_remove_header(uint8_t *data, uint32_t *SOURCE, uint32
 		*DEST = destination_addr;
 	} else {
 		if (destination_addr != *DEST) {
+			/*
+            for(int nn = 0; nn< 2; nn++){
+                    LED_setLED(COL_RED);
+                    RTC_delay_ms(15);
+                    LED_clearLED(); //++++++++++++++++++++++++++!!!!!!!!!!!!!!!!!!!!!!Yitong
+                    RTC_delay_ms(15);
+            }
+			*/
 			return 0;
 		}
 	}
@@ -203,16 +219,33 @@ uint8_t RFPacket_check_and_remove_header(uint8_t *data, uint32_t *SOURCE, uint32
 	// Check Message Type
 	uint8_t message_type = data[6];
 	if (*MSG_TYPE == 0x00) {  // If Destination is empty, return Destination address
+		//RTC_delay_ms(2);
 		*MSG_TYPE = message_type;
 	}else {
 		if (message_type != *MSG_TYPE) {
+			/*
+            for(int nn = 0; nn< 2; nn++){
+                    LED_setLED(COL_RED);
+                    RTC_delay_ms(25);
+                    LED_clearLED();
+                    RTC_delay_ms(25);//++++++++++++++++++++++++++!!!!!!!!!!!!!!!!!!!!!!Yitong
+            }
+			*/
 			return 0;
 		}
 	}
 
 	// Check CRC
 	if (!RFPacket_check_crc16(data)) {
-		return 0;
+		/*
+        for(int nn = 0; nn< 2; nn++){
+                LED_setLED(COL_RED);
+                RTC_delay_ms(30);
+                LED_clearLED();
+                RTC_delay_ms(30);
+        }
+		*/
+        return 0;
 	}
 
 	if (message_type == CC_OPT_BYTE_ACK) {
@@ -220,6 +253,7 @@ uint8_t RFPacket_check_and_remove_header(uint8_t *data, uint32_t *SOURCE, uint32
 	} else {
 		// Remove Header / Extract Data
 		uint16_t data_length = data[7], i = 0;
+		//uint32_t data_length = (uint32_t)data[7], i = 0;
 		for (i=0; i < data_length + 10; i++) {
 			if (i < data_length) {
 				data[i] = data[i+10];

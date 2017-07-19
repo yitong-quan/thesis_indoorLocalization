@@ -80,7 +80,7 @@ static volatile dwt_config_t config = {
 
 /* TAG DEFINES */
 #define GENERAL_NODE_WAKEUP_ID  			0x0000CCCC
-#define TAG_ID 								0x0000310F				//0x00AC310D
+#define TAG_ID 								0x0000310D				//0x00AC310D
 
 /* NODE DEFINES */
 #define NUMBER_OF_MEASUREMENTS				25

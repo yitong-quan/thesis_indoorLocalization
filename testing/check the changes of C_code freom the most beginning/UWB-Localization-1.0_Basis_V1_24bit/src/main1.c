@@ -434,7 +434,6 @@ void sendPacket(uint32_t wakeupid, uint8_t option, uint8_t *data, uint8_t len, u
 
 	memset(UWB_data, 0, 200);
 
-	/*
 	for (num = 0; num < NODE_NUMBERS; num++)
 	{
 		arraycpy(uintUWB_data, CC1101_full_data, num*((n_measurements * 4) + 2), ((n_measurements * 4) + 2));
@@ -479,7 +478,7 @@ void sendPacket(uint32_t wakeupid, uint8_t option, uint8_t *data, uint8_t len, u
 				//sprintf(string_buffer, "%ld \r\n", (long int) (UWB_data[n] * 100));
 				//error = printMSG(string_buffer, strlen(string_buffer));
 
-//TODO: buffer<<nodeID1:<<dist,dist,dist...; <<nodeID2:<<dist,dist,dist...;<<nodeID3...    buffer>>out
+//TODO: buffer<<nodeID1<<dist,dist,dist...<<nodeID2<<dist,dist,dist...<<nodeID3...    buffer>>out
 
 				if(NODE_ADDRESS == 0x1C1C)
 				{
@@ -514,84 +513,6 @@ void sendPacket(uint32_t wakeupid, uint8_t option, uint8_t *data, uint8_t len, u
 			}
 		}
 	}
-	*/
-
-	sprintf(string_buffer, ""); // this line is to realize the following buffer_extension
-	for (num = 0; num < NODE_NUMBERS; num++)
-	{
-		arraycpy(uintUWB_data, CC1101_full_data, num*((n_measurements * 4) + 2), ((n_measurements * 4) + 2));
-		NODE_ADDRESS = (((uint16_t) uintUWB_data[0]) << 8 | ((uint16_t) uintUWB_data[1]));
-
-		// remove IDs
-		for (i = 0; i < (n_measurements * 4) + 2; i++)
-		{
-			if (i < (n_measurements * 4))
-			{
-				uintUWB_data[i] = uintUWB_data[i+2];
-			}
-			else
-			{
-				uintUWB_data[i] = 0x00;
-			}
-		}
-
-		float *UWB_float_data_pointer = (float *)uintUWB_data;
-		for(uint16_t n = 0; n < n_measurements; n++)
-		{
-			UWB_data[n] = *UWB_float_data_pointer;
-			UWB_float_data_pointer++;
-		}
-
-		if(!NODE_ADDRESS)
-		{
-			//disable for nicer presentation. TODO, should be back. Yitong
-			//UART_WriteString("NODE is out of range, Wake up not possible\r\n", sizeof("NODE is out of range, Wake up not possible\r\n"));
-			sprintf(string_buffer + strlen(string_buffer), "no data recieved!; \t");
-		}
-		else
-		{
-			sprintf(string_buffer + strlen(string_buffer),"0x%X: ", (int) NODE_ADDRESS);
-			////sprintf(string_buffer,"Received Packet from NODE: 0x%X \r\n",(int) NODE_ADDRESS);
-			//error = printMSG(string_buffer, strlen(string_buffer));
-
-			for (n = 0; n < n_measurements; n++)
-			{
-
-				//sprintf(string_buffer, "%ld \r\n", (long int) (UWB_data[n] * 100));
-				//error = printMSG(string_buffer, strlen(string_buffer));
-
-//TODO: buffer<<nodeID1:<<dist,dist,dist...; <<nodeID2:<<dist,dist,dist...;<<nodeID3...    buffer>>out
-
-				if(NODE_ADDRESS == 0x1C1C)
-				{
-					sprintf(string_buffer + strlen(string_buffer), "%ld ", (long int) (0.9925 * UWB_data[n] * 100 - 0.005));		// y = 0.9925  * x - 0.005
-				}
-				if(NODE_ADDRESS == 0x2020)
-				{
-					sprintf(string_buffer + strlen(string_buffer), "%ld ", (long int) (0.9925 * UWB_data[n] * 100 - 0.005));		// y = 0.9925  * x - 5.205
-				}
-				if(NODE_ADDRESS == 0x6E6E)
-				{
-					sprintf(string_buffer + strlen(string_buffer), "%ld ", (long int) (0.9925 * UWB_data[n] * 100 - 0.005));		// y = 0.9925  * x - 0.005
-				}
-				if(NODE_ADDRESS == 0x3E3E)
-				{
-					sprintf(string_buffer + strlen(string_buffer), "%ld ", (long int) (0.9925 * UWB_data[n] * 100 - 0.005));		// y = 0.9925  * x - 0.005
-				}
-				if(NODE_ADDRESS == 0x4D4D)
-				{
-					sprintf(string_buffer + strlen(string_buffer), "%ld ", (long int) (0.9925 * UWB_data[n] * 100 - 0.005));		// y = 0.9925  * x - 0.005
-				}
-				if(NODE_ADDRESS == 0x5A5A)
-				{
-					sprintf(string_buffer + strlen(string_buffer), "%ld ", (long int) (0.9925 * UWB_data[n] * 100 - 0.005));		// y = 0.9925  * x - 0.005
-				}
-			}
-			sprintf(string_buffer + strlen(string_buffer), "; \n");
-		}
-	}
-	sprintf(string_buffer + strlen(string_buffer), "\r\n");
-	error = printMSG(string_buffer, strlen(string_buffer));
 }
 
 void wake_up_function_without_ACK(uint32_t wakeupid, uint8_t option, uint16_t n_measurements)

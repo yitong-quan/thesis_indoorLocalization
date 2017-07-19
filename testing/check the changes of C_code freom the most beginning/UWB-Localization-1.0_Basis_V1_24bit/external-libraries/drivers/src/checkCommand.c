@@ -72,10 +72,10 @@ bool check_command_find(uint8_t *buffer)
 {
 	bool error = false;
 
-	//if (memcmp(buffer, "\r\n",2) == 0)
-	//{
-		//sendPacket(0x310F, AS_OPT_BYTE_NORMAL_MODE, NULL, 0, 100);
-	//}
+	if (memcmp(buffer, "\r\n",2) == 0)
+	{
+		sendPacket(0x310D, AS_OPT_BYTE_NORMAL_MODE, NULL, 0, 1); //Tag ID
+	}
 
 	if (memcmp(buffer, "find", 4) == 0)
 	{

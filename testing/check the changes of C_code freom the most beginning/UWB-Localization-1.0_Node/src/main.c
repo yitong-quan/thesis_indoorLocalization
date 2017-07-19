@@ -193,9 +193,9 @@ int main(void){
 	while(1)
 	{
 		// Blink LED
-		//LED_setLED(COL_GREEN);
-		//RTC_delay_ms(5);
-		//LED_clearLED();
+		LED_setLED(COL_GREEN);
+		RTC_delay_ms(5);
+		LED_clearLED();
 
 		// Feed Watchdog
 		#if WDOG_ENABLED
