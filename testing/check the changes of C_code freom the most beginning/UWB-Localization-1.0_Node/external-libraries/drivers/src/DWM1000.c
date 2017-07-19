@@ -2223,7 +2223,7 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 			case RECEIVER_ON_STATE:
 				DWM1000_receiver();
 				state1 = STATE_WAIT_BLINK_RECEIVE;
-				RTC_start(1000); //too long, change from 'RTC_start(6000);' by Yitong
+				RTC_start(6000);
 			break;
 
 			case STATE_WAIT_BLINK_RECEIVE:
@@ -2344,7 +2344,7 @@ void DWM1000_Chip_INIT()
 {
 	while(DWM1000_init());																	// init DWM1000
 	DWM1000_configuration2(&config);														// configuration of DWM1000
-	DWM1000_set_GPIOs_sec_mode();
+	//DWM1000_set_GPIOs_sec_mode();
 	DWM1000_config_sleep_mode(DWT_PRESRV_SLEEP | DWT_CONFIG, DWT_WAKE_CS | DWT_SLP_EN);
 }
 

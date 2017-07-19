@@ -430,8 +430,7 @@ void AS3933_EFM_sleep_enable_wake_up (uint32_t WAKEUP_ID)
 	while (!WAKEUP_received)
 	{
 		__disable_irq();
-		//EMU_EnterEM3(true);  // EM3
-		EMU_EnterEM2(true);  // EM3
+		EMU_EnterEM3(true);  // EM3
 		__enable_irq();
 	}
 }

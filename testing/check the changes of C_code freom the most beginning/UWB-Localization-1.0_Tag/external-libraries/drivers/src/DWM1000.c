@@ -2297,12 +2297,7 @@ void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t NODE_A
 		{
 			case STATE_SEND_BLINK:
 				state = DWM1000_blink_transmit_state(NODE_ADD, MY_TAG_ID);
-				//RTC_start(700);  // can be Changed to 300?? TODO Yitong
-				RTC_start(10);
-				//>>>>>>>>>>>>>>>>>>>>>>>>> Inorder to make the time needed shorter, when not all th enodes can be contacted. can it be Changed to 300?? TODO Yitong
-				//>>>>>>>>>>>>>>>>>>>>>>>>> I am choosing 100m/(3*10^8)*factor, take a factor 3, then I get 10^(-6)s = 0.001ms
-				//>>>>>>>>>>>>>>>>>>>>>>>>> so choosing RTC_start(100) should be problem free, if there is no other things is needed to be done except ranging, (others might be waiting for respond or so)
-				//>>>>>>>>>>>>>>>>>>>>>>>>> choosing RTC_start(10), since RTC_start(100) is problem free, if there is no other things is needed to be done except ranging, (others might be waiting for respond or so)
+				RTC_start(700);
 			break;
 
 			case STATE_RECEIVER_ON:
@@ -2344,10 +2339,7 @@ void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t NODE_A
 					range[i++] = DWM1000_compute_range_asymmetric(poll_tx_timestamp, poll_rx_timestamp, resp_tx_timestamp, resp_rx_timestamp, final_tx_timestamp, final_rx_timestamp);
 					measurement_numbers--;
 
-					//RTC_start(5000);
-					RTC_start(300);
-					//>>>>>>>>>>>>>>>>>>>>>>>>> Inorder to make the time needed shorter, TODO Yitong
-
+					RTC_start(5000);
 					state = STATE_RECEIVER_ON;
 				}
 				else
@@ -2368,7 +2360,7 @@ void DWM1000_Chip_INIT()
 {
 	while(DWM1000_init());																	// init DWM1000
 	DWM1000_configuration2(&config);														// configuration of DWM1000
-	DWM1000_set_GPIOs_sec_mode();
+	//DWM1000_set_GPIOs_sec_mode();
 	//DWM1000_set_GPIO_mode();
 	DWM1000_config_sleep_mode(DWT_PRESRV_SLEEP | DWT_CONFIG, DWT_WAKE_CS | DWT_SLP_EN);
 }
