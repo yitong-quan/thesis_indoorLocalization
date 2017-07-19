@@ -1,3 +1,24 @@
+DOING:
+
+//Import Ccode into simplicity studio with
+... gitub folder
+
+//Matlab same R to generate noise
+
+//test simplify
+
+//Change the value of factor_Q to 1 in all KF_traj_noise_meas_...
+
+//% <<<<<<<<TODO: 01 instead of 1
+
+...execle to record the mismatch R Q #NODEDS ...
+
+//randomly set the num of missing measurements in each set
+
+//trimmean,  mad
+
+//find out the nodes_position from 'uwb03-Unnamed__Time_Position.mat'
+
 //calib the experiment data frome HTerm back to true value
 
 //dist from HTerm shoild substract the height from the ground
@@ -5,6 +26,7 @@
 debug the hardware ,looks like I have only changed the waitiong time from 6 to 2s in the basis, should also chang somewhere in the nodes 
 find out the location of the nodes
 calibration is good- only seems changing from time to time
+and 0x4D4D calib is not good
 
 
 design the location to place the nodes, the dist among them should be different, so that it is easier to be recgonized

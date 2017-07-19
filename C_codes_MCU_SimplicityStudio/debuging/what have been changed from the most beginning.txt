@@ -13,6 +13,13 @@ UWB-Localization-1.0_Tag/external-libraries/drivers/src/DWM1000.c
 	2348 >  RTC_start(300);
 				<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< I want to make it (100) here, (>70) is enough
 
+UWB-Localization-1.0_Tag/inc/config.h
+
+
 UWB-Localization-1.0_Tag/src/main.c
+	10   >  	1, /* Channel number. */  %<<<<<<<<<<<<<<<<< or 5 
+	383  >          break;       
+				<<<<<<<<<<<<<<<<<< I want to add one command 'RTC_TIMEOUT = true', before the 'break'
+				<<<<<<<<<<<<<<<<<< or replace 'break' with 'RTC_TIMEOUT = true'
 
 	
