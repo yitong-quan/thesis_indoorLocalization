@@ -609,7 +609,7 @@ void listenForResponse(uint8_t *buffer, uint32_t wakeupid, uint8_t msgType, uint
 	while (!RTC_TIMEOUT) {
 		memset(buffer, 0x00, sizeof(buffer));
 		// Receive Data from Identifier
-		radio_receive_packet(&xfer, buffer, len, 800);		//Patrick set the last para:3000. I think it's too large. Yitong 0x1533720>>							//3195//1000
+		radio_receive_packet(&xfer, buffer, len, 800);		//Patrick set the last para:3000. I think it's too large. Yitong 0x1533720 >>	//3195//1000
 
 		// Decrypt received packet (AES128CBC)
 		RFPacket_decrypt_AES128CBC(buffer, AES_decryption_key, AES_initVector);

@@ -27,6 +27,8 @@ debug the hardware ,looks like I have only changed the waitiong time from 6 to 2
 find out the location of the nodes
 calibration is good- only seems changing from time to time
 and 0x4D4D calib is not good
+RTC_delay_ms    RTC_start    RTC_init
+NODE LED 6S when no ID is written in the basic
 
 
 design the location to place the nodes, the dist among them should be different, so that it is easier to be recgonized
