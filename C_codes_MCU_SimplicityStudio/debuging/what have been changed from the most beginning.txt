@@ -5,6 +5,7 @@ UWB-Localization-1.0_Basis_V1_24bit/external-libraries/drivers/src/checkCommand.
 
 UWB-Localization-1.0_Node/external-libraries/drivers/src/DWM1000.c
 	2226 > 	RTC_start(1000); //too long, change from 'RTC_start(6000);' by Yitong
+	2241 >  uint16_t count = 45;  // Patrick set 45, too much. Yitong
 	2347 > 	DWM1000_set_GPIOs_sec_mode();
 
 UWB-Localization-1.0_Tag/external-libraries/drivers/src/DWM1000.c

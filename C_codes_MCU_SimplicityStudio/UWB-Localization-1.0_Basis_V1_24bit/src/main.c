@@ -604,12 +604,12 @@ bool wake_up_function(uint32_t wakeupid, uint8_t option, uint16_t n_measurements
 void listenForResponse(uint8_t *buffer, uint32_t wakeupid, uint8_t msgType, uint8_t *len,
 		uint8_t *act_packet, uint8_t *total_n_packet, uint32_t *tag_addr) {
 
-	RTC_start(11000);
+	RTC_start(750); // Patrick has set 11000, I think it is too much. Yitong
 
 	while (!RTC_TIMEOUT) {
 		memset(buffer, 0x00, sizeof(buffer));
 		// Receive Data from Identifier
-		radio_receive_packet(&xfer, buffer, len, 3000);									//3195//1000
+		radio_receive_packet(&xfer, buffer, len, 800);		//Patrick set the last para:3000. I think it's too large. Yitong 0x1533720>>							//3195//1000
 
 		// Decrypt received packet (AES128CBC)
 		RFPacket_decrypt_AES128CBC(buffer, AES_decryption_key, AES_initVector);
@@ -654,11 +654,11 @@ bool checkACK(uint32_t wakeupid) {
 // Check that Identifier has received wake up
 	bool ack = false;
 	// Wait for ACK
-	RTC_start(500);	//180
+	RTC_start(180);	// 500 //180 Yitong
 	while (!RTC_TIMEOUT) {
 		cc1101_change_config_to(CC1101_DATA_38kBaud_CONFIG, paTableData);
 		ack = cc1101_check_ack(&xfer, &wakeupid, &MY_BASE_ID,
-				AES_decryption_key, AES_initVector, 500);					//200
+				AES_decryption_key, AES_initVector, 180);		//500 //200 Yitong
 		if (ack) {
 			break;
 		}
@@ -907,12 +907,12 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 	uint8_t CC1101_send[256] = { 0 };
 	uint8_t num_of_tries = 0;
 	bool acknowledged = true;
-
+	/*
 	//for debug, Yitong TODO: check ok or not
 	if (idx == 1){
 		idx = 17; //17 == 1+16
 	}
-
+	*/
 	// Build Header
 	RFPacket_build_header(CC1101_send, buffer, &MY_BASE_ID, &wakeupid, CC_OPT_BYTE_DAT_BASIS_TO_IDENTIFIER, &idx);
 
@@ -921,12 +921,12 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 
 	// Encrypt send packet (AES128CBC)
 	RFPacket_encrypt_AES128CBC(CC1101_send, &idx, AES_encryption_key, AES_initVector);
-	/*
+
 	//for debug, Yitong TODO: check ok or not
-	if (idx > 200){
-		idx = 0;
+	if (idx > 225){
+		idx = 17;
 	}
-	*/
+
 	// Send packet
 	while (num_of_tries < MAX_NUM_OF_TRIES)
 	{

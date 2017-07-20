@@ -2211,7 +2211,7 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 	uint8_t MSG_TYPE = FUNC_CODE_POLL;
 	uint64_t poll_tx_timestamp = 0;
 	uint64_t resp_rx_timestamp = 0;
-	uint16_t count = 45;
+	uint16_t count = 45;  // Patrick set 45, too much. Yitong  0x16470720 >>
 	uint16_t count2 = 1;
 
 	state1 = RECEIVER_ON_STATE;
@@ -2223,7 +2223,7 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 			case RECEIVER_ON_STATE:
 				DWM1000_receiver();
 				state1 = STATE_WAIT_BLINK_RECEIVE;
-				RTC_start(1000); //too long, change from 'RTC_start(6000);' by Yitong
+				RTC_start(800); //1000 works. too long, change from 'RTC_start(6000);' by Yitong
 			break;
 
 			case STATE_WAIT_BLINK_RECEIVE:
@@ -2246,7 +2246,7 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 			case STATE_WAIT_RESPONSE_RECEIVE:
 				if(RTC_TIMEOUT)
 				{
-					count--;
+					count--;  // Yitong  0x16470720 <<
 					state1 = STATE_POLL_TRANSMIT;
 				}
 			break;

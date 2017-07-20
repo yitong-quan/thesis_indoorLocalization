@@ -2297,8 +2297,8 @@ void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t NODE_A
 		{
 			case STATE_SEND_BLINK:
 				state = DWM1000_blink_transmit_state(NODE_ADD, MY_TAG_ID);
-				//RTC_start(700);  // can be Changed to 300?? TODO Yitong
-				RTC_start(10);
+				//RTC_start(700);  // 10 can work. can be Changed to 300?? TODO Yitong
+				RTC_start(100);
 				//>>>>>>>>>>>>>>>>>>>>>>>>> In order to make the time needed shorter, when not all the nodes can be contacted. can it be Changed to 300?? TODO Yitong
 				//>>>>>>>>>>>>>>>>>>>>>>>>> I am choosing 100m/(3*10^8)*factor, take a factor 3, then I get 10^(-6)s = 0.001ms
 				//>>>>>>>>>>>>>>>>>>>>>>>>> so choosing RTC_start(100) should be problem free, if there is no other things is needed to be done except ranging, (others might be waiting for respond or so)
@@ -2360,7 +2360,7 @@ void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t NODE_A
 			break;
 		}
 	}
-	state = STATE_RECEIVER_ON;
+	state = STATE_RECEIVER_ON;  //useless here. Yitong
 }
 
 

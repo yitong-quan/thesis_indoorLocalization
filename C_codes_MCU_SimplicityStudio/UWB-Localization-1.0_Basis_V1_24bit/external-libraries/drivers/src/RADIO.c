@@ -411,7 +411,7 @@ int radio_receive_packet(struct radio_transfer *xfer, uint8_t *buffer,
 	/* TODO: Comment: Re-enable interrupts. */
 	GPIO_IntEnable((1 << CC1101_GDO0_PIN) | (1 << CC1101_GDO2_PIN));
 
-	while (!xfer->finished && !xfer->timedout) {
+	while (!xfer->finished && !xfer->timedout) {  //Yitong 0x1533720 <<
 	}
 
 	/* TODO: Comment: Disable and reset the timer. */
