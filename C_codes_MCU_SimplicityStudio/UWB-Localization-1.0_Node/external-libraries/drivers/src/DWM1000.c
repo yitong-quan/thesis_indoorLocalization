@@ -2213,23 +2213,28 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 	uint64_t resp_rx_timestamp = 0;
 	uint16_t count = 45;  // Patrick set 45, too much. Yitong  0x16470720 >>
 	uint16_t count2 = 1;
+	uint8_t debug_num = 255; // Yitong
 
 	state1 = RECEIVER_ON_STATE;
 
-	while(measurement_numbers > 0 && count > 0 && count2 > 0)
+	while(((measurement_numbers > 0 && count > 0) && count2 > 0)) // Yitong 0x12380721 <<
 	{
 		switch (state1)
 		{
 			case RECEIVER_ON_STATE:
 				DWM1000_receiver();
 				state1 = STATE_WAIT_BLINK_RECEIVE;
-				RTC_start(800); //1000 works. too long, change from 'RTC_start(6000);' by Yitong
+				RTC_start(600); //800 and 1000 works, but out of no reasons RTC_TIMEOUT will nerver set to be true.// too long, change from 'RTC_start(6000);' by Yitong
 			break;
 
 			case STATE_WAIT_BLINK_RECEIVE:
+				// TODO, SET LED BLINK HERE // <<<<<<<<<<<<<<<<<<<<<<<<  Yitong
+				debug_num++;
 				if(RTC_TIMEOUT)
 				{
-					count2 = 0;
+					// TODO, SET LED BLINK HERE // <<<<<<<<<<<<<<<<<<<<<<<<  Yitong
+					count2 = 0;   // <<<<<<<<<<<<<<<<<<<<<<<<  Yitong, here dontt work 0x12380721 >>
+					debug_num = debug_num + 10;
 				}
 			break;
 

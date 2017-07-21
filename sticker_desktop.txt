@@ -30,6 +30,7 @@ and 0x4D4D calib is not good
 RTC_delay_ms    RTC_start    RTC_init
 NODE LED 6S when no ID is written in the basic
 
+when tag is cummunicating with at least one node, the nodes which are not in the communication list will be still wake up with 6~8 sec LED
 
 design the location to place the nodes, the dist among them should be different, so that it is easier to be recgonized
 dt too big, try to seperate dt into smaller ddt
