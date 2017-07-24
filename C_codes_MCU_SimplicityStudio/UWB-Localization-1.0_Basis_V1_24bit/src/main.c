@@ -482,32 +482,38 @@ void sendPacket(uint32_t wakeupid, uint8_t option, uint8_t *data, uint8_t len, u
 
 				if(NODE_ADDRESS == 0x1C1C)
 				{
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (89.73 * UWB_data[n] + 25.4));		// y = 0.9925  * x - 5.205
+					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (89.73 * UWB_data[n] + 25.4));		// y = 0.9925  * x - 5.205
+					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (100 * UWB_data[n]));
 					error = printMSG(string_buffer, strlen(string_buffer));
 				}
 				if(NODE_ADDRESS == 0x2020)
 				{
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (90.42 * UWB_data[n] + 5.531));		// y = 0.9993  * x - 0.24217
+					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (90.42 * UWB_data[n] + 5.531));		// y = 0.9993  * x - 0.24217
+					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (100 * UWB_data[n]));		// y = 0.9993  * x - 0.24217error = printMSG(string_buffer, strlen(string_buffer));
 					error = printMSG(string_buffer, strlen(string_buffer));
 				}
 				if(NODE_ADDRESS == 0x6E6E)
 				{
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (91.74 * UWB_data[n] + 15.89));		// y = 0.9993  * x - 0.24217
+					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (91.74 * UWB_data[n] + 15.89));		// y = 0.9993  * x - 0.24217
+					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (100 * UWB_data[n]));		// y = 0.9993  * x - 0.24217
 					error = printMSG(string_buffer, strlen(string_buffer));
 				}
 				if(NODE_ADDRESS == 0x3E3E)
 				{
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (91.91 * UWB_data[n] + 23.44));		// y = 1.00547 * x - 14.103
+					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (91.91 * UWB_data[n] + 23.44));		// y = 1.00547 * x - 14.103
+					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (100 * UWB_data[n]));		// y = 1.00547 * x - 14.103
 					error = printMSG(string_buffer, strlen(string_buffer));
 				}
 				if(NODE_ADDRESS == 0x4D4D)
 				{
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (89.84 * UWB_data[n] + 21.37));		// y = 1.01452 * x - 8.1253
+					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (89.84 * UWB_data[n] + 21.37));		// y = 1.01452 * x - 8.1253
+					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (100 * UWB_data[n]));		// y = 1.01452 * x - 8.1253
 					error = printMSG(string_buffer, strlen(string_buffer));
 				}
 				if(NODE_ADDRESS == 0x5A5A)
 				{
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1.0 * UWB_data[n] * 100 - 0));		// y = 1.01015 * x - 4.9066
+					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1.0 * UWB_data[n] * 100 - 0));		// y = 1.01015 * x - 4.9066
+					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (100 * UWB_data[n]));
 					error = printMSG(string_buffer, strlen(string_buffer));
 				}
 			}
