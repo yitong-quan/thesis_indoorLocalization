@@ -35,7 +35,7 @@ while iter < iter_max && norm(u_tilde) >= epslon_taget
     u_tilde = gama * d_w;
     u = u - u_tilde;
     U = [U u];
-    % todo plot the cost function : sum((f_ij)^2)
+    % todo plot the cost function : sum((f_ij))
     iter = iter + 1;
 end
 
