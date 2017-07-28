@@ -1,0 +1,4 @@
+4m	399cm
+5m	500cm
+
+change the basis_main.c 10 measurement each wake up
