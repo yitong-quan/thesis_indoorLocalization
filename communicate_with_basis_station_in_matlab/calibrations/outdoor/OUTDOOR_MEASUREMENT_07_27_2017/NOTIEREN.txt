@@ -2,3 +2,5 @@
 5m	500cm
 
 change the basis_main.c 10 measurement each wake up
+
+needed to be done: 3m 2020 and 5a5a and 6e6e
