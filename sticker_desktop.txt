@@ -23,6 +23,8 @@ DOING:
 
 //dist from HTerm shoild substract the height from the ground
 
+needed to be done: 3m 2020 and 5a5a and 6e6e
+
 debug the hardware ,looks like I have only changed the waitiong time from 6 to 2s in the basis, should also chang somewhere in the nodes 
 find out the location of the nodes
 calibration is good- only seems changing from time to time
@@ -30,6 +32,7 @@ and 0x4D4D calib is not good
 RTC_delay_ms    RTC_start    RTC_init
 NODE LED 6S when no ID is written in the basic
 
+problem needed to be explained:  D:\Yitong\GitHub\thesis_indoorLocalization\communicate_with_basis_station_in_matlab\calibrations\outdoor\OUTDOOR_MEASUREMENT_07_27_2017\problems
 when tag is cummunicating with at least one node, the nodes which are not in the communication list will be still wake up with 6~8 sec LED
 
 design the location to place the nodes, the dist among them should be different, so that it is easier to be recgonized
