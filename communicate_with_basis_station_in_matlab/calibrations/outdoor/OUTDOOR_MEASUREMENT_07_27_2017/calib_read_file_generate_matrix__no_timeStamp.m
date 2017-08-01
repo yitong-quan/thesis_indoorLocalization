@@ -2,7 +2,7 @@
 %% 
 clear;
 %fileID = fopen('0x1C1C-10m.log'); %'0x2020, 0x3E3E, 0x4D4D, 0x6E6E-2m.log'
-fileID = fopen('3m_6E6E_2.log'); 
+fileID = fopen('4m_all_in_1_file.log'); 
 %{
 % tline = fgetl(fid);
 % while ischar(tline)
