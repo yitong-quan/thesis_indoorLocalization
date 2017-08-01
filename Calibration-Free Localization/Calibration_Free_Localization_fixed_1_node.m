@@ -1,4 +1,5 @@
 clear 
+
 %% 
 % one D
 %node_posi_sym = sym('n_%d', [1 2]);
@@ -33,18 +34,21 @@ u_tilde = inf;
 gama_init = 0.5; %<<<<<
 epslon_taget = 0.00001;
 iter_max = 900;
-iter = 1;
+iter = 0;
 
 u = u_0;
 U = u_0;
 F = inf;
 cost = inf;
+progress = @(iter,u,cost) fprintf('iter = %3d: u = %-32s, cost = %f\n', ...
+    iter, mat2str(u,6), cost);
 
 while iter < iter_max && cost > 0.0000001 %norm(u_tilde) >= epslon_taget
     gama = rand*gama_init;  %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< set rand factor for gamma
     d_w =  eval(subs(d_w_sym, [tag_p_sym, node_posi_sym(1:end-1)].', u));
         % todo plot the cost function : sum((f_ij)^2)
     cost = eval(subs(F_sym, [tag_p_sym, node_posi_sym(1:end-1) ].', u));
+    progress(iter, u, cost);
     F = [F,  cost];
     u_tilde = gama * d_w;
     u = u - u_tilde;

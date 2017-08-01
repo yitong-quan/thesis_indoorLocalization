@@ -1,4 +1,5 @@
 clear 
+%TODO: determine the gama value, https://en.wikipedia.org/wiki/Gradient_descent
 %% 
 % one D
 node_posi_sym = sym('n_%d', [1 2]);
