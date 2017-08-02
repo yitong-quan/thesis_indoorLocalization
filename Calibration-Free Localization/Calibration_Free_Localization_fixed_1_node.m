@@ -31,9 +31,9 @@ F_sym = sum(sum((f_sym).^2));
 %u_0 = [-7.3 -1.9 -9.9 -2.5 -2.9 -10.9 0.9, -7.9]'; %[ tag node] fix the last node
 u_0 = rand(8,1); %[ tag node] fix the last node
 u_tilde = inf;
-gama_init = 0.5; %<<<<<
+gama_init = 0.3; %<<<<<0.5 also works
 epslon_taget = 0.00001;
-iter_max = 900;
+iter_max = 300;
 iter = 0;
 
 u = u_0;
