@@ -424,11 +424,12 @@ void AS3933_EFM_sleep_enable_wake_up (uint32_t WAKEUP_ID)
 	// Switch antenna to WakeUp Receiver
 	ANTENNA_switch(ANTENNA_DEST_WAKEUPRF);
 
+
 	// Now enter SleepMode!!
 	while (!WAKEUP_received)
 	{
 		__disable_irq();
-		EMU_EnterEM2(true);  // change from EM3 to EM2  //always on
+		EMU_EnterEM2(true);  // change from EM3 to EM2  //always on //EMU_EnterEM1(); //
 		__enable_irq();
 	}
 }
