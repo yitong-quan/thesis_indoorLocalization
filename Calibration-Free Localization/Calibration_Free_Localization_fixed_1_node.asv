@@ -2,21 +2,16 @@ clear
 
 %% 
 % one D
-%% flags
-add_perturbance = 1; % 1 for add_perturbance, 0 for random seeding <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
-reasonable_gama = 1; % 1 for reasonable_gama, 0 for random gamma <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
-use_Gauss_Newton = 1;  % 1 for use_Gauss_Newton, 0 for not use_Gauss_Newton <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
-%%
 %node_posi_sym = sym('n_%d', [1 2]);
 node_posi_sym = sym('n_%d', [1 2]); % fix 1 out of the 2 ndoes
 node_posi_sym(2) = 3;
-nodes_p = [-7, 3];
-tag_p = linspace(-16,0,17);
-tag_p_sym = sym('tag_p_%d', [1 17]);
+tag_p_sym = sym('tag_p_%d', [1 7]);
 
 f_sym = sym('f_%d', [length(node_posi_sym), length(tag_p_sym)]);
+nodes_p = [-7, 3];
+tag_p = linspace(-6,0,7);
 true_dist = [abs(tag_p - nodes_p(1)) ; abs(tag_p - nodes_p(2))];
-%true_dist = rand(size(true_dist)) + true_dist; % <<<<<<<<<<<<<<< <<<<<<<<<<<<<<<   add noise here, become noisy measurements
+true_dist = rand(size(true_dist)) + true_dist; % <<<<<<<<<<<<<<< <<<<<<<<<<<<<<<   add noise here
 for i = 1:length(node_posi_sym)
     for j = 1:length(tag_p_sym)
         f_sym(i,j) = abs(node_posi_sym(i) - tag_p_sym(j)) - true_dist(i,j);
@@ -36,17 +31,16 @@ F_sym = sum(sum((f_sym).^2));
 %u_0 = [-6.3 -5.9 -4 -3 -2.0 -1 0, -7 3]'; %[ tag node]
 %u_0 = [-7.3 -1.9 -9.9 -2.5 -2.9 -10.9 0.9, -7.9]'; %[ tag node] fix the last node
 
+add_perturbance = 0; % 1 for add_perturbance, 0 for random seeding <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
+reasonable_gama = 1; % 1 for reasonable_gama, 0 for random gamma <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
+
 epslon_taget = 0.00001;
 if add_perturbance == 1
-    if use_Gauss_Newton == 1
-        iter_max = 100;
-    else
-        iter_max = 300;
-    end
+    iter_max = 300;
 else
     iter_max = 30;
 end
-u_0 = rand(18,1);%zeros(8,1); %rand(8,1); %[ tag node] fix the last node
+u_0 = rand(8,1);%zeros(8,1); %rand(8,1); %[ tag node] fix the last node
 u = u_0;
 U = u_0;
 u_tilde = inf;
@@ -64,11 +58,11 @@ cost_min = inf;
 if add_perturbance == 1
     trialNum = 1;
 else
-    trialNum = 3;
+    trialNum = 6;
 end
 for ii = 1:trialNum
     if add_perturbance == 0
-        u_0 = rand(18,1);%zeros(8,1); %rand(8,1); %[ tag node] fix the last node
+        u_0 = rand(8,1);%zeros(8,1); %rand(8,1); %[ tag node] fix the last node
         u = u_0;
         u_tilde = inf;
         gama_init = 0.3; %<<<<<0.5 also works
@@ -83,10 +77,8 @@ for ii = 1:trialNum
         progress(ii, iter, u, cost);
         F = [F,  cost];
         
-        if norm(d_w) < 1
-            if use_Gauss_Newton == 1
-                Gauss_Newton_Flag = 1; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<< set Flag
-            end
+        if norm(d_w) < 2
+            Gauss_Newton_Flag = 1;
             Q = eval(subs(Q_sym, [tag_p_sym, node_posi_sym(1:end-1)].', u));
         end
         
@@ -108,7 +100,6 @@ for ii = 1:trialNum
                 else
                     if add_perturbance == 1  %%add_perturbance_at_local_minina_and_reached_global_minima
                         u_tilde = 10*rand * ones(size(d_w));
-                        Gauss_Newton_Flag = 0 ;
                         if cost < cost_min
                             cost_min = cost;
                             u_most_likely = U(:,end-1);

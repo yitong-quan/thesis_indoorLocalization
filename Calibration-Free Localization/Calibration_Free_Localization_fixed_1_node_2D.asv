@@ -1,15 +1,15 @@
 clear 
 
 %% 
-% one D
+% two D
 %% flags
 add_perturbance = 1; % 1 for add_perturbance, 0 for random seeding <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
 reasonable_gama = 1; % 1 for reasonable_gama, 0 for random gamma <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
 use_Gauss_Newton = 1;  % 1 for use_Gauss_Newton, 0 for not use_Gauss_Newton <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
 %%
 %node_posi_sym = sym('n_%d', [1 2]);
-node_posi_sym = sym('n_%d', [1 2]); % fix 1 out of the 2 ndoes
-node_posi_sym(2) = 3;
+node_posi_sym = sym('n_%d', [2 2]); % fix 1 out of the 2 ndoes
+node_posi_sym(:,2) = 3;
 nodes_p = [-7, 3];
 tag_p = linspace(-16,0,17);
 tag_p_sym = sym('tag_p_%d', [1 17]);

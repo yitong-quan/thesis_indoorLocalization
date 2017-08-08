@@ -1,25 +1,31 @@
 clear 
 
 %% 
-% one D
+% two D
 %% flags
 add_perturbance = 1; % 1 for add_perturbance, 0 for random seeding <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
 reasonable_gama = 1; % 1 for reasonable_gama, 0 for random gamma <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
 use_Gauss_Newton = 1;  % 1 for use_Gauss_Newton, 0 for not use_Gauss_Newton <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
 %%
 %node_posi_sym = sym('n_%d', [1 2]);
-node_posi_sym = sym('n_%d', [1 2]); % fix 1 out of the 2 ndoes
-node_posi_sym(2) = 3;
-nodes_p = [-7, 3];
-tag_p = linspace(-16,0,17);
-tag_p_sym = sym('tag_p_%d', [1 17]);
+node_posi_sym = sym('n_%d', [2 2]); % fix 1 out of the 2 ndoes
+node_posi_sym(:,2) = [3, 0];
+nodes_p = [-7, 3; 0, 0];
+tag_p_sym = sym('tag_p_%d', [2 17]);
+tag_p_x = linspace(-16,0,17);
+tag_p = [tag_p_x; zeros(size(tag_p_x))]; 
+
 
 f_sym = sym('f_%d', [length(node_posi_sym), length(tag_p_sym)]);
-true_dist = [abs(tag_p - nodes_p(1)) ; abs(tag_p - nodes_p(2))];
-%true_dist = rand(size(true_dist)) + true_dist; % <<<<<<<<<<<<<<< <<<<<<<<<<<<<<<   add noise here, become noisy measurements
-for i = 1:length(node_posi_sym)
-    for j = 1:length(tag_p_sym)
-        f_sym(i,j) = abs(node_posi_sym(i) - tag_p_sym(j)) - true_dist(i,j);
+for j = 1:length(node_posi_sym)
+    for i = 1:length(tag_p_sym)
+        true_dist(j,i) = norm(tag_p(:,i) - nodes_p(:,j));
+    end
+end
+true_dist = rand(size(true_dist)) + true_dist; % <<<<<<<<<<<<<<< <<<<<<<<<<<<<<<   add noise here, become noisy measurements
+for j = 1:length(node_posi_sym)
+    for i = 1:length(tag_p_sym)
+        f_sym(j,i) = norm(tag_p_sym(:,i) - node_posi_sym(:,j)) - true_dist(j,i);
     end
 end    
 b = [];
