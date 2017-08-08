@@ -46,7 +46,7 @@ if add_perturbance == 1
 else
     iter_max = 30;
 end
-u_0 = rand(18,1);%zeros(8,1); %rand(8,1); %[ tag node] fix the last node
+u_0 = rand(length(node_posi_sym)+length(tag_p_sym)-1,1);%zeros(8,1); %rand(8,1); %[ tag node] fix the last node
 u = u_0;
 U = u_0;
 u_tilde = inf;
@@ -68,7 +68,7 @@ else
 end
 for ii = 1:trialNum
     if add_perturbance == 0
-        u_0 = rand(18,1);%zeros(8,1); %rand(8,1); %[ tag node] fix the last node
+        u_0 = rand(length(node_posi_sym)+length(tag_p_sym)-1,1);%zeros(8,1); %rand(8,1); %[ tag node] fix the last node
         u = u_0;
         u_tilde = inf;
         gama_init = 0.3; %<<<<<0.5 also works

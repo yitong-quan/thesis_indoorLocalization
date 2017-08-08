@@ -33,7 +33,8 @@ for l = 1:size(f_sym)
     b = [b f_sym(l,:)];
 end    
 b = b.';
-u = [tag_p_sym, node_posi_sym(1:end-1)].';
+u = [tag_p_sym, node_posi_sym(:,1:end-1)].';
+u = [u(:,1); u(:,2)]; % [tag_x,...,nodes_x,...,tag_y,...,nodes_y]
 Q_sym = jacobian(b, u);
 d_w_sym = Q_sym.' * b;
 % cost function
@@ -52,7 +53,7 @@ if add_perturbance == 1
 else
     iter_max = 30;
 end
-u_0 = rand(18,1);%zeros(8,1); %rand(8,1); %[ tag node] fix the last node
+u_0 = rand((length(node_posi_sym)+length(tag_p_sym)-1)*2,1);%[ tag node] fix the last node
 u = u_0;
 U = u_0;
 u_tilde = inf;
@@ -74,7 +75,7 @@ else
 end
 for ii = 1:trialNum
     if add_perturbance == 0
-        u_0 = rand(18,1);%zeros(8,1); %rand(8,1); %[ tag node] fix the last node
+        u_0 = rand((length(node_posi_sym)+length(tag_p_sym)-1)*2,1); %[ tag node] fix the last node
         u = u_0;
         u_tilde = inf;
         gama_init = 0.3; %<<<<<0.5 also works
@@ -83,17 +84,17 @@ for ii = 1:trialNum
     end
     Gauss_Newton_Flag = 0; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Gauss_Newton_Flag
     while iter < iter_max && cost > epslon_taget %norm(u_tilde) >= epslon_taget
-        d_w =  eval(subs(d_w_sym, [tag_p_sym, node_posi_sym(1:end-1)].', u));
+        d_w =  eval(subs(d_w_sym, [tag_p_sym(1,:), node_posi_sym(1,1:end-1), tag_p_sym(2,:), node_posi_sym(2,1:end-1)].', u));
         d_w_stack = [d_w_stack d_w];
-        cost = eval(subs(F_sym, [tag_p_sym, node_posi_sym(1:end-1) ].', u));
+        cost = eval(subs(F_sym, [tag_p_sym(1,:), node_posi_sym(1,1:end-1), tag_p_sym(2,:), node_posi_sym(2,1:end-1)].', u));
         progress(ii, iter, u, cost);
         F = [F,  cost];
         
-        if norm(d_w) < 1
+        if norm(d_w) < 0.1
             if use_Gauss_Newton == 1
                 Gauss_Newton_Flag = 1; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<< set Flag
             end
-            Q = eval(subs(Q_sym, [tag_p_sym, node_posi_sym(1:end-1)].', u));
+            Q = eval(subs(Q_sym, [tag_p_sym(1,:), node_posi_sym(1,1:end-1), tag_p_sym(2,:), node_posi_sym(2,1:end-1)].', u));
         end
         
         if iter == 0
@@ -108,7 +109,7 @@ for ii = 1:trialNum
                     if Gauss_Newton_Flag == 0 
                         gama = (u - u_last).' * (d_w - d_w_last) / denominator;
                     else 
-                        gama = inv(Q'*Q);
+                        gama = inv(Q'*Q); % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< TODO badly scale
                     end
                     u_tilde = gama * d_w;
                 else
