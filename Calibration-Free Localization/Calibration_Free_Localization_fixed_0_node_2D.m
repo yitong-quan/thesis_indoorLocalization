@@ -5,7 +5,7 @@ clear
 %% flags
 add_perturbance = 0; % 1 for add_perturbance, 0 for random seeding <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
 reasonable_gama = 1; % 1 for reasonable_gama, 0 for random gamma <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
-use_Gauss_Newton = 1;  % 1 for use_Gauss_Newton, 0 for not use_Gauss_Newton <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
+use_Gauss_Newton = 0;  % 1 for use_Gauss_Newton, 0 for not use_Gauss_Newton <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
 if add_perturbance == 1
     if use_Gauss_Newton == 1
         iter_max = 200;
@@ -18,14 +18,14 @@ end
 if add_perturbance == 1
     trialNum = 1;
 else
-    trialNum = 3;
+    trialNum = 10;
 end
 %%
 %node_posi_sym = sym('n_%d', [1 2]);
-node_posi_sym = sym('n_%d', [2 2]); % fix 1 out of the 2 ndoes
-node_posi_sym(:,1) = [-7, 0];
-node_posi_sym(:,2) = [3, 0];
-nodes_p = [-7, 3; 0, 0];
+node_posi_sym = sym('n_%d', [2 3]); % fix 2 out of the 3 ndoes
+%node_posi_sym(:,end) = [-17, -6];
+%node_posi_sym(:,end-1) = [3, 5];
+nodes_p = [2, 3, -17; 0, 5, -6];
 tag_p_sym = sym('tag_p_%d', [2 17]);
 tag_p_x = linspace(-16,0,17);
 tag_p = [tag_p_x; zeros(size(tag_p_x))]; 
@@ -35,7 +35,7 @@ for j = 1:length(node_posi_sym)
         true_dist(j,i) = norm(tag_p(:,i) - nodes_p(:,j));
     end
 end
-true_dist = rand(size(true_dist)) - 0.5 + true_dist; % <<<<<<<<<<<<<<< <<<<<<<<<<<<<<<   add noise here, become noisy measurements
+%true_dist = rand(size(true_dist)) - 0.5 + true_dist; % <<<<<<<<<<<<<<< <<<<<<<<<<<<<<<   add noise here, become noisy measurements
 for j = 1:length(node_posi_sym)
     for i = 1:length(tag_p_sym)
         %f_sym(j,i) = norm(tag_p_sym(:,i) - node_posi_sym(:,j)) - true_dist(j,i);
@@ -47,16 +47,16 @@ for l = 1:size(f_sym)
     b = [b f_sym(l,:)];
 end    
 b = b.';
-u_sym = [tag_p_sym, node_posi_sym(:,1:end-2)].';
+u_sym = [tag_p_sym, node_posi_sym(:,1:end)].';
 u_sym = [u_sym(:,1); u_sym(:,2)]; % [tag_x,...,nodes_x,...,tag_y,...,nodes_y]
 Q_sym = jacobian(b, u_sym);
 d_w_sym = Q_sym.' * b;
 % cost function
 F_sym = sum(sum((f_sym).^2));
 
-epslon_taget = 1.0000e-10;
+epslon_taget = 1.0000e-12;
 
-u_0 = rand((length(node_posi_sym)+length(tag_p_sym)-2)*2,1) -0.5;%[ tag node] fix the last node
+u_0 = rand((length(node_posi_sym)+length(tag_p_sym))*2,1) -0.5;%[ tag node] fix the last node
 u = u_0;
 U = u_0;
 u_tilde = inf;
@@ -79,7 +79,7 @@ Gauss_Newton_Flag = 0;
 
 for ii = 1:trialNum
     if add_perturbance == 0
-        u_0 = rand((length(node_posi_sym)+length(tag_p_sym)-2)*2,1); %[ tag node] fix the last node
+        u_0 = rand((length(node_posi_sym)+length(tag_p_sym))*2,1); %[ tag node] fix the last node
         u = u_0;
         u_tilde = inf;
         gama_init = 0.3; %<<<<<0.5 also works
@@ -88,15 +88,15 @@ for ii = 1:trialNum
     end
     Gauss_Newton_Flag = 0; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Gauss_Newton_Flag
     while iter < iter_max && cost > epslon_taget %norm(u_tilde) >= epslon_taget
-        cost = eval(subs(F_sym, [tag_p_sym(1,:), node_posi_sym(1,1:end-2), tag_p_sym(2,:), node_posi_sym(2,1:end-2)].', u));
-        d_w =  eval(subs(d_w_sym, [tag_p_sym(1,:), node_posi_sym(1,1:end-2), tag_p_sym(2,:), node_posi_sym(2,1:end-2)].', u));
+        cost = eval(subs(F_sym, [tag_p_sym(1,:), node_posi_sym(1,1:end), tag_p_sym(2,:), node_posi_sym(2,1:end)].', u));
+        d_w =  eval(subs(d_w_sym, [tag_p_sym(1,:), node_posi_sym(1,1:end), tag_p_sym(2,:), node_posi_sym(2,1:end)].', u));
         d_w_stack = [d_w_stack d_w];        
         progress(ii, iter, u, cost, d_w, Gauss_Newton_Flag);
         F = [F,  cost];
         
         %norm(d_w)
         
-        if norm(d_w) < 0.0001
+        if norm(d_w) < 0.001
             if use_Gauss_Newton == 1
                 Gauss_Newton_Flag = 1; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<< set Flag
             end
@@ -109,12 +109,12 @@ for ii = 1:trialNum
         if Gauss_Newton_Flag == 1
             try
                 %Q = vpa(eval(subs(Q_sym, [tag_p_sym(1,:), node_posi_sym(1,1:end-2), tag_p_sym(2,:), node_posi_sym(2,1:end-2)].', u)));
-                Q = eval(subs(Q_sym, [tag_p_sym(1,:), node_posi_sym(1,1:end-2), tag_p_sym(2,:), node_posi_sym(2,1:end-2)].', u));
+                Q = eval(subs(Q_sym, [tag_p_sym(1,:), node_posi_sym(1,1:end), tag_p_sym(2,:), node_posi_sym(2,1:end)].', u));
             catch ME
                 nosie2u = 0.0001;
                 u = u + nosie2u;
                 %Q = vpa(eval(subs(Q_sym, [tag_p_sym(1,:), node_posi_sym(1,1:end-2), tag_p_sym(2,:), node_posi_sym(2,1:end-2)].', u)));
-                Q = eval(subs(Q_sym, [tag_p_sym(1,:), node_posi_sym(1,1:end-2), tag_p_sym(2,:), node_posi_sym(2,1:end-2)].', u));
+                Q = eval(subs(Q_sym, [tag_p_sym(1,:), node_posi_sym(1,1:end), tag_p_sym(2,:), node_posi_sym(2,1:end)].', u));
                 warning('elements in u is too close to the true value, leading elements in Jacobian Q to be Inf. add small noise %f to u', nosie2u);
             end
         end
@@ -133,7 +133,7 @@ for ii = 1:trialNum
                     Q_stack = [Q_stack; Q];
                     denominator_GaussNewton_stack = [denominator_GaussNewton_stack; denominator_GaussNewton];
                 end
-                if (Gauss_Newton_Flag == 0 && denominator > 1e-11) || (Gauss_Newton_Flag == 1 && (F(end-1) - F(end)) > 10*epslon_taget)%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                if (Gauss_Newton_Flag == 0 && denominator > 1e-11) || (Gauss_Newton_Flag == 1 && (F(end-1) - F(end)) > 1.0000e-6)%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                     if Gauss_Newton_Flag == 0 
                         gama = (u - u_last).' * (d_w - d_w_last) / denominator;
                         %u_tilde = gama * d_w;
@@ -175,15 +175,18 @@ for ii = 1:trialNum
             u_most_likely = U(:,end-1);
         end
     end
+    u_most = [u_most_likely(1:length(u_most_likely)/2)'; u_most_likely(length(u_most_likely)/2+1:end)']
+    cost_min
+    plot(u_most(1,:), u_most(2,:), '-*');
+    hold on;
     
 end
-
+%{
+figure;
 plot(F, '-*r');
 u'
 u_most = [u_most_likely(1:length(u_most_likely)/2)'; u_most_likely(length(u_most_likely)/2+1:end)']
 cost_min
 figure
 plot(u_most(1,:), u_most(2,:), '-*');
- for ii = 1: length(d_w_stack)
-     norm_d_w_stack(ii) = norm(d_w_stack(:,ii));
- end
+%}

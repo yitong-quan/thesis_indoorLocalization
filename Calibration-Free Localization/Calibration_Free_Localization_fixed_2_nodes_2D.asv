@@ -13,12 +13,12 @@ if add_perturbance == 1
         iter_max = 500;
     end
 else
-    iter_max = 100;
+    iter_max = 200;
 end
 if add_perturbance == 1
     trialNum = 1;
 else
-    trialNum = 3;
+    trialNum = 1;
 end
 %%
 %node_posi_sym = sym('n_%d', [1 2]);
@@ -35,7 +35,7 @@ for j = 1:length(node_posi_sym)
         true_dist(j,i) = norm(tag_p(:,i) - nodes_p(:,j));
     end
 end
-true_dist = rand(size(true_dist)) - 0.5 + true_dist; % <<<<<<<<<<<<<<< <<<<<<<<<<<<<<<   add noise here, become noisy measurements
+%true_dist = rand(size(true_dist)) - 0.5 + true_dist; % <<<<<<<<<<<<<<< <<<<<<<<<<<<<<<   add noise here, become noisy measurements
 for j = 1:length(node_posi_sym)
     for i = 1:length(tag_p_sym)
         %f_sym(j,i) = norm(tag_p_sym(:,i) - node_posi_sym(:,j)) - true_dist(j,i);
@@ -54,7 +54,7 @@ d_w_sym = Q_sym.' * b;
 % cost function
 F_sym = sum(sum((f_sym).^2));
 
-epslon_taget = 1.0000e-10;
+epslon_taget = 0.000000000001;
 
 u_0 = rand((length(node_posi_sym)+length(tag_p_sym)-2)*2,1) -0.5;%[ tag node] fix the last node
 u = u_0;
@@ -64,18 +64,17 @@ gama_init = 0.3; %<<<<<0.5 also works
 iter = 0;
 cost = inf;
 d_w_stack = [];
-F = [];
+F = inf;
 cost = inf;
 %progress = @(trial, iter,u,cost) fprintf('trial %d, iter = %3d: u = %-32s,
 %cost = %f\n', trial, iter, mat2str(u,6), cost); % printv out the 'u'
-progress = @(trial, iter,u,cost, d_w, Gauss_Newton_Flag) fprintf('trial %d, iter = %3d:  cost = %f, norm_d_w = %f, GN: %d\n', ...
-    trial, iter, cost, norm(d_w), Gauss_Newton_Flag);
+progress = @(trial, iter,u,cost) fprintf('trial %d, iter = %3d:  cost = %f\n', ...
+    trial, iter, cost);
 
 COST_MIN = [];
 cost_min = inf;
 Q_stack = [];
 denominator_GaussNewton_stack = [];
-Gauss_Newton_Flag = 0;
 
 for ii = 1:trialNum
     if add_perturbance == 0
@@ -91,12 +90,12 @@ for ii = 1:trialNum
         cost = eval(subs(F_sym, [tag_p_sym(1,:), node_posi_sym(1,1:end-2), tag_p_sym(2,:), node_posi_sym(2,1:end-2)].', u));
         d_w =  eval(subs(d_w_sym, [tag_p_sym(1,:), node_posi_sym(1,1:end-2), tag_p_sym(2,:), node_posi_sym(2,1:end-2)].', u));
         d_w_stack = [d_w_stack d_w];        
-        progress(ii, iter, u, cost, d_w, Gauss_Newton_Flag);
+        progress(ii, iter, u, cost);
         F = [F,  cost];
         
-        %norm(d_w)
+        norm(d_w)
         
-        if norm(d_w) < 0.0001
+        if norm(d_w) < 0.1
             if use_Gauss_Newton == 1
                 Gauss_Newton_Flag = 1; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<< set Flag
             end
@@ -133,7 +132,7 @@ for ii = 1:trialNum
                     Q_stack = [Q_stack; Q];
                     denominator_GaussNewton_stack = [denominator_GaussNewton_stack; denominator_GaussNewton];
                 end
-                if (Gauss_Newton_Flag == 0 && denominator > 1e-11) || (Gauss_Newton_Flag == 1 && (F(end-1) - F(end)) > 10*epslon_taget)%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                if denominator > 1e-11  || F(end-1) - %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                     if Gauss_Newton_Flag == 0 
                         gama = (u - u_last).' * (d_w - d_w_last) / denominator;
                         %u_tilde = gama * d_w;
@@ -184,6 +183,3 @@ u_most = [u_most_likely(1:length(u_most_likely)/2)'; u_most_likely(length(u_most
 cost_min
 figure
 plot(u_most(1,:), u_most(2,:), '-*');
- for ii = 1: length(d_w_stack)
-     norm_d_w_stack(ii) = norm(d_w_stack(:,ii));
- end
