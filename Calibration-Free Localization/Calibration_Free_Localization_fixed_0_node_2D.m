@@ -5,7 +5,7 @@ clear
 %% flags
 add_perturbance = 0; % 1 for add_perturbance, 0 for random seeding <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
 reasonable_gama = 1; % 1 for reasonable_gama, 0 for random gamma <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
-use_Gauss_Newton = 0;  % 1 for use_Gauss_Newton, 0 for not use_Gauss_Newton <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
+use_Gauss_Newton = 1;  % 1 for use_Gauss_Newton, 0 for not use_Gauss_Newton <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Flag
 if add_perturbance == 1
     if use_Gauss_Newton == 1
         iter_max = 200;
