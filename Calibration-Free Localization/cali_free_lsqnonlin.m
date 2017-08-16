@@ -1,9 +1,16 @@
 clear all
 close all
-
+%{
 x_num = 55; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< x_num
-    nodes_num = 5; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
+nodes_num = 5; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
 x0 = 5*rand(2,x_num);
+%}
+tag_traj = importdata('30points_traj.mat');
+tag_num = size(tag_traj,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
+nodes_num = 5; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
+x_num = tag_num + nodes_num;
+x0 = 5*rand(2,x_num);
+
 % options = optimoptions(@lsqnonlin,'Algorithm','trust-region-reflective');
 % options.Algorithm = 'levenberg-marquardt';
 options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','iter','MaxIterations',2000);
@@ -30,7 +37,44 @@ title(str);
 sprev = rng();
 rng(sprev)
 
+% load data
+function [F, true_dist] = myfun(x)  
+%     tag_p_x = linspace(-16,0,17);
+%     tag_p = [tag_p_x; zeros(size(tag_p_x))]; 
+%     nodes_p = [-7, 3; 0, 0];
+    tag_traj = importdata('30points_traj.mat');
+    tag_num = size(tag_traj,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
+    nodes_num = 5; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
+    x_num = tag_num + nodes_num; 
+    tag_x = tag_traj(1,:); 
+    tag_y = tag_traj(2,:);
+    tag_p = [tag_x; tag_y]; 
+    nodes_p = [-2, 6, -3, 2, 3; 0, 0, 2, 5, 1];
+    axis square;
+    plot(tag_x, tag_y ,'-*y');
+    hold on;
+    plot(nodes_p(1,:), nodes_p(2,:) ,'-or');
 
+    x_tags = x(:,1:end-nodes_num);
+    x_nodes = x(:,end-nodes_num+1:end);
+    
+    for j = 1:length(nodes_p)
+        for i = 1:length(tag_p)
+            true_dist(j,i) = norm(tag_p(:,i) - nodes_p(:,j));
+            x_dist(j,i) = norm(x_tags(:,i) - x_nodes(:,j));
+        end
+    end
+%     rng default;
+%     true_dist = true_dist + 0.5*( rand(size(true_dist)) - 0.5);
+    % x_coordinate = [x(1:length(x)/2); x(length(x)/2+1:end)];  
+    F_matrix = x_dist - true_dist;
+    F = [];
+    for i = 1:nodes_num
+        F = [F, F_matrix(i,:)];
+    end
+end
+
+%{
 function [F, true_dist] = myfun(x)  
 %     tag_p_x = linspace(-16,0,17);
 %     tag_p = [tag_p_x; zeros(size(tag_p_x))]; 
@@ -58,20 +102,13 @@ function [F, true_dist] = myfun(x)
         end
     end
     rng default;
-    true_dist = true_dist + 1*( rand(size(true_dist)) - 0.5);
+    true_dist = true_dist + 3*( rand(size(true_dist)) - 0.5);
     % x_coordinate = [x(1:length(x)/2); x(length(x)/2+1:end)];  
     F_matrix = x_dist - true_dist;
     F = [];
     for i = 1:nodes_num
         F = [F, F_matrix(i,:)];
     end
-end
-%{
-x_addnoise = x + 0.1*rand
-(norm(myfun4testing(x_addnoise)))^2 - resnorm
-function F = myfun4testing(x)    
-    F = [(x(1) - 2)^2;(x(2) - 3)^2;(x(3) - 4)^2;...
-        (x(4) - 5)^2;(x(5) - 6)^2;(x(6) - 7)^2;];
 end
 %}
 

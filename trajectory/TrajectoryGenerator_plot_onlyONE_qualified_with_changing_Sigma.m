@@ -5,13 +5,13 @@ dt = (2/3) /4; %% 0.3;
 sampleNum = 30;
 A = [1,0,dt,0;0,1,0,dt;0,0,1,0;0,0,0,1];
 G = [dt^2/2*eye(2);dt*eye(2)];
-sigma = 0.005;
+sigma = 3.5;
 TrialNum = 0;
 LastTrialNum = 0;
 %w = randn(2,1,sampleNum);
-NumberOfTraj = 50;
+NumberOfTraj = 1;
 allData = zeros(4, sampleNum + 1);
-while sigma <= 2.0
+while sigma <= 8.0
     fprintf('sigma=%f \n ', sigma);
     GoodTrajFound = 0;
     for j = 1:NumberOfTraj
@@ -44,6 +44,6 @@ while sigma <= 2.0
         %break
         end
     end
-    sigma = sigma + 0.005;
+    sigma = sigma + 0.5;
 end    
 % save('posivelodata2.mat', 'pdata');
