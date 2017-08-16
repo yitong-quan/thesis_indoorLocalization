@@ -1,7 +1,8 @@
 clear all
 close all
 
-x_num = 50; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< x_num
+x_num = 55; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< x_num
+    nodes_num = 5; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
 x0 = 5*rand(2,x_num);
 % options = optimoptions(@lsqnonlin,'Algorithm','trust-region-reflective');
 % options.Algorithm = 'levenberg-marquardt';
@@ -9,13 +10,13 @@ options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','i
 %options = optimoptions('lsqnonlin','Display','iter');
 % options.MaxFunctionEvaluations = 6000;
 [x,resnorm] = lsqnonlin(@myfun,x0,[],[],options);
-plot(x(1,1:end-3), x(2,1:end-3), 'b-*');
-plot(x(1,end-2:end), x(2,end-2:end), 'b-o');
+plot(x(1,1:end-nodes_num), x(2,1:end-nodes_num), 'b-*');
+plot(x(1,end-nodes_num+1:end), x(2,end-nodes_num+1:end), 'b-o');
 resnorm
-opt_tag = x(:,1:end-3);
-opt_node = x(:,end-2:end);
-for j = 1:3
-    for i = 1:x_num-3
+opt_tag = x(:,1:end-nodes_num);
+opt_node = x(:,end-nodes_num+1:end);
+for j = 1:nodes_num
+    for i = 1:x_num-nodes_num
         opt_x_dist(j,i) = norm(opt_tag(:,i) - opt_node(:,j));
     end
 end
@@ -34,15 +35,16 @@ function [F, true_dist] = myfun(x)
 %     tag_p_x = linspace(-16,0,17);
 %     tag_p = [tag_p_x; zeros(size(tag_p_x))]; 
 %     nodes_p = [-7, 3; 0, 0];
-    x_num = 50; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< x_num
-    nodes_num = 3; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
+    x_num = 55; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< x_num
+    nodes_num = 5; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
     tag_num = x_num - nodes_num;
-    t = linspace(0,4*pi,tag_num);
-    tag_x = 5*t-20;
-    tag_y = 10*sin(t)+6;
+    t = linspace(0,2*pi,tag_num);
+    tag_x = 5*cos(t); % 5*t-20;
+    tag_y = 10*sin(t)+12;
     tag_p = [tag_x; tag_y]; 
-    nodes_p = [-20, 60, -30; 0, 0, 25];
+    nodes_p = [-20, 60, -30, 20, 3; 0, 0, 25, 25, 15.9];
     plot(tag_x, tag_y ,'-*y');
+    axis square;
     hold on;
     plot(nodes_p(1,:), nodes_p(2,:) ,'-or');
 
@@ -55,8 +57,8 @@ function [F, true_dist] = myfun(x)
             x_dist(j,i) = norm(x_tags(:,i) - x_nodes(:,j));
         end
     end
-%     rng default;
-%     true_dist = true_dist + 0.001*( rand(size(true_dist)) - 0.5);
+    rng default;
+    true_dist = true_dist + 1*( rand(size(true_dist)) - 0.5);
     % x_coordinate = [x(1:length(x)/2); x(length(x)/2+1:end)];  
     F_matrix = x_dist - true_dist;
     F = [];

@@ -2,16 +2,16 @@ clear all; close all;
 Xini = [0,0,0.8,0.8]'; %[0,0,1.0,1.0]'; %[0,0,1.4,1.4]';
 % X = Xini; pdata(:,1) = Xini;
 dt = (2/3) /4; %% 0.3;
-sampleNum = 500;
+sampleNum = 30;
 A = [1,0,dt,0;0,1,0,dt;0,0,1,0;0,0,0,1];
 G = [dt^2/2*eye(2);dt*eye(2)];
 sigma = 0.005;
 TrialNum = 0;
 LastTrialNum = 0;
 %w = randn(2,1,sampleNum);
-NumberOfTraj = 50000;
+NumberOfTraj = 50;
 allData = zeros(4, sampleNum + 1);
-while sigma <= 10.0
+while sigma <= 2.0
     fprintf('sigma=%f \n ', sigma);
     GoodTrajFound = 0;
     for j = 1:NumberOfTraj

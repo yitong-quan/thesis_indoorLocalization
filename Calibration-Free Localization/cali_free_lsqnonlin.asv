@@ -1,7 +1,8 @@
 clear all
 close all
 
-x_num = 50; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< x_num
+x_num = 500; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< x_num
+    nodes_num = 4; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
 x0 = 5*rand(2,x_num);
 % options = optimoptions(@lsqnonlin,'Algorithm','trust-region-reflective');
 % options.Algorithm = 'levenberg-marquardt';
@@ -34,8 +35,8 @@ function [F, true_dist] = myfun(x)
 %     tag_p_x = linspace(-16,0,17);
 %     tag_p = [tag_p_x; zeros(size(tag_p_x))]; 
 %     nodes_p = [-7, 3; 0, 0];
-    x_num = 50; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< x_num
-    nodes_num = 3; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
+    x_num = 500; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< x_num
+    nodes_num = 4; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
     tag_num = x_num - nodes_num;
     t = linspace(0,4*pi,tag_num);
     tag_x = 5*t-20;
