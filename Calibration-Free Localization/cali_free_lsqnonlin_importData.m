@@ -1,17 +1,16 @@
 clear all
 close all
-
-tag_num = 250; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
-nodes_num = 5; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
-x_num = nodes_num + tag_num; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< x_num
-x0 = 10*rand(2,x_num);
 %{
+x_num = 55; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< x_num
+nodes_num = 5; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
+x0 = 5*rand(2,x_num);
+%}
 tag_traj = importdata('30points_traj.mat');
 tag_num = size(tag_traj,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
 nodes_num = 5; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
 x_num = tag_num + nodes_num;
 x0 = 5*rand(2,x_num);
-%}
+
 % options = optimoptions(@lsqnonlin,'Algorithm','trust-region-reflective');
 % options.Algorithm = 'levenberg-marquardt';
 options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','iter','MaxIterations',2000);
@@ -43,19 +42,14 @@ function [F, true_dist] = myfun(x)
 %     tag_p_x = linspace(-16,0,17);
 %     tag_p = [tag_p_x; zeros(size(tag_p_x))]; 
 %     nodes_p = [-7, 3; 0, 0];
-    %{
     tag_traj = importdata('30points_traj.mat');
     tag_num = size(tag_traj,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
-    %}
-    tag_num = 250; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set tag_num
     nodes_num = 5; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
     x_num = tag_num + nodes_num; 
-    t = linspace(0,2*pi,tag_num);
-    %tag_x = 5*t-20;
-    tag_x = 30*sin(t)+10;
-    tag_y = 5*cos(t)+6;
+    tag_x = tag_traj(1,:); 
+    tag_y = tag_traj(2,:);
     tag_p = [tag_x; tag_y]; 
-    nodes_p = [-20, -30, 50, 60, 20; -10, 30, -20, 10, 10];
+    nodes_p = [-2, 6, -3, 2, 3; 0, 0, 2, 5, 1];
     axis square;
     plot(tag_x, tag_y ,'-*y');
     hold on;
@@ -70,8 +64,8 @@ function [F, true_dist] = myfun(x)
             x_dist(j,i) = norm(x_tags(:,i) - x_nodes(:,j));
         end
     end
-    rng default;
-    true_dist = true_dist + 0.1*( rand(size(true_dist)) - 0.5);
+%     rng default;
+%     true_dist = true_dist + 0.5*( rand(size(true_dist)) - 0.5);
     % x_coordinate = [x(1:length(x)/2); x(length(x)/2+1:end)];  
     F_matrix = x_dist - true_dist;
     F = [];
