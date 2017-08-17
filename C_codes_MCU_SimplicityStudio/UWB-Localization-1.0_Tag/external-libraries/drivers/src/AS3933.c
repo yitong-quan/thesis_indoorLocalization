@@ -370,7 +370,8 @@ bool AS3933_receive_data(uint32_t *woke_up_by_ID, uint8_t * options, uint16_t *n
 	uint16_t chksum_received = 0;
 	uint8_t tmp[16] = { 0 };
 	uint8_t i;
-	for (i = 0; i < length; i++) {
+	length = sizeof(received_payload);
+	for (i = 0; i < length-1; i++) {
 		tmp[i] = received_payload[i+1];
 	}
 
