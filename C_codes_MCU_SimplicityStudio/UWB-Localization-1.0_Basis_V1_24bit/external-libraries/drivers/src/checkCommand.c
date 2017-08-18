@@ -77,6 +77,12 @@ bool check_command_find(uint8_t *buffer)
 	if (memcmp(buffer, "\r\n",2) == 0)
 	{
 		sendPacket(0x310D, AS_OPT_BYTE_NORMAL_MODE, NULL, 0, 1); //first para: Tag ID......last para: numberOfMeasurements
+		/*
+		char szNumbers[] = "0x310D";
+		uint8_t tag_id;
+		tag_id = strtol(szNumbers,NULL,0);
+		sendPacket(tag_id, AS_OPT_BYTE_NORMAL_MODE, NULL, 0, 1); //first para: Tag ID......last para: numberOfMeasurements
+		*/
 	}
 
 	if (memcmp(buffer, "find", 4) == 0)

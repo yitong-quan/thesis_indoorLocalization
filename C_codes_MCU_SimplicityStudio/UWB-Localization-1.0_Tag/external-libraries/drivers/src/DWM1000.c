@@ -1380,7 +1380,7 @@ void DWM1000_SPI_Wake_Up(uint8_t *wakeupbuffer, uint16_t length)
 	DWM1000_spi_init(DWM1000_SPI_BAUDRATE_LOW);
 	DWM1000_spi_read_burst_reg(0x0, 0x0, wakeupbuffer, length);
 
-	//RTC_delay_ms(5);
+	RTC_delay_ms(5);  // Yitong, to make it more stable
 }
 
 void DWM1000_send_blink_message(uint8_t *tx_message, uint32_t DESTINATION_ID, uint32_t SOURCE_ID, uint8_t message_length)
@@ -2371,6 +2371,7 @@ void DWM1000_Chip_INIT()
 	DWM1000_set_GPIOs_sec_mode();
 	//DWM1000_set_GPIO_mode();
 	DWM1000_config_sleep_mode(DWT_PRESRV_SLEEP | DWT_CONFIG, DWT_WAKE_CS | DWT_SLP_EN);
+	RTC_delay_ms(3); // Yitong TO make it stable
 }
 
 float DWM1000_compute_range_asymmetric(uint64_t poll_tx_ts, uint64_t poll_rx_ts, uint64_t resp_tx_ts, uint64_t resp_rx_ts, uint64_t final_tx_ts, uint64_t final_rx_ts)

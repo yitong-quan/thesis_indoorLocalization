@@ -933,12 +933,12 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 
 	// Encrypt send packet (AES128CBC)
 	RFPacket_encrypt_AES128CBC(CC1101_send, &idx, AES_encryption_key, AES_initVector);
-
+/*
 	//for debug, Yitong TODO: check ok or not
 	if (idx > 225){
 		idx = 17;
 	}
-
+*/
 	// Send packet
 	while (num_of_tries < MAX_NUM_OF_TRIES)
 	{
