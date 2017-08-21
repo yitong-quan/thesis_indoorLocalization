@@ -919,6 +919,8 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 	uint8_t CC1101_send[256] = { 0 };
 	uint8_t num_of_tries = 0;
 	bool acknowledged = true;
+	//idx, for debug, Yitong TODO: check ok or not
+	idx = 17;
 	/*
 	//for debug, Yitong TODO: check ok or not
 	if (idx == 1){
