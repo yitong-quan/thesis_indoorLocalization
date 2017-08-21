@@ -101,7 +101,7 @@ uint8_t NODE_NUMBERS = 0;
 uint8_t NODE_IDs[10] = {0};
 uint8_t idx = 0;
 //uint8_t MAX_NUM_OF_TRIES = 3;
-uint8_t MAX_NUM_OF_TRIES = 5;
+uint8_t MAX_NUM_OF_TRIES = 10;
 // INTERRUPT ROUTINES DECLARATION
 void TIMER1_IRQHandler(void);
 void GPIO_EVEN_IRQHandler(void);
@@ -945,7 +945,8 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 	while (num_of_tries < MAX_NUM_OF_TRIES)
 	{
 		// Send Data to Basis Station
-		RTC_start(50);
+		//RTC_start(50);
+		RTC_start(20);
 		// Send out packet if channel is free
 		cc1101_change_config_to(CC1101_DATA_38kBaud_CONFIG, paTableData);
 		if (radio_send_packet_use_CSMA_CA(&xfer, CC1101_send, idx))
