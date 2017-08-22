@@ -920,7 +920,7 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 	uint8_t num_of_tries = 0;
 	bool acknowledged = true;
 	//idx, for debug, Yitong TODO: check ok or not
-	idx = 17;
+	//idx = 17;
 	/*
 	//for debug, Yitong TODO: check ok or not
 	if (idx == 1){
@@ -935,12 +935,9 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 
 	// Encrypt send packet (AES128CBC)
 	RFPacket_encrypt_AES128CBC(CC1101_send, &idx, AES_encryption_key, AES_initVector);
-/*
-	//for debug, Yitong TODO: check ok or not
-	if (idx > 225){
-		idx = 17;
-	}
-*/
+
+
+
 	// Send packet
 	while (num_of_tries < MAX_NUM_OF_TRIES)
 	{
@@ -953,6 +950,7 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 		{
 			// Check if Base ACK my packet
 			cc1101_change_config_to(CC1101_DATA_38kBaud_CONFIG, paTableData);
+			//acknowledged = cc1101_check_ack(&xfer, &wakeupid, &MY_BASE_ID, AES_decryption_key, AES_initVector, 75);  //85?
 			acknowledged = cc1101_check_ack(&xfer, &wakeupid, &MY_BASE_ID, AES_decryption_key, AES_initVector, 75);  //85?
 
 			if (acknowledged) 					// ACK!
@@ -962,6 +960,11 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 			num_of_tries++;
 		}
 		while(!RTC_TIMEOUT);
+	}
+	//for debug, Yitong TODO: check ok or not
+	//if (idx > 225){
+	if (idx > 200){
+		idx = 17;
 	}
 	return acknowledged;
 }
