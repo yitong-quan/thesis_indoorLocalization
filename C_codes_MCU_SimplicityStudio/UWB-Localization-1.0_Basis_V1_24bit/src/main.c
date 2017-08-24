@@ -898,16 +898,7 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 	uint8_t CC1101_send[256] = { 0 };
 	uint8_t num_of_tries = 0;
 	bool acknowledged = true;
-<<<<<<< HEAD
 
-=======
-	/*
-	//for debug, Yitong TODO: check ok or not
-	if (idx == 1){
-		idx = 17; //17 == 1+16
-	}
-	*/
->>>>>>> parent of c247b70... this version  solved the problem of everz 15 times comes a no data received problem
 	// Build Header
 	RFPacket_build_header(CC1101_send, buffer, &MY_BASE_ID, &wakeupid, CC_OPT_BYTE_DAT_BASIS_TO_IDENTIFIER, &idx);
 
