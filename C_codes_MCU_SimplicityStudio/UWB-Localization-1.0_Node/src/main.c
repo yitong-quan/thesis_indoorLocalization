@@ -114,6 +114,8 @@ void GPIO_ODD_IRQHandler(void);
 void LEUART0_IRQHandler(void);
 #endif
 
+uint8_t counterDebug = 0; // Yitong
+
 int main(void){
 	/* Chip errata */
 	CHIP_Init();
@@ -145,6 +147,7 @@ int main(void){
 	DWM1000_enter_sleepmode();									// Enter the sleep mode of the DWM1000
 
 	/* Initialize CC1101 RF Module */
+	//cc1101 is not used in node, can be disabled it. Yitong
 	cc1101_spi_init(CC1101_SPI_BAUDRATE);
 	cc1101_change_config_to(CC1101_WAKEUP_CONFIG_NARROW_BAND, paTableWakeUp);
 	NVIC_EnableIRQ(GPIO_EVEN_IRQn);
@@ -188,14 +191,19 @@ int main(void){
 
 	AS3933_prepare_wakeup(AS3933_SPI_BAUDRATE, true);
 	AS3933_wakeup_pattern_16bit(MY_WAKEUP_ID);
-	AS3933_start_wakeup();
+	AS3933_start_wakeup(); // try to disable it. Yitong
+	RTC_delay_ms(5); // add by Yitong
 
 	while(1)
 	{
 		// Blink LED
-		//LED_setLED(COL_GREEN);
-		//RTC_delay_ms(5);
-		//LED_clearLED();
+		LED_setLED(COL_GREEN);
+		RTC_delay_ms(10);
+		LED_clearLED();
+
+		LED_setLED(COL_RED);
+		RTC_delay_ms(10);
+		LED_clearLED();
 
 		// Feed Watchdog
 		#if WDOG_ENABLED
@@ -206,6 +214,7 @@ int main(void){
 		 * Go into Sleep Mode (EFM) and enable AS3933 WakeUp
 		 */
 		localization = STATE_WAKE_UP;
+		//Try to disable , Yitong
 		cc1101_power_down();										// Set CC1101 RF Module to WakeUp Configuration and power down
 
 		AS3933_EFM_sleep_enable_wake_up(MY_WAKEUP_ID);				// AS3933 enable for wake up, set EFM to sleep
@@ -221,7 +230,15 @@ int main(void){
 			#if UART_DEBUG
 				UART_WriteString("WakeUp NOT addressed to me\r\n", sizeof("WakeUp NOT addressed to me\r\n"));
 			#endif
-				continue;  // Go back to sleep!
+				/*
+				for (counterDebug=1; counterDebug<10; counterDebug=counterDebug+1) {
+					LED_setLED(COL_RED);
+					RTC_delay_ms(50);
+					LED_clearLED();
+					RTC_delay_ms(50);
+				}
+				*/
+				continue;  // Go back to sleep
 		}
 
 		// Disable LEUART for broadcast listening
@@ -233,8 +250,10 @@ int main(void){
 		DWM1000_SPI_Wake_Up(wakeup_buffer, 50);						// Wake up DWM1000 Module																						// wake up DWM1000 with SPI
 		DWM1000_Chip_INIT();										// init the DWM1000 Module
 
+		RTC_delay_ms(5); // add by Yitong
 		DWM1000_UWB_NODE(N_MEASUREMENTS);							// start UWB NODE, works as initiator and starts the positioning. 25 positions
 
+		RTC_delay_ms(5); // add by Yitong
 		DWM1000_enter_sleepmode();									// Enter the sleep mode of the DWM1000
 	}
 }

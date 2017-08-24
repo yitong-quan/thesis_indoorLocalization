@@ -367,9 +367,13 @@ bool AS3933_receive_data(uint32_t *woke_up_by_ID, uint8_t * options, uint16_t *n
 	// Copy Buffer to compute payload
 	uint16_t chksum_computed = 0;
 	uint16_t chksum_received = 0;
-	uint8_t tmp[16] = { 0 };
+	//uint8_t i;
 	uint8_t i;
-	for (i = 0; i < length; i++) {
+	length = sizeof(received_payload);
+	//uint8_t tmp[length] = { 0 };
+	uint8_t tmp[16] = { 0 };
+
+	for (i = 0; i < length-1; i++) {
 		tmp[i] = received_payload[i+1];
 	}
 
@@ -389,6 +393,7 @@ bool AS3933_receive_data(uint32_t *woke_up_by_ID, uint8_t * options, uint16_t *n
 		*options = received_payload[7];
 		// Check if Upper Address Byte is correct
 		if (received_payload[1] == UPPER_ADR_BYTE) {
+			RTC_delay_ms(5);
 			return true;  // It's my wakeup address
 		}
 		return false;  // It's not my wakeup address
@@ -427,9 +432,13 @@ void AS3933_EFM_sleep_enable_wake_up (uint32_t WAKEUP_ID)
 	// Now enter SleepMode!!
 	while (!WAKEUP_received)
 	{
+
+
 		__disable_irq();
-		EMU_EnterEM3(true);  // EM3
+		//EMU_EnterEM1();
+		EMU_EnterEM2(true);  // change from EM3 to EM2  //always on //EMU_EnterEM1(); //
 		__enable_irq();
+
 	}
 }
 

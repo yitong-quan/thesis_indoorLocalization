@@ -63,6 +63,8 @@ void check_command_setNODES(uint8_t *buffer, uint8_t *node_ids_array, uint8_t no
 				node_ids_array[idx++] = node_high;
 				node_ids_array[idx++] = node_low;
 			}
+			strcpy(string_buffer, "Nodes IDs are set.\r\n");
+			printMSG(string_buffer, strlen(string_buffer));
 		}
 	}
 }
@@ -72,10 +74,16 @@ bool check_command_find(uint8_t *buffer)
 {
 	bool error = false;
 
-	//if (memcmp(buffer, "\r\n",2) == 0)
-	//{
-		//sendPacket(0x310F, AS_OPT_BYTE_NORMAL_MODE, NULL, 0, 100);
-	//}
+	if (memcmp(buffer, "\r\n",2) == 0)
+	{
+		sendPacket(0x310D, AS_OPT_BYTE_NORMAL_MODE, NULL, 0, 1); //first para: Tag ID......last para: numberOfMeasurements
+		/*
+		char szNumbers[] = "0x310D";
+		uint8_t tag_id;
+		tag_id = strtol(szNumbers,NULL,0);
+		sendPacket(tag_id, AS_OPT_BYTE_NORMAL_MODE, NULL, 0, 1); //first para: Tag ID......last para: numberOfMeasurements
+		*/
+	}
 
 	if (memcmp(buffer, "find", 4) == 0)
 	{
