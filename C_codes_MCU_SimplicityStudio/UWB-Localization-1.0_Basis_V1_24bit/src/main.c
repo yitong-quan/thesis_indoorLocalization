@@ -100,8 +100,13 @@ uint8_t NODE_NUMBERS = 0;
 //uint8_t NODE_IDs[10] = {1,0x20,0x20,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
 uint8_t NODE_IDs[10] = {0};
 uint8_t idx = 0;
+<<<<<<< HEAD
 uint8_t MAX_NUM_OF_TRIES = 3;
 
+=======
+//uint8_t MAX_NUM_OF_TRIES = 3;
+uint8_t MAX_NUM_OF_TRIES = 5;
+>>>>>>> parent of f1933ec... increase the AX_NUM_OF_TRIES and decrease RTC_start() in basis:main.c to make the sucessful rate greater, it also work
 // INTERRUPT ROUTINES DECLARATION
 void TIMER1_IRQHandler(void);
 void GPIO_EVEN_IRQHandler(void);
