@@ -370,8 +370,7 @@ bool AS3933_receive_data(uint32_t *woke_up_by_ID, uint8_t * options, uint16_t *n
 	uint16_t chksum_received = 0;
 	uint8_t tmp[16] = { 0 };
 	uint8_t i;
-	length = sizeof(received_payload);
-	for (i = 0; i < length-1; i++) {
+	for (i = 0; i < length; i++) {
 		tmp[i] = received_payload[i+1];
 	}
 
@@ -431,8 +430,7 @@ void AS3933_EFM_sleep_enable_wake_up (uint32_t WAKEUP_ID)
 	while (!WAKEUP_received)
 	{
 		__disable_irq();
-		//EMU_EnterEM3(true);  // EM3
-		EMU_EnterEM2(true);  // EM3
+		EMU_EnterEM3(true);  // EM3
 		__enable_irq();
 	}
 }

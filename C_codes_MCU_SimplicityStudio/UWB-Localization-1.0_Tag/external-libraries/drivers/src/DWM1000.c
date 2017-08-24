@@ -1380,7 +1380,7 @@ void DWM1000_SPI_Wake_Up(uint8_t *wakeupbuffer, uint16_t length)
 	DWM1000_spi_init(DWM1000_SPI_BAUDRATE_LOW);
 	DWM1000_spi_read_burst_reg(0x0, 0x0, wakeupbuffer, length);
 
-	RTC_delay_ms(5);  // Yitong, to make it more stable
+	//RTC_delay_ms(5);
 }
 
 void DWM1000_send_blink_message(uint8_t *tx_message, uint32_t DESTINATION_ID, uint32_t SOURCE_ID, uint8_t message_length)
@@ -2297,12 +2297,7 @@ void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t NODE_A
 		{
 			case STATE_SEND_BLINK:
 				state = DWM1000_blink_transmit_state(NODE_ADD, MY_TAG_ID);
-				//RTC_start(700);  // 10 can work. can be Changed to 300?? TODO Yitong
-				RTC_start(100);
-				//>>>>>>>>>>>>>>>>>>>>>>>>> In order to make the time needed shorter, when not all the nodes can be contacted. can it be Changed to 300?? TODO Yitong
-				//>>>>>>>>>>>>>>>>>>>>>>>>> I am choosing 100m/(3*10^8)*factor, take a factor 3, then I get 10^(-6)s = 0.001ms
-				//>>>>>>>>>>>>>>>>>>>>>>>>> so choosing RTC_start(100) should be problem free, if there is no other things is needed to be done except ranging, (others might be waiting for respond or so)
-				//>>>>>>>>>>>>>>>>>>>>>>>>> choosing RTC_start(10), since RTC_start(100) is problem free, if there is no other things is needed to be done except ranging, (others might be waiting for respond or so)
+				RTC_start(700);
 			break;
 
 			case STATE_RECEIVER_ON:
@@ -2344,10 +2339,7 @@ void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t NODE_A
 					range[i++] = DWM1000_compute_range_asymmetric(poll_tx_timestamp, poll_rx_timestamp, resp_tx_timestamp, resp_rx_timestamp, final_tx_timestamp, final_rx_timestamp);
 					measurement_numbers--;
 
-					//RTC_start(5000);
-					RTC_start(300);
-					//>>>>>>>>>>>>>>>>>>>>>>>>> Inorder to make the time needed shorter, TODO Yitong
-
+					RTC_start(5000);
 					state = STATE_RECEIVER_ON;
 				}
 				else
@@ -2360,7 +2352,7 @@ void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t NODE_A
 			break;
 		}
 	}
-	state = STATE_RECEIVER_ON;  //useless here. Yitong
+	state = STATE_RECEIVER_ON;
 }
 
 
@@ -2368,10 +2360,9 @@ void DWM1000_Chip_INIT()
 {
 	while(DWM1000_init());																	// init DWM1000
 	DWM1000_configuration2(&config);														// configuration of DWM1000
-	DWM1000_set_GPIOs_sec_mode();
+	//DWM1000_set_GPIOs_sec_mode();
 	//DWM1000_set_GPIO_mode();
 	DWM1000_config_sleep_mode(DWT_PRESRV_SLEEP | DWT_CONFIG, DWT_WAKE_CS | DWT_SLP_EN);
-	RTC_delay_ms(3); // Yitong TO make it stable
 }
 
 float DWM1000_compute_range_asymmetric(uint64_t poll_tx_ts, uint64_t poll_rx_ts, uint64_t resp_tx_ts, uint64_t resp_rx_ts, uint64_t final_tx_ts, uint64_t final_rx_ts)

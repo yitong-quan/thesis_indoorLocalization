@@ -322,8 +322,6 @@ void AS3933_wakeup_int_disable(void);
  */
 void AS3933_prepare_wakeup(uint32_t SPI_BAUDRATE, bool USE_16bit);
 
-void AS3933_wakeup_pattern_16bit(uint16_t MY_WAKEUP_ID);
-
 /*
  *
  */

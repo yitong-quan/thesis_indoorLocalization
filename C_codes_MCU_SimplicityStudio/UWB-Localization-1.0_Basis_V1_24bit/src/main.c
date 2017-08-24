@@ -100,8 +100,8 @@ uint8_t NODE_NUMBERS = 0;
 //uint8_t NODE_IDs[10] = {1,0x20,0x20,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
 uint8_t NODE_IDs[10] = {0};
 uint8_t idx = 0;
-//uint8_t MAX_NUM_OF_TRIES = 3;
-uint8_t MAX_NUM_OF_TRIES = 10;
+uint8_t MAX_NUM_OF_TRIES = 3;
+
 // INTERRUPT ROUTINES DECLARATION
 void TIMER1_IRQHandler(void);
 void GPIO_EVEN_IRQHandler(void);
@@ -461,16 +461,13 @@ void sendPacket(uint32_t wakeupid, uint8_t option, uint8_t *data, uint8_t len, u
 
 		if(!NODE_ADDRESS)
 		{
-			//disable for nicer presentation. TODO, should be back. Yitong
-			//UART_WriteString("NODE is out of range, Wake up not possible\r\n", sizeof("NODE is out of range, Wake up not possible\r\n"));
-			sprintf(string_buffer, "no data recieved! \r\n");
-			error = printMSG(string_buffer, strlen(string_buffer));
+			UART_WriteString("NODE is out of range, Wake up not possible\r\n", sizeof("NODE is out of range, Wake up not possible\r\n"));
 		}
 		else
 		{
-			//sprintf(string_buffer,"0x%X, ",(int) NODE_ADDRESS);
-			////sprintf(string_buffer,"Received Packet from NODE: 0x%X \r\n",(int) NODE_ADDRESS);
-			//error = printMSG(string_buffer, strlen(string_buffer));
+			sprintf(string_buffer,"0x%X \r\n",(int) NODE_ADDRESS);
+			//sprintf(string_buffer,"Received Packet from NODE: 0x%X \r\n",(int) NODE_ADDRESS);
+			error = printMSG(string_buffer, strlen(string_buffer));
 
 			for (n = 0; n < n_measurements; n++)
 			{
@@ -478,48 +475,30 @@ void sendPacket(uint32_t wakeupid, uint8_t option, uint8_t *data, uint8_t len, u
 				//sprintf(string_buffer, "%ld \r\n", (long int) (UWB_data[n] * 100));
 				//error = printMSG(string_buffer, strlen(string_buffer));
 
-//TODO: buffer<<nodeID1<<dist,dist,dist...<<nodeID2<<dist,dist,dist...<<nodeID3...    buffer>>out
 
 				if(NODE_ADDRESS == 0x1C1C)
 				{
-					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (89.73 * UWB_data[n] + 25.4));		// y = 0.9925  * x - 5.205
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n] * 0.9734 - 159.5));
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
+					sprintf(string_buffer, "%ld \r\n", (long int) (0.9925 * UWB_data[n] * 100 - 5.205));		// y = 0.9925  * x - 5.205
 					error = printMSG(string_buffer, strlen(string_buffer));
 				}
 				if(NODE_ADDRESS == 0x2020)
 				{
-					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (90.42 * UWB_data[n] + 5.531));		// y = 0.9993  * x - 0.24217
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n] * 1.034 -291.3));		// y = 0.9993  * x - 0.24217error = printMSG(string_buffer, strlen(string_buffer));
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
+					sprintf(string_buffer, "%ld \r\n", (long int) (0.9993 * UWB_data[n] * 100 - 0.24217));		// y = 0.9993  * x - 0.24217
 					error = printMSG(string_buffer, strlen(string_buffer));
 				}
 				if(NODE_ADDRESS == 0x3E3E)
 				{
-					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (91.91 * UWB_data[n] + 23.44));		// y = 1.00547 * x - 14.103
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n] * 0.9893 -218.1));		// y = 1.00547 * x - 14.103
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
+					sprintf(string_buffer, "%ld \r\n", (long int) (1.00547 * UWB_data[n] * 100 - 14.103));		// y = 1.00547 * x - 14.103
 					error = printMSG(string_buffer, strlen(string_buffer));
 				}
-				if(NODE_ADDRESS == 0x4D4D)
+				if(NODE_ADDRESS == 0x4141)
 				{
-					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (89.84 * UWB_data[n] + 21.37));		// y = 1.01452 * x - 8.1253
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n] * 1.052 -688.6));		// y = 1.01452 * x - 8.1253
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
+					sprintf(string_buffer, "%ld \r\n", (long int) (1.01452 * UWB_data[n] * 100 - 8.1253));		// y = 1.01452 * x - 8.1253
 					error = printMSG(string_buffer, strlen(string_buffer));
 				}
 				if(NODE_ADDRESS == 0x5A5A)
 				{
-					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1.0 * UWB_data[n] * 100 - 0));		// y = 1.01015 * x - 4.9066
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n] * 1.017 -339));
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
-					error = printMSG(string_buffer, strlen(string_buffer));
-				}
-				if(NODE_ADDRESS == 0x6E6E)
-				{
-					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (91.74 * UWB_data[n] + 15.89));		// y = 0.9993  * x - 0.24217
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n] * 1.074 -796.4));		// y = 0.9993  * x - 0.24217
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
+					sprintf(string_buffer, "%ld \r\n", (long int) (1.01015 * UWB_data[n] * 100 - 4.9066));		// y = 1.01015 * x - 4.9066
 					error = printMSG(string_buffer, strlen(string_buffer));
 				}
 			}
@@ -616,12 +595,12 @@ bool wake_up_function(uint32_t wakeupid, uint8_t option, uint16_t n_measurements
 void listenForResponse(uint8_t *buffer, uint32_t wakeupid, uint8_t msgType, uint8_t *len,
 		uint8_t *act_packet, uint8_t *total_n_packet, uint32_t *tag_addr) {
 
-	RTC_start(750); // Patrick has set 11000, I think it is too much. Yitong
+	RTC_start(11000);
 
 	while (!RTC_TIMEOUT) {
 		memset(buffer, 0x00, sizeof(buffer));
 		// Receive Data from Identifier
-		radio_receive_packet(&xfer, buffer, len, 800);		//Patrick set the last para:3000. I think it's too large. Yitong 0x1533720 >>	//3195//1000
+		radio_receive_packet(&xfer, buffer, len, 3000);									//3195//1000
 
 		// Decrypt received packet (AES128CBC)
 		RFPacket_decrypt_AES128CBC(buffer, AES_decryption_key, AES_initVector);
@@ -666,11 +645,11 @@ bool checkACK(uint32_t wakeupid) {
 // Check that Identifier has received wake up
 	bool ack = false;
 	// Wait for ACK
-	RTC_start(180);	// 500 //180 Yitong
+	RTC_start(500);	//180
 	while (!RTC_TIMEOUT) {
 		cc1101_change_config_to(CC1101_DATA_38kBaud_CONFIG, paTableData);
 		ack = cc1101_check_ack(&xfer, &wakeupid, &MY_BASE_ID,
-				AES_decryption_key, AES_initVector, 180);		//500 //200 Yitong
+				AES_decryption_key, AES_initVector, 500);					//200
 		if (ack) {
 			break;
 		}
@@ -919,14 +898,7 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 	uint8_t CC1101_send[256] = { 0 };
 	uint8_t num_of_tries = 0;
 	bool acknowledged = true;
-	//idx, for debug, Yitong TODO: check ok or not
-	//idx = 17;
-	/*
-	//for debug, Yitong TODO: check ok or not
-	if (idx == 1){
-		idx = 17; //17 == 1+16
-	}
-	*/
+
 	// Build Header
 	RFPacket_build_header(CC1101_send, buffer, &MY_BASE_ID, &wakeupid, CC_OPT_BYTE_DAT_BASIS_TO_IDENTIFIER, &idx);
 
@@ -936,21 +908,17 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 	// Encrypt send packet (AES128CBC)
 	RFPacket_encrypt_AES128CBC(CC1101_send, &idx, AES_encryption_key, AES_initVector);
 
-
-
 	// Send packet
 	while (num_of_tries < MAX_NUM_OF_TRIES)
 	{
 		// Send Data to Basis Station
-		//RTC_start(50);
-		RTC_start(20);
+		RTC_start(50);
 		// Send out packet if channel is free
 		cc1101_change_config_to(CC1101_DATA_38kBaud_CONFIG, paTableData);
 		if (radio_send_packet_use_CSMA_CA(&xfer, CC1101_send, idx))
 		{
 			// Check if Base ACK my packet
 			cc1101_change_config_to(CC1101_DATA_38kBaud_CONFIG, paTableData);
-			//acknowledged = cc1101_check_ack(&xfer, &wakeupid, &MY_BASE_ID, AES_decryption_key, AES_initVector, 75);  //85?
 			acknowledged = cc1101_check_ack(&xfer, &wakeupid, &MY_BASE_ID, AES_decryption_key, AES_initVector, 75);  //85?
 
 			if (acknowledged) 					// ACK!
@@ -960,11 +928,6 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 			num_of_tries++;
 		}
 		while(!RTC_TIMEOUT);
-	}
-	//for debug, Yitong TODO: check ok or not
-	//if (idx > 225){
-	if (idx > 200){
-		idx = 17;
 	}
 	return acknowledged;
 }
