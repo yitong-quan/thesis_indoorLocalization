@@ -236,12 +236,14 @@ int main(void){
                         #if UART_DEBUG
                                 UART_WriteString("WakeUp NOT addressed to me\r\n", sizeof("WakeUp NOT addressed to me\r\n"));
                         #endif
+                                /*
                 				for (counterDebug=1; counterDebug<10; counterDebug=counterDebug+1) {
                 					LED_setLED(COL_RED);
                 					RTC_delay_ms(50);
                 					LED_clearLED();
                 					RTC_delay_ms(50);
                 				}
+                				*/
                                 continue;  // Go back to sleep!
                 }
 

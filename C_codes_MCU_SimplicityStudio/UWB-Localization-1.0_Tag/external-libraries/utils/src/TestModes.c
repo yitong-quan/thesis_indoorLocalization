@@ -175,7 +175,8 @@ void wakeUpTestReceive() {
 		// Now enter SleepMode!!
 		while (!WAKEUP_received) {
 			__disable_irq();
-			EMU_EnterEM3(true);  // Sleep mode
+			//EMU_EnterEM3(true);  // Sleep mode
+			EMU_EnterEM1();  //Yitong
 			__enable_irq();
 		}
 
@@ -203,7 +204,8 @@ void wakeUpTestSensitivity() {
 		// Now enter SleepMode!!
 		while (!WAKEUP_received) {
 			__disable_irq();
-			EMU_EnterEM3(true);  // Sleep mode
+			//EMU_EnterEM3(true);  // Sleep mode
+			EMU_EnterEM1();  //Yitong
 			__enable_irq();
 		}
 
