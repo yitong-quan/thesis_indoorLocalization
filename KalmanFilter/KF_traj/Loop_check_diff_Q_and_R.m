@@ -3,7 +3,7 @@
 nodesNumbers = 4; % 3 or 4
 n= 0;
 % i_max = 100; 
-j_max = 100;
+j_max = 1;
 %while i <= i_max % factor_Q
 % while i <=0.1/3 % factor_Q    
     i = 1;  % i should be 1
