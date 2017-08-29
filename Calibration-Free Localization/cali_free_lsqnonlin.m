@@ -52,10 +52,11 @@ function [F, true_dist] = myfun(x)
     x_num = tag_num + nodes_num; 
     t = linspace(0,2*pi,tag_num);
     %tag_x = 5*t-20;
-    tag_x = 30*sin(t)+10;
-    tag_y = 5*cos(t)+6;
+    tag_x = 30*sin(t);
+    tag_y = 5*cos(t);
     tag_p = [tag_x; tag_y]; 
-    nodes_p = [-20, -30, 50, 60, 20; -10, 30, -20, 10, 10];
+    % nodes_p = [-20, -30, 50, 60, 20; -10, 30, -20, 10, 10]; % works sometime
+    nodes_p = [-40, -40, 60, 60, 0; -10, 30, -10, 30, 0];
     axis square;
     plot(tag_x, tag_y ,'-*y');
     hold on;

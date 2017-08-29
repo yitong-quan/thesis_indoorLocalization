@@ -2,7 +2,7 @@
 %% 
 clear;
 %fileID = fopen('0x1C1C-10m.log'); %'0x2020, 0x3E3E, 0x4D4D, 0x6E6E-2m.log'
-fileID = fopen('movingO - Copy.log'); 
+fileID = fopen('3nodes_fixedTag - Copy.log'); 
 %{
 % tline = fgetl(fid);
 % while ischar(tline)
@@ -47,6 +47,17 @@ end
 fclose(fileID);
 
 M = double(M);
+
+temp_data = M(:,[1,3,6]);
+for i = size(temp_data,1):-1:1
+    for j = 1: size(temp_data,2)
+        if temp_data(i,j) == 0
+            temp_data(i,:) = [];
+            break;
+        end
+    end
+end
+
 
 % for more than one node
 data = nan(size(M,1)+3, size(M,2));

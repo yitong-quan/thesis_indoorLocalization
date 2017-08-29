@@ -6,7 +6,7 @@ nodes_num = 5; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
 x0 = 5*rand(2,x_num);
 %}
 
-dist_noisy = importdata('..\data-from-experiments\outdoor27.08\movingO_DataRemoveRowWith0.mat');
+dist_noisy = importdata('..\data-from-experiments\outdoor27.08\3nodes_fixedTag_DataRemoveRowWith0.mat');
 dist_noisy = dist_noisy/1000;
 %tag_traj = importdata('30points_traj.mat');
 tag_num = size(dist_noisy,1); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
@@ -23,17 +23,19 @@ for ii = 1:5
         resnorm_opt = resnorm;
         resnorm_last = resnorm_opt;
     end
-    x0 = x + 1000*rand(size(x));
+    figure;
+    axis square; hold on;
+    plot(x_opt(1,1:end-nodes_num), x_opt(2,1:end-nodes_num), 'b-*');
+    plot(x_opt(1,end-nodes_num+1:end), x_opt(2,end-nodes_num+1:end), 'b-o');
+    str = sprintf('x num:%d   resnorm %0.4e ', x_num, resnorm_opt);
+    title(str);
+    x0 = x + 100*rand(size(x));
 end
 % options = optimoptions(@lsqnonlin,'Algorithm','trust-region-reflective');
 % options.Algorithm = 'levenberg-marquardt';
 
 %options = optimoptions('lsqnonlin','Display','iter');
 % options.MaxFunctionEvaluations = 6000;
-
-    axis square; hold on;
-plot(x_opt(1,1:end-nodes_num), x_opt(2,1:end-nodes_num), 'b-*');
-plot(x_opt(1,end-nodes_num+1:end), x_opt(2,end-nodes_num+1:end), 'b-o');
 resnorm_opt
 
 %{
@@ -43,8 +45,6 @@ for j = 1:nodes_num
     end
 end
 %}
-str = sprintf('x num:%d   resnorm %0.4e ', x_num, resnorm);
-title(str);
 
 opt_tag = x(:,1:end-nodes_num);
 opt_node = x(:,end-nodes_num+1:end);
@@ -61,7 +61,7 @@ function [F, true_dist] = myfun(x)
 %     tag_p_x = linspace(-16,0,17);
 %     tag_p = [tag_p_x; zeros(size(tag_p_x))]; 
 %     nodes_p = [-7, 3; 0, 0];
-    dist_noisy_insideFunc = importdata('..\data-from-experiments\outdoor27.08\movingO_DataRemoveRowWith0.mat');
+    dist_noisy_insideFunc = importdata('..\data-from-experiments\outdoor27.08\3nodes_fixedTag_DataRemoveRowWith0.mat');
     dist_noisy_insideFunc = dist_noisy_insideFunc/1000;
     %tag_traj = importdata('30points_traj.mat');
     tag_num = size(dist_noisy_insideFunc,1); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
