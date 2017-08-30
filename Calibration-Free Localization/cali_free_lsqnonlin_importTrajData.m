@@ -5,11 +5,13 @@ x_num = 55; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< x_num
 nodes_num = 5; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
 x0 = 5*rand(2,x_num);
 %}
-tag_traj = importdata('30points_traj.mat');
+%tag_traj = importdata('30points_traj.mat');
+tag_traj = importdata('position15.mat');
+
 tag_num = size(tag_traj,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
 nodes_num = 5; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
 x_num = tag_num + nodes_num;
-x0 = 5*rand(2,x_num);
+x0 = 10*rand(2,x_num);
 
 % options = optimoptions(@lsqnonlin,'Algorithm','trust-region-reflective');
 % options.Algorithm = 'levenberg-marquardt';
@@ -34,22 +36,24 @@ title(str);
 % x_xy
 % resnorm
 % plot(x_xy(1,:), x_xy(2,:), 'b-*');
-sprev = rng();
-rng(sprev)
+% sprev = rng();
+% rng(sprev)
 
 % load data
 function [F, true_dist] = myfun(x)  
 %     tag_p_x = linspace(-16,0,17);
 %     tag_p = [tag_p_x; zeros(size(tag_p_x))]; 
 %     nodes_p = [-7, 3; 0, 0];
-    tag_traj = importdata('30points_traj.mat');
+    %tag_traj = importdata('30points_traj.mat');
+    tag_traj = importdata('position15.mat');
     tag_num = size(tag_traj,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
     nodes_num = 5; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
     x_num = tag_num + nodes_num; 
     tag_x = tag_traj(1,:); 
     tag_y = tag_traj(2,:);
     tag_p = [tag_x; tag_y]; 
-    nodes_p = [-2, 6, -3, 2, 3; 0, 0, 2, 5, 1];
+    % nodes_p = [-2, 6, -3, 2, 3; 0, 0, 2, 5, 1]; % for '30points_traj.mat'
+    nodes_p = [-3, 11, 12, -4, 6; -9, -9, 7, 7, 0];
     axis square;
     plot(tag_x, tag_y ,'-*y');
     hold on;
