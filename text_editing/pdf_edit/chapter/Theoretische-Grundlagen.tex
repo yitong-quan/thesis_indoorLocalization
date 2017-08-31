@@ -1,0 +1,215 @@
+
+\lhead[\chaptername~\thechapter]{\rightmark}
+
+
+\rhead[\leftmark]{}
+
+
+\lfoot[\thepage]{}
+
+
+\cfoot{}
+
+
+\rfoot[]{\thepage}
+
+
+\chapter{Theoretischer Hintergrund}
+In diesem Kapitel werden die benötigten theoretischen Grundlagen für den Aufbau und das Verständnis der drehraten- und beschleunigungsbasierten Atemfrequenzmessung vorgestellt. Dabei werden wichtige Begriffe erläutert, die Funktionsweise von verwendeten Bauteilen erklärt und Methoden der Signalverarbeitung beschrieben.
+
+\section{Atemmechanismus und -frequenz}
+Der Atemmechanismus ist ein Vorgang, bei dem sich die Lunge ausdehnt, um Luft einzuatmen und kontrahiert, um Luft auszustoßen. Da die Lunge an sich kein Muskel ist, wird der Atemmechanismus von den Inspirationsmuskeln kontrolliert. Der wichtigste unter ihnen ist das Zwerchfell. Spannt es sich an, vergrößert sich der Brustkorb, was zu einem Unterdruck führt. Dieser Vorgang wird Inspiration genannt und in \ref{img:atemmechanik} (links) dargestellt. Um ausatmen zu können, muss sich das Zwerchfell entspannen, wodurch sich der Brustkorb verkleinert und die Luft durch den Überdruck nach draußen strömt. Der Vorgang der Expiration wird in \ref{img:atemmechanik} rechts illustriert\cite{anatomy-and-physiology}. 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.55\textwidth]{images/atemmechanik.pdf}
+	\caption[Atemmechanik]{Beim Einatmen vergrößert sich die Lunge (links) und beim Ausatmen verkleinert sie sich (rechts).}
+	\label{img:atemmechanik}
+\end{figure}
+
+Wie in \ref{img:atemmechanik} zu erkennen, erfährt der Brustkorb eine deutliche Oberflächenveränderung während des Atemvorgangs. Neben der translatorischen Ausdehnung entsteht auch eine Drehung des vorderen Brustkorbs (Rotation).
+
+\begin{table}[h!]
+	\centering
+	\caption{Atemfrequenzen von unterschiedlichen Altersgruppen}
+	\label{tab:atemfrequenz}
+	\begin{tabular}{lcc}
+		\toprule
+		Altersgruppe 	& \multicolumn{2}{c}{Atemfrequenz}\\
+						& in Ruhe	& bei Belastung\\
+		\midrule
+		Säugling		& ca. 50 	& -\\
+		Kindher			& ca. 25 	& ca. 70\\
+		Erwachsene		& 12-16		& 40-60\\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+Die Atemfrequenz (\textit{engl. respiratory rate}) gibt an, wie oft in einer bestimmten Zeitspanne ein- und ausgeatmet wurde. Meistens wird die Zeitspanne in Minuten angegeben. Je nach Alter und gesundheitlichem Zustand variiert die Atemfrequenz eines Menschen. Die Atemfrequenzen für unterschiedliche Altergruppen werden in \ref{tab:atemfrequenz} aufgelistet\cite{juergen-weineck}. Die Frequenz erstreckt sich demnach von 12 bis 70 Atemzügen pro Minute bzw. 0,2 bis 1,2~Hz.
+
+\section{Inertialsensoren}
+Sensoren, die die Trägheit einer Masse nutzen, um auf sie einwirkende Kräfte zu messen, werden Inertialsensoren genannt (\textit{inert, lateinisch für ,,träge''}). Zu den Inertialsensoren werden Beschleunigungs- und Drehratensensoren gezählt. Der Anwendungsbereich erstreckt sich dabei von der Automobiltechnik über die Medizin bis hin zur Unterhaltungselektronik\cite{sensortechnik}.
+
+	\subsection{Drehratensensoren}	
+	MEMS-basierte Drehratensensoren (\textit{engl. gyroscope}) nutzen die Corioliskraft, um die Winkelgeschwindigkeit $^\circ/s$ um eine definierte Achse zu messen. Ein Drei-Achsen Drehratensensor ist so ausgelegt, dass er Rotationen im dreidimensionalen Raum erkennen kann. Rotationen um diese drei orthogonal zueinander stehenden Achsen werden Roll-, Nick- und Gier-Winkel (\textit{engl. roll-, pitch-, yaw-angle}) genannt und werden in \ref{img:rollpitchyaw} dargestellt. Bewegt sich ein Massepunkt $m$ mit der Relativgeschwindigkeit $v_{rel}$ in einem sich rotierenden Bezugssystem mit einer Drehgeschwindigkeit $\Omega$, so erfährt er eine Corioliskraft $F_c$. Dadurch entsteht eine Beschleunigung $a_c$ orthogonal zu $v_{rel}$ und der Rotationsachse von $\Omega$ und wird durch
+
+	\begin{equation}
+		\vec{a}_c = \frac{\vec{F}_c}{m} = 2\vec{v}_{rel} \times \vec{\Omega}
+		\label{eqn:corioliskraft}
+	\end{equation}
+ 
+ 	beschrieben. Kräfte, Beschleunigungen und Geschwindigkeiten werden in \ref{eqn:corioliskraft} dabei in Vektorform dargestellt, da sie im dreidimensionalen Raum auf den Massepunkt~$m$ einwirken\cite{sensortechnik}.
+ 
+ 	\begin{figure}[h]
+ 		\centering
+ 		\includegraphics[width=0.5\textwidth]{images/rollpitchyaw.pdf}
+ 		\caption[Roll-, Nick- und Gierachsen]{Schematische Darstellung eines Drei-Achsen-Drehratensensors. Dabei stehen alle Achsen orthogonal zueinander an einem gemeinsamen Mittelpunkt.	Rotationen um die drei Achsen werden als Roll-, Nick- und Gierwinkel bezeichnet.}
+ 		\label{img:rollpitchyaw}
+ 	\end{figure}
+ 
+ 	Das zugrunde liegende Prinzip eines MEMS-basierten Drehratensensors beruht auf dem Zweimassenschwinger, der in \ref{img:zweimassenschwinger} schematisch dargestellt wird. Dabei werden beide Massepunkte gegenphasig in Schwingung versetzt. Wenn das Bezugssystem mit der Drehgeschwindigkeit $\Omega$ rotiert wird, beginnen die Massepunkte zusätzlich orthogonal zur aufgespannten Ebene von Schwingungsrichtung und der Rotationsachse zu schwingen. Die daraus resultierende Coriolisbeschleunigung $a_c$ kann dann mithilfe eines angeschlossenen elektrischen Schaltkreises gemessen und die Drehgeschwindgkeit in $^\circ$/s ausgegeben werden\cite{sensortechnik}.
+ 	
+ 	\begin{figure}[h]
+ 		\centering
+ 		\includegraphics[width=0.57\textwidth]{images/zweimassenschwinger.pdf}
+ 		\caption[Schematische Darstellung eines Zweimassenschwingers]{Schematische Darstellung eines Zweimassenschwingers. Das rotierende Bezugssystem mit Rotationsgeschwindigkeit $\Omega$ regt die beiden Massepunkte so an, dass die Coriolisbeschleunigung $a_c$ entsteht.}
+ 		\label{img:zweimassenschwinger}
+ 	\end{figure}
+ 
+ 	Um aus der Winkelgeschwindigkeit den Winkel zu bestimmen, muss sie integriert werden. Da die erfassten Daten eines Drehratenratensensors diskret sind, werden sie in einem Mikrocontroller numerisch gemäß
+ 	
+	\begin{equation}
+	 	Winkel \pluseq Winkel + Drehrate/Abtastrate
+	 	\label{eqn:gyrointegration}
+ 	\end{equation}
+ 	
+ 	integriert. Dabei taucht das übliche Problem des Gyroscope-Drifts auf, da in Ruhe eine systematische Abweichung ungleich Null vorliegt. Wird dieser Wert nach \ref{eqn:gyrointegration} integriert, entsteht eine wachsende Abweichung zum echten Winkel. Angenommen, ein Drehratensensor zeigt in Ruhe eine Abweichung von 1~$^\circ$/s an. So hätte der Winkel bereits nach einer Minute eine absolute Abweichung von 60~$^\circ$, ohne dass sich der Sensor je bewegt hat.
+ 
+	\subsection{Beschleunigungssensoren}
+	Ein Beschleunigungssensor (\textit{engl. accelerometer}) misst eine Kraft $F$, die durch eine Beschleunigung $a$ auf eine Masse $m$ einwirkt. Bei bekannter Masse kann die Beschleunigung durch das 2. Newtonsche Axiom
+	
+	\begin{equation}
+		F = m \cdot a
+		\label{eqn:newton}
+	\end{equation}
+	
+	berechnet werden. Sie wird dabei in m/s$^2$ oder als Vielfaches der Erdbeschleunigung g = 9,81~m/s$^2$ angegeben. Für Beschleunigungssensoren ist die Erdbeschleunigung von besonderer Wichtigkeit, da sie zu jeder Zeit als Lot zur Erdmitte vorhanden ist. Dadurch kann ein Beschleunigungssensor ohne weiteres Werkzeug kalibriert werden\cite{sensortechnik}.
+	
+ 	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.57\textwidth]{images/accelerometer2.pdf}
+		\caption[Schematische Darstellung eines Beschleunigungssensors]{Schematische Darstellung eines uniaxialen MEMS-Beschleunigungssensors mit seismischer Masse und Gehäuse.}
+		\label{img:accelerometer}
+	\end{figure}
+
+	In \ref{img:accelerometer} wird ein schematischer Aufbau eines MEMS-Beschleunigungssensors in uniaxialer Richtung dargestellt. Die seismische Masse ist dabei an beiden Seiten durch Federn an ein Gehäuse befestigt und kann sich in einer Achse (hier horizontal) bewegen. Bei Krafteinwirkung F$_a$ erfährt die seismische Masse eine Verschiebung, die anhand der festen Elektroden kapazitiv gemessen werden kann\cite{sensortechnik}.
+	
+ 	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.4\textwidth]{images/koordinatensystem.pdf}
+		\caption[Rotationen um eine Achse]{Rotation um den Winkel $\alpha$ eines Koordinatensystems entlang der X-Achse.}
+		\label{img:koordinatensystem}
+	\end{figure}
+	
+	Neben der Eigenschaft als Kalibrierungsgegenstand dient die Erdbeschleunigung auch dazu, Neigungen im Bezug zur Erdoberfläche zu bestimmen. Dies gilt insbesondere für Roll- und Nick-Winkel. Der Gier-Winkel kann nicht bestimmt werden, da diese Achse entlang der Erdbeschleunigung ausgerichtet ist. In \ref{img:koordinatensystem} wird beispielhaft die Koordinate eines gedrehten Einheitsvektors $\Vec{z}$ (blau) angezeigt. Der Vektor hat demnach die neuen Koordinaten $\Vec{z} = (0, \sin{\alpha}, \cos{\alpha})$. Die entstandene Rotation im dreidimensionalen Raum kann in Form einer Drehmatrix für alle drei Vektoren angegeben werden. Für Drehungen im dreidimensionalen Raum entstehen dadurch drei Drehmatrizen\cite{rui-zhang}
+	
+	\begin{equation}
+		R_x(\phi) = 
+		\begin{pmatrix}
+			1 & 0 & 0\\
+			0 & \cos{\phi} & \sin{\phi}\\
+			0 & -\sin{\phi} & \cos{\phi}
+		\end{pmatrix},
+		\label{eqn:drehmatrix-x}
+	\end{equation}
+	
+	\begin{equation}
+		R_y(\theta) = 
+		\begin{pmatrix}
+			\cos{\theta} & 0 & -\sin{\theta}\\
+			0 & 1 & 0\\
+			\sin{\theta} & 0 & \cos{\theta}
+		\end{pmatrix},
+		\label{eqn:drehmatrix-y}
+	\end{equation}
+	
+	\begin{equation}
+		R_z(\psi) = 
+		\begin{pmatrix}
+			\cos{\psi} & \sin{\psi} & 0\\
+			-\sin{\psi} & \cos{\psi} & 0\\
+			0 & 0 & 1
+		\end{pmatrix}.
+		\label{eqn:drehmatrix-z}
+	\end{equation}
+	
+	Die Drehmatrizen geben dabei die relative Winkeländerung im Bezug auf die einzelnen absoluten Achsen an. Für eine freie relative Bewegung um alle Achsen, müssen alle Matrizen zu einer Orientierungsmatrix multipliziert werden. Nun kommt es darauf an, wie die Koordinaten des zu drehenden Systems anfänglich definiert sind. Für Drehungen wie in \ref{img:rollpitchyaw} abgebildet, ist die Sequenz X-Y-Z geeignet. Die Orientierungsmatrix R$_\text{ges}$ für Rollwinkel $\theta$, Nickwinkel $\phi$ und Gierwinkel $\psi$ lautet demnach wie folgt:
+		
+	\begin{equation}
+		R_\text{ges} = R_x \cdot R_y \cdot R_z = 
+		\begin{pmatrix}
+			\text{c}\theta~\text{c}\psi & \text{c}\theta~\text{s}\psi & -\text{s}\theta\\
+			\text{c}\psi~\text{s}\theta~\text{s}\phi - \text{c}\phi~\text{s}\psi & \text{c}\phi~\text{c}\psi + \text{s}\theta~\text{s}\phi~\text{s}\psi & \text{c}\theta~\text{s}\phi\\
+			\text{c}\phi~\text{c}\psi~\text{s}\theta + \text{s}\phi~\text{s}\psi & \text{c}\phi~\text{s}\theta~\text{s}\psi - \text{c}\psi~\text{s}\phi & \text{c}\theta~\text{c}\phi
+		\end{pmatrix},
+		\label{eqn:orientierungsmatrix}
+	\end{equation}
+	
+	wobei $\text{s}$ und $\text{c}$ für $\sin$ und $\cos$ stehen\cite{rui-zhang}. Angenommen ein Beschleunigungssensor ist anfänglich so orientiert, dass die Erdbeschleunigung gänzlich auf die Z-Achse des Sensors in Form von $\Vec{g} = (0,0,1)$ wirkt und der Sensor keinen weiteren Beschleunigungen ausgesetzt ist. So ist die Ausgabe $G = (G_x, G_y, G_z)$ des Sensors definiert als
+	
+	\begin{equation}
+		\frac{G}{|G|} = R_\text{ges} \cdot \Vec{g} \Rightarrow
+		\frac{1}{\sqrt{G_x^2 + G_y^2 + G_z^2}}
+		\begin{pmatrix}
+		G_x\\
+		G_y\\
+		G_z
+		\end{pmatrix} =
+		\begin{pmatrix}
+			-\sin{\theta}\\
+			\cos{\theta}\sin{\phi}\\
+			\cos{\theta}\cos{\phi}
+		\end{pmatrix}.
+	\end{equation}
+	
+	Der Winkel $\phi$ um die Roll-Achse kann dann mit
+	
+	\begin{equation}
+		\phi = \tan^{-1}{\left(\frac{G_y}{G_z}\right)}
+	\end{equation}
+	
+	berechnet werden, da die X-Komponente unabhängig von $\phi$ und somit trivial ist. Für die Berechnung von $\theta$ müssen die Y- und Z-Komponenten trigonometrisch nach
+	
+	\begin{equation*}
+		\sqrt{\cos^2{\theta}\sin^2{\phi} + \cos^2{\theta}\cos^2{\phi}}
+		= \cos{\theta} \cdot \underbrace{\sqrt{\sin^2{\phi} + \cos^2{\phi}}}_{1}
+		= \cos{\theta}
+	\end{equation*}
+	\begin{equation*}
+		\Rightarrow \cos{\theta} = \sqrt{G_y^2 + G_z^2}
+	\end{equation*}
+	
+	zusammengeführt werden. Somit lässt sich der Nick-Winkel $\theta$ durch
+	
+	\begin{equation}
+		\theta = \tan^{-1}{\left( - \frac{G_x}{\sqrt{G_y^2 + G_z^2}} \right)}
+	\end{equation}
+	
+	berechnen\cite{mark-pedley}.
+	
+\section{Signalverarbeitung}
+Ein Sensor muss meist eine sehr feine analoge Umgebung erfassen, die mit Störungen behaftet ist. Unter anderem entsteht Rauschen durch die Verstärkung des Signalpegels. Um ein verwertbares Signal für den Abnehmer zu bekommen, können einige Signalverarbeitungsschritte vollzogen werden, die im Folgenden erläutert werden.
+
+	\subsection{Savitzky-Golay-Filter}
+	
+	\subsection{Bandpass-Filter}
+	
+	\subsection{Sensordatenfusion}
+
+	\subsection{Komplementär-Filter}
+
+	\subsection{Kalman-Filter}
+
+	\subsection{Schnelle Fourier-Transformation}
+
+\section{Fehlerrechnung}

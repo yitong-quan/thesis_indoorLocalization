@@ -55,9 +55,9 @@ function [F, true_dist] = myfun(x)
     % nodes_p = [-2, 6, -3, 2, 3; 0, 0, 2, 5, 1]; % for '30points_traj.mat'
     nodes_p = [-3, 11, 12, -4, 6; -9, -9, 7, 7, 0];
     axis square;
-    plot(tag_x, tag_y ,'-*y');
+    h=plot(tag_x, tag_y ,'-*y', nodes_p(1,:), nodes_p(2,:) ,'-or');
     hold on;
-    plot(nodes_p(1,:), nodes_p(2,:) ,'-or');
+%     h=plot(nodes_p(1,:), nodes_p(2,:) ,'-or');
 
     x_tags = x(:,1:end-nodes_num);
     x_nodes = x(:,end-nodes_num+1:end);

@@ -1,0 +1,33 @@
+\lhead[\chaptername~\thechapter]{\rightmark}
+
+
+\rhead[\leftmark]{}
+
+
+\lfoot[\thepage]{}
+
+
+\cfoot{}
+
+
+\rfoot[]{\thepage}
+
+\chapter{Stand der Technik}
+Dieses Kapitel befasst sich mit dem aktuellen Stand der Technik, wobei es um die Atemfrequenzanalyse mithilfe von Inertialsensoren geht. Es wird dabei zwischen drei Methoden unterschieden.
+
+\section{Drehratenbasierte Atemfrequenzanalyse}
+In seiner Bachelorarbeit stellt Dustin Kunzelmann ein Verfahren vor, mittels Drehratensensoren die Auslenkung des Brustkorbs zu erfassen (\textit{Gyroscope Based Breath Analysis - GBBA}). Dabei wird die Winkelgeschwindigkeit der Brustkorbauslenkung betrachtet. Um die relative Auslenkung des Brustkorbs von der absoluten Drehbewegung der Testperson unterscheiden zu können, wird am Rücken der Testperson ein weiterer Drehratensensor angebracht. Ein Mikrocontroller erfasst die Daten von den Sensoren und berechnet daraus die Atemfrequenz und leitet sie über ein integriertes Bluetoothmodul an ein Smartphone weiter. Die Methode hat gezeigt, dass mit Drehratensensoren unter statischen Bedingungen die besten Ergebnisse erzielt werden. Sobald die Testperson nicht in Ruhe ist, sondern periodische Bewegungen ausführt, wird die Atmung schlecht bis gar nicht detektiert\cite{gabba}.
+
+\section{Beschleunigungsbasierte Atemfrequenzanalyse}
+Die Atemanalyse mithilfe von Beschleunigungssensoren ist etwas gängiger und findet bereits in einigen Anwendungen statt. Im Folgenden werden zwei Ansätze vorgestellt.
+
+	\subsection*{Brust- und Rückensensor}
+	Ähnlich wie bei der drehratenbasierten Atemfrequenzanalyse werden Beschleunigungssensoren je auf der Brust und am Rücken angebracht (\textit{Acceleration Based Breath Analysis - ABBA}). Dabei reichen kleine Auslenkungen des Brustkorbs bereits aus, um die Änderung der Erdbeschleunigung zu detektieren. Da das Signalrauschen der beiden Sensoren sehr groß ist, werden verschiedene Schritte der Signalglättung respektive Filterung durchgeführt. Die Ergebnisse zeigen, dass das ABBA-System in der Lage ist die Atemfrequenz unter verschiedenen Umständen mit sehr geringen Abweichungen zu bestimmen. Hohe Genauigkeiten werden dabei in Ruhe und vor allem bei hoher sportlicher Aktivität erzielt\cite{abba}.
+
+	\subsection*{Zwei parallele Brustsensoren}
+	
+	
+	
+\section{Drehraten- und beschleunigungsbasierte Atemfrequenzanalyse}
+
+	\subsection*{Improvement of Dynamic Respiration Monitoring Through Sensor Fusion of Accelerometer and Gyro-sensor}
