@@ -352,7 +352,12 @@ int main(void){
                         uint16_t j = 1;
                         for(uint8_t ii = 0; ii < NODE_NUMBERS; ii++)
                         {
-                                NODE_IDs[ii] = (((uint16_t) CC1101_receive[j]) << 8 | ((uint16_t) CC1101_receive[j+1]));
+                        	// change the way to get NODE_IDs, add by Yitong,
+                        	uint16_t temp1, temp2;
+                        	temp1 = (uint16_t) (CC1101_receive[j]);
+                        	temp2 = (uint16_t) (CC1101_receive[j+1]);
+                        	NODE_IDs[ii] = ( (temp1 << 8) | (temp2) );
+                                //NODE_IDs[ii] = (((uint16_t) CC1101_receive[j]) << 8 | ((uint16_t) CC1101_receive[j+1]));
                                 j++;
                                 j++;
                         }
@@ -404,7 +409,15 @@ int main(void){
                         }
 */
                 cc1101_power_down();										// Set CC1101 RF Module to WakeUp Configuration and power down
-
+/*
+        		// FLAG before ranging: DO NOTHING FOR 0,2 SECOND; FOR OBSERVATION IN THE Oscilloscope
+                for(int nn = 0; nn< 10; nn++){
+                        LED_setLED(COL_RED);
+                        RTC_delay_ms(10);
+                        LED_clearLED();
+                        RTC_delay_ms(10);//+++++++++++++++++++++!!!!!!!!!!!!!!!!!!!!!Yitong
+                }
+*/
                 //UART_WriteString("Got NODE IDs\r\n", sizeof("Got NODE IDs\r\n"));
 /*
                         // FLAG3: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
