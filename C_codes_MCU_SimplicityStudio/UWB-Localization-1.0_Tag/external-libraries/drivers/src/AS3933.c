@@ -424,10 +424,62 @@ void AS3933_EFM_sleep_enable_wake_up (uint32_t WAKEUP_ID)
 		AS3933_enable_wakeup_by_24bit_address(WAKEUP_ID, AS3933_SPI_BAUDRATE);
 	#endif
 
+        // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
+		RTC_delay_ms(5);
+                for(int i = 1; i < 5; i++){
+                        LED_setLED(COL_RED);
+                        RTC_delay_ms(2);
+                        LED_clearLED();
+                        RTC_delay_ms(1);
+                }
 	// Switch antenna to WakeUp Receiver
 	ANTENNA_switch(ANTENNA_DEST_WAKEUPRF);
+    // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
+	RTC_delay_ms(5);
+            for(int i = 1; i < 7; i++){
+                    LED_setLED(COL_RED);
+                    RTC_delay_ms(1);
+                    LED_clearLED();
+                    RTC_delay_ms(3);
+            }
 
+	//Yitong, change the following while() with this
+	__disable_irq();
+    // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
+	/*
+	RTC_delay_ms(5);
+            for(int i = 1; i < 9; i++){
+                    LED_setLED(COL_RED);
+                    RTC_delay_ms(3);
+                    LED_clearLED();
+                    RTC_delay_ms(1);
+            }
+            */
+	//EMU_EnterEM3(true);  // EM3
+	EMU_EnterEM2(true);  // EM3^
+    // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
+	/*
+            for(int i = 1; i < 2; i++){
+                    LED_setLED(COL_RED);
+                    RTC_delay_ms(1);
+                    LED_clearLED();
+                    RTC_delay_ms(3);
+            }
+            */
+	__enable_irq();
+    // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
+	/*
+	RTC_delay_ms(5);
+	for(int i = 1; i < 6; i++){
+                    LED_setLED(COL_RED);
+                    RTC_delay_ms(3);
+                    LED_clearLED();
+                    RTC_delay_ms(2);
+            }
+	*/
+	while (!WAKEUP_received) {}
 	// Now enter SleepMode!!
+	/*
 	while (!WAKEUP_received)
 	{
 		__disable_irq();
@@ -435,6 +487,7 @@ void AS3933_EFM_sleep_enable_wake_up (uint32_t WAKEUP_ID)
 		EMU_EnterEM2(true);  // EM3
 		__enable_irq();
 	}
+	*/
 }
 
 #endif /* def. AS3933_USART_CLK */

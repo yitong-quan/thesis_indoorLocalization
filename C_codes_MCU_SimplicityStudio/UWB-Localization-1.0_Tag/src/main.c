@@ -209,6 +209,17 @@ int main(void){
 
         while(1)
         {
+
+/*
+            // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
+                    RTC_delay_ms(10);
+                    for(int i = 1; i < 5; i++){
+                            LED_setLED(COL_RED);
+                            RTC_delay_ms(2);
+                            LED_clearLED();
+                            RTC_delay_ms(2);
+                    }
+*/
                 // Blink LED
                 LED_setLED(COL_GREEN);
                 RTC_delay_ms(5);
@@ -220,16 +231,40 @@ int main(void){
                 #endif
 
 /*
+                // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
+                        RTC_delay_ms(10);
+                        for(int i = 1; i < 5; i++){
+                                LED_setLED(COL_RED);
+                                RTC_delay_ms(2);
+                                LED_clearLED();
+                                RTC_delay_ms(2);
+                        }
+*/
+/*
  * Go into Sleep Mode (EFM) and enable AS3933 WakeUp
  */
                 cc1101_power_down();										// Set CC1101 RF Module to WakeUp Configuration and power down
+
+                // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
+                        for(int i = 1; i < 5; i++){
+                                LED_setLED(COL_RED);
+                                RTC_delay_ms(3);
+                                LED_clearLED();
+                                RTC_delay_ms(2);
+                        }
+
+                        //Yitong, change the order of these two lines in front of 'AS3933_EFM_sleep_enable_wake_up()'
+                        ID_WHO_WOKE_ME_UP = 0x00;
+                        OPTION_BYTE = 0x00;
+
                 AS3933_EFM_sleep_enable_wake_up(MY_WAKEUP_ID);				// AS3933 enable for wake up, set EFM to sleep
 
 /**************************************************************************************************************
  * Normal WakeUp -> Read AS3933 data
  **************************************************************************************************************/
-                ID_WHO_WOKE_ME_UP = 0x00;
-                OPTION_BYTE = 0x00;
+                //ID_WHO_WOKE_ME_UP = 0x00;
+                //OPTION_BYTE = 0x00;
+
                 if (!AS3933_receive_data(&ID_WHO_WOKE_ME_UP, &OPTION_BYTE, &N_MEASUREMENTS, AS3933_SPI_BAUDRATE))
                 {
                 // WakeUp NOT addressed to me (Additional addr byte -> no match)
@@ -252,16 +287,16 @@ int main(void){
                         LEUART_Enable(LEUART0, leuartDisable);
                 #endif
 
-/*
+
                                         // FLAG6: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
-                                                RTC_delay_ms(100);
-                                                for(int i = 1; i < 15; i++){
+                                                RTC_delay_ms(10);
+                                                for(int i = 1; i < 9; i++){
                                                         LED_setLED(COL_RED);
                                                         RTC_delay_ms(2);
                                                         LED_clearLED();
                                                         RTC_delay_ms(2);
                                                 }
-*/
+
 /*************************************************************************************************************
  * 										ACK to Base Station!																					   ***
  *************************************************************************************************************/
@@ -274,16 +309,25 @@ int main(void){
  */
                 // ACK WakeUp
                 cc1101_change_config_to(CC1101_DATA_38kBaud_CONFIG, paBaseData);
-                /*
-                 * // FLAG11 for _ack_: DO NOTHING FOR 0,06 SECOND; FOR OBSERVATION IN THE Oscilloscope
+/*
+                 // FLAG11 for _ack_: DO NOTHING FOR 0,06 SECOND; FOR OBSERVATION IN THE Oscilloscope
                         for(int i = 0; i < 6; i++){
                                 LED_setLED(COL_RED);
                                 RTC_delay_ms(5);
                                 LED_clearLED();
                                 RTC_delay_ms(5);
                         }
-                */
+*/
                 cc1101_ack_reception(&xfer, &MY_TAG_ID, &ID_WHO_WOKE_ME_UP, AES_encryption_key, AES_initVector);
+/*
+                	// FLAG11 for _ack_: DO NOTHING FOR 0,06 SECOND; FOR OBSERVATION IN THE Oscilloscope
+                        for(int i = 0; i < 6; i++){
+                                LED_setLED(COL_RED);
+                                RTC_delay_ms(5);
+                                LED_clearLED();
+                                RTC_delay_ms(5);
+                        }
+*/
 
                 // check number of measurements
 
@@ -352,12 +396,14 @@ int main(void){
                         uint16_t j = 1;
                         for(uint8_t ii = 0; ii < NODE_NUMBERS; ii++)
                         {
+                        	/*
                         	// change the way to get NODE_IDs, add by Yitong,
                         	uint16_t temp1, temp2;
                         	temp1 = (uint16_t) (CC1101_receive[j]);
                         	temp2 = (uint16_t) (CC1101_receive[j+1]);
                         	NODE_IDs[ii] = ( (temp1 << 8) | (temp2) );
-                                //NODE_IDs[ii] = (((uint16_t) CC1101_receive[j]) << 8 | ((uint16_t) CC1101_receive[j+1]));
+                        	*/
+                                NODE_IDs[ii] = ( ((uint16_t) CC1101_receive[j]) << 8 | ((uint16_t) CC1101_receive[j+1]));
                                 j++;
                                 j++;
                         }
@@ -442,7 +488,7 @@ int main(void){
                 uint16_t idx = 0, n = 0;
 
                 float UWB_data[500];																		// UWB data buffer with n measurements
-                memset(UWB_data, 0, 500);
+                memset(UWB_data, 0, 500*4);
 /*
                         // FLAG2: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
                                 RTC_delay_ms(100);
@@ -465,8 +511,10 @@ int main(void){
                                         RTC_delay_ms(5);
                                 }
 */
-                while(response)
-                {
+
+                //Yitong, this while loop 'while(response){}'here is useless. disable it
+//                while(response)
+//                {
                         for (i = 0; i < NODE_NUMBERS; i++)														// routine depend on how many nodes
                         {
                                 char UART_data[256] = {0};
@@ -475,7 +523,8 @@ int main(void){
                                 //sprintf(UART_data,"Received Packet from NODE: 0x%X \r\n",(int) NODE_IDs[i]);
                                 //UART_WriteString(UART_data, strlen(UART_data));
 
-                                node_high = (NODE_IDs[i] >> 8);
+                                //node_high = (NODE_IDs[i] >> 8);
+                                node_high = (uint8_t) (NODE_IDs[i] >> 8); // yitong, replaced last line with this, using casting
                                 node_low = (NODE_IDs[i]);
 
                                 // Add received Data to send packet
@@ -491,7 +540,7 @@ int main(void){
                                 memset(UWB_data, 0, 500);
                         }
                         response = 0;
-                }
+//                }
 
                 DWM1000_enter_sleepmode();																	// Enter the sleep mode of the DWM1000
 
@@ -566,6 +615,14 @@ int main(void){
                                 #endif
                         #endif
                 }
+                                        // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
+                                                RTC_delay_ms(10);
+                                                for(int i = 1; i < 5; i++){
+                                                        LED_setLED(COL_RED);
+                                                        RTC_delay_ms(2);
+                                                        LED_clearLED();
+                                                        RTC_delay_ms(2);
+                                                }
         }
 }
 
