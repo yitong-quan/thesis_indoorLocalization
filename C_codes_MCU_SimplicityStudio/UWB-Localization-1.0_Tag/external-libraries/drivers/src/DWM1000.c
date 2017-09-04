@@ -2291,14 +2291,16 @@ void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t NODE_A
 
 	//DWM1000_Chip_INIT();
 
-	while(measurement_numbers && count > 0)
+	//while(measurement_numbers && count > 0)
+	while(measurement_numbers > 0 && count > 0) // Yitong, replace
 	{
 		switch (state)
 		{
 			case STATE_SEND_BLINK:
 				state = DWM1000_blink_transmit_state(NODE_ADD, MY_TAG_ID);
 				//RTC_start(700);  // 10 can work. can be Changed to 300?? TODO Yitong
-				RTC_start(100);
+				//RTC_start(100);
+				RTC_start(33); //23 works
 				//>>>>>>>>>>>>>>>>>>>>>>>>> In order to make the time needed shorter, when not all the nodes can be contacted. can it be Changed to 300?? TODO Yitong
 				//>>>>>>>>>>>>>>>>>>>>>>>>> I am choosing 100m/(3*10^8)*factor, take a factor 3, then I get 10^(-6)s = 0.001ms
 				//>>>>>>>>>>>>>>>>>>>>>>>>> so choosing RTC_start(100) should be problem free, if there is no other things is needed to be done except ranging, (others might be waiting for respond or so)
@@ -2344,14 +2346,15 @@ void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t NODE_A
 					range[i++] = DWM1000_compute_range_asymmetric(poll_tx_timestamp, poll_rx_timestamp, resp_tx_timestamp, resp_rx_timestamp, final_tx_timestamp, final_rx_timestamp);
 					measurement_numbers--;
 
-					//RTC_start(5000);
-					RTC_start(300);
-					//>>>>>>>>>>>>>>>>>>>>>>>>> Inorder to make the time needed shorter, TODO Yitong
+					//RTC_start(5000); //RTC_start(300);
+					RTC_start(100);
+					//>>>>>>>>>>>>>>>>>>>>>>>>> 300 works. Inorder to make the time needed shorter, TODO Yitong
 
 					state = STATE_RECEIVER_ON;
 				}
 				else
 				{
+					RTC_start(33); //add, Yitong
 					state = STATE_RECEIVER_ON;
 				}
 			break;

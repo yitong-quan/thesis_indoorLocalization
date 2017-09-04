@@ -210,6 +210,7 @@ int main(void){
         while(1)
         {
 
+        	WAKEUP_received = false; // added Yitong
 /*
             // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
                     RTC_delay_ms(10);

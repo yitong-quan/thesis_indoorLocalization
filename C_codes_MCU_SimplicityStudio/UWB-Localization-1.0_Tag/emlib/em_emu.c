@@ -364,6 +364,79 @@ void dcdcHsFixLnBlock(void)
  **************************   GLOBAL FUNCTIONS   *******************************
  ******************************************************************************/
 
+void EMU_EnterEM1_selfDefined(bool restore)
+{
+#if defined( ERRATA_FIX_EMU_E107_EN )
+  bool errataFixEmuE107En;
+  uint32_t nonWicIntEn[2];
+#endif
+
+  /* Auto-update CMU status just in case before entering energy mode. */
+  /* This variable is normally kept up-to-date by the CMU API. */
+  cmuStatus = CMU->STATUS;
+#if defined( _CMU_HFCLKSTATUS_RESETVALUE )
+  cmuHfclkStatus = (uint16_t)(CMU->HFCLKSTATUS);
+#endif
+
+  /* Enter sleep mode */
+  SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk;
+
+  /* Fix for errata EMU_E107 - store non-WIC interrupt enable flags.
+     Disable the enabled non-WIC interrupts. */
+#if defined( ERRATA_FIX_EMU_E107_EN )
+  errataFixEmuE107En = getErrataFixEmuE107En();
+  if (errataFixEmuE107En)
+  {
+    nonWicIntEn[0] = NVIC->ISER[0] & NON_WIC_INT_MASK_0;
+    NVIC->ICER[0] = nonWicIntEn[0];
+#if (NON_WIC_INT_MASK_1 != (~(0x0U)))
+    nonWicIntEn[1] = NVIC->ISER[1] & NON_WIC_INT_MASK_1;
+    NVIC->ICER[1] = nonWicIntEn[1];
+#endif
+  }
+#endif
+
+#if defined( _EMU_DCDCCTRL_MASK )
+  dcdcFetCntSet(true);
+  dcdcHsFixLnBlock();
+#endif
+
+  __WFI();
+
+#if defined( _EMU_DCDCCTRL_MASK )
+  dcdcFetCntSet(false);
+#endif
+
+  /* Fix for errata EMU_E107 - restore state of non-WIC interrupt enable flags. */
+#if defined( ERRATA_FIX_EMU_E107_EN )
+  if (errataFixEmuE107En)
+  {
+    NVIC->ISER[0] = nonWicIntEn[0];
+#if (NON_WIC_INT_MASK_1 != (~(0x0U)))
+    NVIC->ISER[1] = nonWicIntEn[1];
+#endif
+  }
+#endif
+
+  /* Restore oscillators/clocks if specified */
+  if (restore)
+  {
+    emuRestore();
+  }
+  /* If not restoring, and original clock was not HFRCO, we have to */
+  /* update CMSIS core clock variable since core clock has changed */
+  /* to using HFRCO. */
+#if defined( _CMU_HFCLKSTATUS_RESETVALUE )
+  else if ((cmuHfclkStatus & _CMU_HFCLKSTATUS_SELECTED_MASK)
+           != CMU_HFCLKSTATUS_SELECTED_HFRCO)
+#else
+  else if (!(cmuStatus & CMU_STATUS_HFRCOSEL))
+#endif
+  {
+    SystemCoreClockUpdate();
+  }
+}
+
 /***************************************************************************//**
  * @brief
  *   Enter energy mode 2 (EM2).
