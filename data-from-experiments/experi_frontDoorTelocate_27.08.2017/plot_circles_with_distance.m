@@ -1,4 +1,4 @@
-clear;
+% clear;
 nodesNumber = 4;
 if nodesNumber == 3
     %distances2all_abs = importdata('3nodes_fixedTag_DataRemoveRowWith0.mat');
@@ -22,6 +22,7 @@ end
 %axis square; %axis([-100 150 -200 200]);
 %% make cross points of circles with Radius distances2all
 % make circles
+figure;
 hold on; % axis square; axis tight;
 
 for j = 1:size(distances2all_abs, 2)
