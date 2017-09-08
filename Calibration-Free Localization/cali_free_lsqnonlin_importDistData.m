@@ -12,11 +12,11 @@ dist_noisy = dist_noisy/1000;
 tag_num = size(dist_noisy,1); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
 nodes_num = size(dist_noisy,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
 x_num = tag_num + nodes_num;
-x0 = 1*rand(2,x_num);
+x0 = 10*rand(2,x_num);
 
 resnorm_last = inf;
 options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','iter','MaxIterations',2000);
-for ii = 1:5
+for ii = 1:1
     [x,resnorm] = lsqnonlin(@myfun,x0,[],[],options);
     if resnorm < resnorm_last
         x_opt = x;
