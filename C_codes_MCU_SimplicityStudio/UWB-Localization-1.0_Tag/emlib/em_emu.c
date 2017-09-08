@@ -148,6 +148,7 @@ static uint16_t dcdcOutput_mVout;
  * @brief
  *   Restore oscillators and core clock after having been in EM2 or EM3.
  ******************************************************************************/
+//static void emuRestore(void) // Yitong
 static void emuRestore(void)
 {
   uint32_t oscEnCmd;
@@ -538,6 +539,7 @@ void EMU_EnterEM2(bool restore)
 #endif
 
   /* Restore oscillators/clocks if specified */
+  //if (restore) //debug, Yitong
   if (restore)
   {
     emuRestore();
