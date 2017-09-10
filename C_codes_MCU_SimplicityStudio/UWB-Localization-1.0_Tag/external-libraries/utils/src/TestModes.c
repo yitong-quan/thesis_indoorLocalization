@@ -176,7 +176,7 @@ void wakeUpTestReceive() {
 		while (!WAKEUP_received) {
 			__disable_irq();
 			//EMU_EnterEM3(true);  // Sleep mode
-			EMU_EnterEM1();  //Yitong
+			EMU_EnterEM2(true);  //Yitong
 			__enable_irq();
 		}
 
@@ -205,7 +205,7 @@ void wakeUpTestSensitivity() {
 		while (!WAKEUP_received) {
 			__disable_irq();
 			//EMU_EnterEM3(true);  // Sleep mode
-			EMU_EnterEM1();  //Yitong
+			EMU_EnterEM2(true);  //Yitong
 			__enable_irq();
 		}
 
@@ -467,7 +467,8 @@ void AS_optimization_receiver(struct radio_transfer *xfer, bool use_wakeup) {
 			// Now enter SleepMode!!
 			while (!WAKEUP_received) {
 				__disable_irq();
-				EMU_EnterEM3(true);  // Sleep mode
+				//EMU_EnterEM3(true);  // Sleep mode
+				EMU_EnterEM2(true);  //Yitong
 				__enable_irq();
 			}
 
@@ -754,7 +755,8 @@ void TEST_data_receiver(struct radio_transfer *xfer, const uint8_t *decrypt_key,
 		// Now enter SleepMode!!
 		while (!WAKEUP_received) {
 			__disable_irq();
-			EMU_EnterEM3(true);  // Sleep mode
+			//EMU_EnterEM3(true);  // Sleep mode
+			EMU_EnterEM2(true);  //Yitong
 			__enable_irq();
 		}
 

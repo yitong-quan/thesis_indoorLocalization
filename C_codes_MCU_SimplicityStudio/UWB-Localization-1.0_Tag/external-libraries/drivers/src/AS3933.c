@@ -456,6 +456,7 @@ void AS3933_EFM_sleep_enable_wake_up (uint32_t WAKEUP_ID)
             }
             */
 	//EMU_EnterEM3(true);  // EM3
+	//EMU_EnterEM1();
 	EMU_EnterEM2(true);  // EM3^
 	//EMU_EnterEM1_selfDefined(true);
     // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
