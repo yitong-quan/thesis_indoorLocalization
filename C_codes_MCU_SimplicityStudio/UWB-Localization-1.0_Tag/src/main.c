@@ -258,8 +258,8 @@ int main(void){
                         ID_WHO_WOKE_ME_UP = 0x00;
                         OPTION_BYTE = 0x00;
 
-                AS3933_EFM_sleep_enable_wake_up(MY_WAKEUP_ID);				// AS3933 enable for wake up, set EFM to sleep
 
+                AS3933_EFM_sleep_enable_wake_up(MY_WAKEUP_ID);				// AS3933 enable for wake up, set EFM to sleep
 /**************************************************************************************************************
  * Normal WakeUp -> Read AS3933 data
  **************************************************************************************************************/
@@ -272,14 +272,14 @@ int main(void){
                         #if UART_DEBUG
                                 UART_WriteString("WakeUp NOT addressed to me\r\n", sizeof("WakeUp NOT addressed to me\r\n"));
                         #endif
-                                /*
-                				for (counterDebug=1; counterDebug<10; counterDebug=counterDebug+1) {
-                					LED_setLED(COL_RED);
-                					RTC_delay_ms(50);
-                					LED_clearLED();
-                					RTC_delay_ms(50);
-                				}
-                				*/
+
+                				//for (counterDebug=1; counterDebug<10; counterDebug=counterDebug+1) {
+                				//	LED_setLED(COL_RED);
+                				//	RTC_delay_ms(50);
+                				//	LED_clearLED();
+                				//	RTC_delay_ms(50);
+                				//}
+
                                 continue;  // Go back to sleep!
                 }
 

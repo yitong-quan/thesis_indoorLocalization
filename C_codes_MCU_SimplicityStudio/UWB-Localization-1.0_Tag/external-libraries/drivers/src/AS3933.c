@@ -457,28 +457,33 @@ void AS3933_EFM_sleep_enable_wake_up (uint32_t WAKEUP_ID)
             */
 	//EMU_EnterEM3(true);  // EM3
 	//EMU_EnterEM1();
-	EMU_EnterEM2(true);  // EM3^
+	//EMU_EnterEM2(true);  // EM3^
 	//EMU_EnterEM1_selfDefined(true);
     // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
-	/*
+/*
             for(int i = 1; i < 2; i++){
                     LED_setLED(COL_RED);
                     RTC_delay_ms(1);
                     LED_clearLED();
                     RTC_delay_ms(3);
             }
-            */
+*/
 	__enable_irq();
     // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
-	/*
-	RTC_delay_ms(5);
+/*
 	for(int i = 1; i < 6; i++){
                     LED_setLED(COL_RED);
-                    RTC_delay_ms(3);
-                    LED_clearLED();
                     RTC_delay_ms(2);
+                    LED_clearLED();
+                    RTC_delay_ms(1);
             }
-	*/
+	for(int i = 1; i < 6; i++){
+                    LED_setLED(COL_RED);
+                    RTC_delay_ms(20);
+                    LED_clearLED();
+                    RTC_delay_ms(10);
+            }
+*/
 	while (!WAKEUP_received) {}
 	// Now enter SleepMode!!
 	/*
