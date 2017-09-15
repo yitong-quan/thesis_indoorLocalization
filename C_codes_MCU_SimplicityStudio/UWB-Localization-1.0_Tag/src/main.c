@@ -245,7 +245,7 @@ int main(void){
  * Go into Sleep Mode (EFM) and enable AS3933 WakeUp
  */
                 cc1101_power_down();										// Set CC1101 RF Module to WakeUp Configuration and power down
-
+/*
                 // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
                         for(int i = 1; i < 5; i++){
                                 LED_setLED(COL_RED);
@@ -253,7 +253,7 @@ int main(void){
                                 LED_clearLED();
                                 RTC_delay_ms(2);
                         }
-
+*/
                         //Yitong, change the order of these two lines in front of 'AS3933_EFM_sleep_enable_wake_up()'
                         ID_WHO_WOKE_ME_UP = 0x00;
                         OPTION_BYTE = 0x00;
@@ -279,7 +279,7 @@ int main(void){
                 				//	LED_clearLED();
                 				//	RTC_delay_ms(50);
                 				//}
-
+                    //            RTC_delay_ms(5);
                                 continue;  // Go back to sleep!
                 }
 
@@ -516,6 +516,7 @@ int main(void){
                 //Yitong, this while loop 'while(response){}'here is useless. disable it
 //                while(response)
 //                {
+                //NODE_NUMBERS = 1; N_MEASUREMENTS = 1; NODE_IDs[i]=15934; // Yitong , for removing the sleeping modul
                         for (i = 0; i < NODE_NUMBERS; i++)														// routine depend on how many nodes
                         {
                                 char UART_data[256] = {0};
@@ -731,7 +732,8 @@ void GPIO_ODD_IRQHandler(void)
         {
                 if (GPIO_IntGetEnabled() & (1 << AS3933_WAKE_PIN))
                 {
-                        GPIO_IntDisable(1 << AS3933_WAKE_PIN);
+                        //GPIO_IntDisable(1 << AS3933_WAKE_PIN); // Yitong, replaced with next line, for testing
+                		GPIO_IntEnable(1 << AS3933_WAKE_PIN);
                         GPIO_IntClear(1 << AS3933_WAKE_PIN);
                         WAKEUP_received = true;
                 }

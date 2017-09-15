@@ -521,7 +521,7 @@ void EMU_EnterEM2(bool restore)
   dcdcHsFixLnBlock();
 #endif
 
-  __WFI();
+  __WFI();  // disable  entering to EM1/2/3 , Yitong
 
 #if defined( _EMU_DCDCCTRL_MASK )
   dcdcFetCntSet(false);

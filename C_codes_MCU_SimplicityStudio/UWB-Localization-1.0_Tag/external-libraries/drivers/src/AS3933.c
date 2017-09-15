@@ -423,7 +423,7 @@ void AS3933_EFM_sleep_enable_wake_up (uint32_t WAKEUP_ID)
 	#elif	WU_ADDR_LENGTH == USE_24_BIT
 		AS3933_enable_wakeup_by_24bit_address(WAKEUP_ID, AS3933_SPI_BAUDRATE);
 	#endif
-
+/*
         // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
 		RTC_delay_ms(5);
                 for(int i = 1; i < 5; i++){
@@ -432,6 +432,7 @@ void AS3933_EFM_sleep_enable_wake_up (uint32_t WAKEUP_ID)
                         LED_clearLED();
                         RTC_delay_ms(1);
                 }
+*/
 	// Switch antenna to WakeUp Receiver
 	ANTENNA_switch(ANTENNA_DEST_WAKEUPRF);
     // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
@@ -456,11 +457,11 @@ void AS3933_EFM_sleep_enable_wake_up (uint32_t WAKEUP_ID)
                     RTC_delay_ms(1);
             }
             */
-	__enable_irq();  //Yitong
-	GPIO_IntEnable((1 << AS3933_WAKE_PIN));
+	//__enable_irq();  //Yitong
+	//GPIO_IntEnable((1 << AS3933_WAKE_PIN));
 	//EMU_EnterEM3(true);  // EM3
 	//EMU_EnterEM1();
-	EMU_EnterEM2(true);  // EM3^
+
 	//EMU_EnterEM1_selfDefined(true);
     // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
 /*
@@ -487,7 +488,13 @@ void AS3933_EFM_sleep_enable_wake_up (uint32_t WAKEUP_ID)
                     RTC_delay_ms(10);
             }
 */
-	while (!WAKEUP_received) {}
+
+
+	while (!WAKEUP_received) {
+		EMU_EnterEM2(true);  // EM3^
+	}
+
+	//RTC_delay_ms(360); // Yitong, try to replace EMU_EnterEM2() with this RTC_delay_ms(), did not work
 	// Now enter SleepMode!!
 	/*
 	while (!WAKEUP_received)
