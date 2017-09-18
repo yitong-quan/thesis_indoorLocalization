@@ -2201,6 +2201,16 @@ int64_t DWM1000_check_time_overflow(int64_t timeoverflow)
 	return timeoverflow;
 }
 
+//for debuging, Yitong
+void LED_blink_yitong(int ms, int num){
+    for(int ij = 0; ij< num; ij++){
+            LED_setLED(COL_RED);
+            RTC_delay_ms(ms);
+            LED_clearLED();
+            RTC_delay_ms(ms);//+++++++++++++++++++++!!!!!!!!!!!!!!!!!!!!!Yitong
+    }
+}
+
 void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 {
 	localization = STATE_UWB;
@@ -2213,7 +2223,7 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 	uint64_t resp_rx_timestamp = 0;
 	uint16_t count1 = 45;  // Patrick set 45, too much. Yitong  0x16470720 >>
 	uint16_t count2 = 1;
-	uint8_t debug_num = 255; // Yitong
+	uint8_t debug_num = 205; // Yitong
 
 	state1 = RECEIVER_ON_STATE;
 
@@ -2222,6 +2232,8 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 		switch (state1)
 		{
 			case RECEIVER_ON_STATE:
+				//debug_num =  debug_num + 1;
+				//debug_num =  debug_num + 10;
 				DWM1000_receiver();
 				state1 = STATE_WAIT_BLINK_RECEIVE;
 				RTC_start(600); //800 and 1000 works, but out of no reasons RTC_TIMEOUT will nerver set to be true.// too long, change from 'RTC_start(6000);' by Yitong
@@ -2244,14 +2256,20 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 			break;
 
 			case STATE_POLL_TRANSMIT:
+				//LED_blink_yitong(2,5);//2ms,1time, Yitong
 				state1 = DWM1000_poll_transmit_state(RANGE_TAG_ID, MY_NODE_ID, &poll_tx_timestamp);
-				RTC_start(80);
+				RTC_start(80); //80
 			break;
 
 			case STATE_WAIT_RESPONSE_RECEIVE:
+			   /*
+				for(int ij = 0; ij< 100; ij++){
+			            LED_setLED(COL_RED);
+			            LED_clearLED();
+			    }*/
 				if(RTC_TIMEOUT)
 				{
-					count1--;  // Yitong  0x16470720 <<
+					count1 = count1 - 1;  // Yitong  0x16470720 <<
 					state1 = STATE_POLL_TRANSMIT;
 				}
 			break;
