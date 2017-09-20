@@ -198,19 +198,20 @@ int main(void){
         AES_DecryptKey128(AES_decryption_key, AES_encryption_key);
         AES_DecryptKey128(AES_decryption_public_key, AES_encryption_public_key);
 
-        AS3933_prepare_wakeup(AS3933_SPI_BAUDRATE, true);
-        AS3933_wakeup_pattern_16bit((uint16_t)MY_WAKEUP_ID);
-        AS3933_start_wakeup();
-
         /* Optional test modes, to set in config.h */
         #if MODE != NORMAL
         TESTMODE_enter(&xfer);
         #endif
 
+        AS3933_prepare_wakeup(AS3933_SPI_BAUDRATE, true);
+        AS3933_wakeup_pattern_16bit((uint16_t)MY_WAKEUP_ID);
+        AS3933_start_wakeup();
+        RTC_delay_ms(5); // add by Yitong
+
         while(1)
         {
 
-        	WAKEUP_received = false; // added Yitong
+        	//WAKEUP_received = false; // added Yitong
 /*
             // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
                     RTC_delay_ms(10);
@@ -223,7 +224,7 @@ int main(void){
 */
                 // Blink LED
                 LED_setLED(COL_GREEN);
-                RTC_delay_ms(5);
+                RTC_delay_ms(10);
                 LED_clearLED();
 
                 // Feed Watchdog
@@ -260,6 +261,13 @@ int main(void){
 
 
                 AS3933_EFM_sleep_enable_wake_up(MY_WAKEUP_ID);				// AS3933 enable for wake up, set EFM to sleep
+/*
+            	for(int i = 0; i < 2; i++){
+                                LED_setLED(COL_RED);
+                                RTC_delay_ms(1);
+                                LED_clearLED();
+            	}
+*/
 /**************************************************************************************************************
  * Normal WakeUp -> Read AS3933 data
  **************************************************************************************************************/
@@ -291,11 +299,11 @@ int main(void){
 
                                         // FLAG6: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
                                                 RTC_delay_ms(10);
-                                                for(int i = 1; i < 9; i++){
+                                                for(int i = 0; i < 10; i++){
                                                         LED_setLED(COL_RED);
-                                                        RTC_delay_ms(2);
+                                                        RTC_delay_ms(5);
                                                         LED_clearLED();
-                                                        RTC_delay_ms(2);
+                                                        RTC_delay_ms(3);
                                                 }
 
 /*************************************************************************************************************
@@ -619,11 +627,11 @@ int main(void){
                 }
                                         // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
                                                 RTC_delay_ms(10);
-                                                for(int i = 1; i < 5; i++){
+                                                for(int i = 0; i < 5; i++){
                                                         LED_setLED(COL_RED);
-                                                        RTC_delay_ms(2);
+                                                        RTC_delay_ms(3);
                                                         LED_clearLED();
-                                                        RTC_delay_ms(2);
+                                                        RTC_delay_ms(3);
                                                 }
         }
 }

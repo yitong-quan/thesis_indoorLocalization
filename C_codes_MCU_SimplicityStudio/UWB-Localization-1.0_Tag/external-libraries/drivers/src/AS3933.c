@@ -491,9 +491,18 @@ void AS3933_EFM_sleep_enable_wake_up (uint32_t WAKEUP_ID)
 
 
 	while (!WAKEUP_received) {
+		__disable_irq();
 		EMU_EnterEM2(true);  // EM3^
+		__enable_irq();
 	}
-
+/*
+	for(int i = 0; i < 2; i++){
+                    LED_setLED(COL_RED);
+                    RTC_delay_ms(1);
+                    LED_clearLED();
+                    RTC_delay_ms(1);
+	}
+*/
 	//RTC_delay_ms(360); // Yitong, try to replace EMU_EnterEM2() with this RTC_delay_ms(), did not work
 	// Now enter SleepMode!!
 	/*
