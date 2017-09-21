@@ -368,9 +368,9 @@ bool AS3933_receive_data(uint32_t *woke_up_by_ID, uint8_t * options, uint16_t *n
 	// Copy Buffer to compute payload
 	uint16_t chksum_computed = 0;
 	uint16_t chksum_received = 0;
-	uint8_t tmp[16] = { 0 };
 	uint8_t i;
 	length = sizeof(received_payload);
+	uint8_t tmp[16] = { 0 };
 	for (i = 0; i < length-1; i++) {
 		tmp[i] = received_payload[i+1];
 	}
@@ -401,7 +401,7 @@ bool AS3933_receive_data(uint32_t *woke_up_by_ID, uint8_t * options, uint16_t *n
 		chksum_received = (((uint16_t) received_payload[7]) << 8 | received_payload[8]);
 		if (chksum_computed != chksum_received)
 		{
-			UART_WriteString("checksum false\r\n", sizeof("checksum false\r\n"));
+			//UART_WriteString("checksum false\r\n", sizeof("checksum false\r\n")); // useless now, Yitong
 			return false;
 		}
 		*woke_up_by_ID = (((uint32_t) received_payload[1]) << 16 | ((uint32_t) received_payload[2]) << 8 | received_payload[3]);

@@ -245,6 +245,7 @@ int main(void){
 /*
  * Go into Sleep Mode (EFM) and enable AS3933 WakeUp
  */
+                localization = STATE_WAKE_UP;
                 cc1101_power_down();										// Set CC1101 RF Module to WakeUp Configuration and power down
 /*
                 // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
@@ -256,8 +257,8 @@ int main(void){
                         }
 */
                         //Yitong, change the order of these two lines in front of 'AS3933_EFM_sleep_enable_wake_up()'
-                        ID_WHO_WOKE_ME_UP = 0x00;
-                        OPTION_BYTE = 0x00;
+                        //ID_WHO_WOKE_ME_UP = 0x00;
+                        //OPTION_BYTE = 0x00;
 
 
                 AS3933_EFM_sleep_enable_wake_up(MY_WAKEUP_ID);				// AS3933 enable for wake up, set EFM to sleep
@@ -271,8 +272,8 @@ int main(void){
 /**************************************************************************************************************
  * Normal WakeUp -> Read AS3933 data
  **************************************************************************************************************/
-                //ID_WHO_WOKE_ME_UP = 0x00;
-                //OPTION_BYTE = 0x00;
+                ID_WHO_WOKE_ME_UP = 0x00; //Original position
+                OPTION_BYTE = 0x00;
 
                 if (!AS3933_receive_data(&ID_WHO_WOKE_ME_UP, &OPTION_BYTE, &N_MEASUREMENTS, AS3933_SPI_BAUDRATE))
                 {
@@ -740,8 +741,8 @@ void GPIO_ODD_IRQHandler(void)
         {
                 if (GPIO_IntGetEnabled() & (1 << AS3933_WAKE_PIN))
                 {
-                        //GPIO_IntDisable(1 << AS3933_WAKE_PIN); // Yitong, replaced with next line, for testing
-                		GPIO_IntEnable(1 << AS3933_WAKE_PIN);
+                        GPIO_IntDisable(1 << AS3933_WAKE_PIN); // Yitong, replaced with next line, for testing
+                        //GPIO_IntEnable(1 << AS3933_WAKE_PIN);
                         GPIO_IntClear(1 << AS3933_WAKE_PIN);
                         WAKEUP_received = true;
                 }
