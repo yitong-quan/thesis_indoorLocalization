@@ -590,7 +590,7 @@ int main(void){
 
                         // Send Data to Basis Station
                         #if USE_CSMA_CA
-                                RTC_start(50);
+                                RTC_start(50); // patrick set 50, test 30 comes problem
                                 cc1101_change_config_to(CC1101_DATA_38kBaud_CONFIG, paBaseData);
                                 if (radio_send_packet_use_CSMA_CA(&xfer, CC1101_send, send_length))
                                 {
