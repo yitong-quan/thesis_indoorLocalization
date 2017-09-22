@@ -1,0 +1,797 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="UWB-Localization-1.0_Basis_V1_24bit" toolchainCompatibility="com.silabs.ide.si32.gcc:4.8.3.20131129" sdkCompatibility="com.silabs.sdk.si32.efm32.sls:2.0.6" propertyScope="project" contentRoot="file:/D:/Yitong/GitHub/thesis_indoorLocalization/C_codes_MCU_SimplicityStudio/UWB-Localization-1.0_Basis_V1_24bit/">
+  <folder name=".git" uri=".git/" includeAllFiles="false" includeAllFolders="false">
+    <folder name="hooks" uri="hooks/" includeAllFiles="false" includeAllFolders="false">
+      <file name="applypatch-msg.sample"/>
+      <file name="commit-msg.sample"/>
+      <file name="post-update.sample"/>
+      <file name="pre-applypatch.sample"/>
+      <file name="pre-commit.sample"/>
+      <file name="pre-push.sample"/>
+      <file name="pre-rebase.sample"/>
+      <file name="pre-receive.sample"/>
+      <file name="prepare-commit-msg.sample"/>
+      <file name="update.sample"/>
+    </folder>
+    <folder name="info" uri="info/" includeAllFiles="false" includeAllFolders="false">
+      <file name="exclude"/>
+    </folder>
+    <folder name="logs" uri="logs/" includeAllFiles="false" includeAllFolders="false">
+      <folder name="refs" uri="refs/" includeAllFiles="false" includeAllFolders="false">
+        <folder name="heads" uri="heads/" includeAllFiles="false" includeAllFolders="false">
+          <file name="develop"/>
+          <file name="master"/>
+        </folder>
+        <folder name="remotes" uri="remotes/" includeAllFiles="false" includeAllFolders="false">
+          <folder name="origin" uri="origin/" includeAllFiles="false" includeAllFolders="false">
+            <file name="develop"/>
+            <file name="master"/>
+          </folder>
+        </folder>
+      </folder>
+      <file name="HEAD"/>
+    </folder>
+    <folder name="objects" uri="objects/" includeAllFiles="false" includeAllFolders="false">
+      <folder name="03" uri="03/" includeAllFiles="false" includeAllFolders="false">
+        <file name="1235fe931ec24a64ff2910535bfef126fcf2b2"/>
+      </folder>
+      <folder name="04" uri="04/" includeAllFiles="false" includeAllFolders="false">
+        <file name="c6d3904145cc289a78f0aa63afd6f3e4a37789"/>
+      </folder>
+      <folder name="05" uri="05/" includeAllFiles="false" includeAllFolders="false">
+        <file name="44a3b1263ea64ba4d36535fcf6028762254ecb"/>
+      </folder>
+      <folder name="06" uri="06/" includeAllFiles="false" includeAllFolders="false">
+        <file name="079cd099008ecb4320ecd204be21a0e4b0c8e5"/>
+        <file name="094e240736833d3569d6071d335e6f4f4b61d1"/>
+        <file name="bf68620bf3c9ef3bfae57acb7fb056db11efe6"/>
+      </folder>
+      <folder name="07" uri="07/" includeAllFiles="false" includeAllFolders="false">
+        <file name="8964c658e76de961002cbce4196fe2b569fe63"/>
+      </folder>
+      <folder name="0a" uri="0a/" includeAllFiles="false" includeAllFolders="false">
+        <file name="eb811eba00563a4f070b2b0e1a1baaf033793b"/>
+      </folder>
+      <folder name="0b" uri="0b/" includeAllFiles="false" includeAllFolders="false">
+        <file name="3a290e66fe43ee39e2fda051a0adf0097939bd"/>
+      </folder>
+      <folder name="0e" uri="0e/" includeAllFiles="false" includeAllFolders="false">
+        <file name="23631de1f7f0eb550625fa143f818220e93049"/>
+      </folder>
+      <folder name="0f" uri="0f/" includeAllFiles="false" includeAllFolders="false">
+        <file name="e891bf1049f9d733f750e542d9bf5c91ed787b"/>
+      </folder>
+      <folder name="10" uri="10/" includeAllFiles="false" includeAllFolders="false">
+        <file name="a3bc88af5e2c343e0032f1f2898ad9f621dd45"/>
+      </folder>
+      <folder name="12" uri="12/" includeAllFiles="false" includeAllFolders="false">
+        <file name="681c7d66b03043678ae92b6e4105adc8c61f62"/>
+      </folder>
+      <folder name="13" uri="13/" includeAllFiles="false" includeAllFolders="false">
+        <file name="13e7644905c6cb523c5414c56ebd1a44807371"/>
+      </folder>
+      <folder name="15" uri="15/" includeAllFiles="false" includeAllFolders="false">
+        <file name="698dc5adf8787ddd64a73a95539cdef9c729b3"/>
+      </folder>
+      <folder name="16" uri="16/" includeAllFiles="false" includeAllFolders="false">
+        <file name="26a1d9f0851bee4955b3b10772065e6f495047"/>
+        <file name="4472fda9469e8eb0983c2e60aae934766d1cba"/>
+        <file name="74c249ee24007c024042e86892ae83c47fe35c"/>
+      </folder>
+      <folder name="18" uri="18/" includeAllFiles="false" includeAllFolders="false">
+        <file name="5293ec6000d0f95f236a5ae7a72776d3c16afa"/>
+      </folder>
+      <folder name="19" uri="19/" includeAllFiles="false" includeAllFolders="false">
+        <file name="1eeaf8e970f6350384cc653073f21a472f577d"/>
+      </folder>
+      <folder name="1a" uri="1a/" includeAllFiles="false" includeAllFolders="false">
+        <file name="4fd5be392983948e46f7c1ae7421d48a1be9ca"/>
+        <file name="77915134f38d4fe60efad17833020397d65cd1"/>
+      </folder>
+      <folder name="1b" uri="1b/" includeAllFiles="false" includeAllFolders="false">
+        <file name="4daed51de0557bf5584cce5b8231108d4b1a24"/>
+      </folder>
+      <folder name="1c" uri="1c/" includeAllFiles="false" includeAllFolders="false">
+        <file name="d1940da1c2039864c68358e42e66be3085385d"/>
+      </folder>
+      <folder name="1e" uri="1e/" includeAllFiles="false" includeAllFolders="false">
+        <file name="00aa7b71595715d82831989af1b520c7917acb"/>
+        <file name="8ea01ada52665d9a4f50a24bb3d60f68890bca"/>
+      </folder>
+      <folder name="1f" uri="1f/" includeAllFiles="false" includeAllFolders="false">
+        <file name="62141f1728273e571ca9d9132cb1dcbc73ff54"/>
+      </folder>
+      <folder name="21" uri="21/" includeAllFiles="false" includeAllFolders="false">
+        <file name="b3fbc03e6bffdc9dbc541748563d261df6b5ec"/>
+        <file name="d0b3713014461d9d95633d4c0d3f669089e0c7"/>
+      </folder>
+      <folder name="22" uri="22/" includeAllFiles="false" includeAllFolders="false">
+        <file name="0550d76652d990dd06f7fcd2595c175dadcaf3"/>
+        <file name="84e0d82ef5c7b2edf84cb9f35f1dfe320dcfd9"/>
+        <file name="8b7de550c236d5dd6c0f7059327a7dbd00909e"/>
+      </folder>
+      <folder name="23" uri="23/" includeAllFiles="false" includeAllFolders="false">
+        <file name="58fda327669b5dbcb1326b5204071f77ce3a0e"/>
+      </folder>
+      <folder name="24" uri="24/" includeAllFiles="false" includeAllFolders="false">
+        <file name="e2aca6ec347eb3bf1f1775ffda91129c814dcf"/>
+      </folder>
+      <folder name="25" uri="25/" includeAllFiles="false" includeAllFolders="false">
+        <file name="e766ae52290df9905061d7f23e98d5a55a3a60"/>
+      </folder>
+      <folder name="28" uri="28/" includeAllFiles="false" includeAllFolders="false">
+        <file name="5683876631a839f17c6a25c5a4bb5e81bf5e73"/>
+      </folder>
+      <folder name="2a" uri="2a/" includeAllFiles="false" includeAllFolders="false">
+        <file name="4cdaa015a18bf312acb0154c89a2a65aa08d20"/>
+        <file name="a4e48acdf1f736808e9fc770a94c02bc964849"/>
+      </folder>
+      <folder name="2b" uri="2b/" includeAllFiles="false" includeAllFolders="false">
+        <file name="c03f8fa8bf16fd7e6cc1b8df5d5b95b19ceb04"/>
+      </folder>
+      <folder name="2c" uri="2c/" includeAllFiles="false" includeAllFolders="false">
+        <file name="123be0ac54ebc36a974f638a5c2cc34face02d"/>
+      </folder>
+      <folder name="2d" uri="2d/" includeAllFiles="false" includeAllFolders="false">
+        <file name="d1e8ec223fe0aba1c15dcc1ac704d635960ccc"/>
+      </folder>
+      <folder name="2e" uri="2e/" includeAllFiles="false" includeAllFolders="false">
+        <file name="39341242b09f7a7ab97b0682f0c6817e2bc9a1"/>
+        <file name="425daf07b0212784da5a4684465d59e684095a"/>
+      </folder>
+      <folder name="31" uri="31/" includeAllFiles="false" includeAllFolders="false">
+        <file name="55f95aaba2a93e4edc794987b8c677ba106f78"/>
+        <file name="ad71bb3ef586ad1ffef57f6b1d71918e6a82a7"/>
+        <file name="eacf165c919b6bdaa5c569aa32f4e7b52c0f93"/>
+      </folder>
+      <folder name="32" uri="32/" includeAllFiles="false" includeAllFolders="false">
+        <file name="be4a11375d703210763cf9624cdcab26860792"/>
+      </folder>
+      <folder name="33" uri="33/" includeAllFiles="false" includeAllFolders="false">
+        <file name="d32a97e7ffacaeeec36042ca2b9fcf4fbbc24b"/>
+      </folder>
+      <folder name="36" uri="36/" includeAllFiles="false" includeAllFolders="false">
+        <file name="d42066c7e0a3bc7ff297a05a2c554e2baac73e"/>
+      </folder>
+      <folder name="37" uri="37/" includeAllFiles="false" includeAllFolders="false">
+        <file name="dc37d89c34e735e6842fea09074d17c3861600"/>
+      </folder>
+      <folder name="38" uri="38/" includeAllFiles="false" includeAllFolders="false">
+        <file name="003d58288e86689bd6a81d5e1462ab9bdd4361"/>
+        <file name="d47bd6e4544cb0eb6db9148f4dca195b565a9a"/>
+      </folder>
+      <folder name="39" uri="39/" includeAllFiles="false" includeAllFolders="false">
+        <file name="7c4cc8f3b2b00791fdf8a5f01437855f2a4a88"/>
+      </folder>
+      <folder name="3a" uri="3a/" includeAllFiles="false" includeAllFolders="false">
+        <file name="8219a3df34e0b292a075b50fa21bdabad0090e"/>
+      </folder>
+      <folder name="3b" uri="3b/" includeAllFiles="false" includeAllFolders="false">
+        <file name="a05efb781d489f927ed2dc33b5c5433cff334f"/>
+      </folder>
+      <folder name="3c" uri="3c/" includeAllFiles="false" includeAllFolders="false">
+        <file name="3a43e124b0888f21031d00768a6af91f01e19b"/>
+      </folder>
+      <folder name="3d" uri="3d/" includeAllFiles="false" includeAllFolders="false">
+        <file name="36bc8a72660deedeaa1d2e71a20a584538fc90"/>
+        <file name="47bab28cc73698252fa753ca747027670951a4"/>
+        <file name="b86dfeaac6f0380b9a133ed6a15faea436d92e"/>
+      </folder>
+      <folder name="3e" uri="3e/" includeAllFiles="false" includeAllFolders="false">
+        <file name="eb5fa1400acfb807b48802a033b108664ba235"/>
+      </folder>
+      <folder name="3f" uri="3f/" includeAllFiles="false" includeAllFolders="false">
+        <file name="503d2cc8654cf173368423b57d5d0a9e7f2ef4"/>
+        <file name="c539bbaf76760a4607966a3e371bb49f9cfb57"/>
+        <file name="e9e7143ef59cc493729bfefa5091ea9648ec2c"/>
+      </folder>
+      <folder name="40" uri="40/" includeAllFiles="false" includeAllFolders="false">
+        <file name="581c41ef801d770cb121e9553abfa6b95c957a"/>
+        <file name="6482df8805e48cb16c6e621d1e1d1f570e32ff"/>
+        <file name="821858a25d7933a00ddb06a82639447b63d96a"/>
+      </folder>
+      <folder name="42" uri="42/" includeAllFiles="false" includeAllFolders="false">
+        <file name="833a5aee291a0027722c4d58dea6f3c6ea5bfd"/>
+      </folder>
+      <folder name="45" uri="45/" includeAllFiles="false" includeAllFolders="false">
+        <file name="cbf11a5161f24976c990f836e51d4a460dfc7d"/>
+      </folder>
+      <folder name="46" uri="46/" includeAllFiles="false" includeAllFolders="false">
+        <file name="cc17bf6280ca927dd4909a16ae825c66ea456d"/>
+      </folder>
+      <folder name="47" uri="47/" includeAllFiles="false" includeAllFolders="false">
+        <file name="90aea5c6b7efb7f7dd590c01851ae0d5b6633c"/>
+        <file name="9ce2879aafc5ee978c63cdc90c27f5e125d55a"/>
+        <file name="e3ac9ed5618564897993e7e9c8569677e2156f"/>
+      </folder>
+      <folder name="4b" uri="4b/" includeAllFiles="false" includeAllFolders="false">
+        <file name="173910c54d568997a8ee937c9e471028cd9adf"/>
+      </folder>
+      <folder name="4c" uri="4c/" includeAllFiles="false" includeAllFolders="false">
+        <file name="7e7e1db7b2c69fd44a8f5de2f672ba10ae5e8f"/>
+      </folder>
+      <folder name="4f" uri="4f/" includeAllFiles="false" includeAllFolders="false">
+        <file name="75d8dd01172bb36c05ab556a05c0881eb3a623"/>
+        <file name="7bb91a5f20979c038f5f4453c8b13651fcc8ec"/>
+      </folder>
+      <folder name="50" uri="50/" includeAllFiles="false" includeAllFolders="false">
+        <file name="45d8bfd4b2d254cd026013efc17306389e0166"/>
+      </folder>
+      <folder name="51" uri="51/" includeAllFiles="false" includeAllFolders="false">
+        <file name="81b7f71656525c119553b80d85da657b9ea20d"/>
+      </folder>
+      <folder name="52" uri="52/" includeAllFiles="false" includeAllFolders="false">
+        <file name="147c0fb6fd4dc81bc3e23b6d01b9c9e708baab"/>
+      </folder>
+      <folder name="53" uri="53/" includeAllFiles="false" includeAllFolders="false">
+        <file name="0c594886f9e0b5d487aab91640f8cb3a8c2609"/>
+      </folder>
+      <folder name="54" uri="54/" includeAllFiles="false" includeAllFolders="false">
+        <file name="417b214c69480f2a17d876f02c055d741685be"/>
+        <file name="749d4efd72cd0d0dc687d8a2b3b5d0363df978"/>
+      </folder>
+      <folder name="55" uri="55/" includeAllFiles="false" includeAllFolders="false">
+        <file name="9b4c1496d3c41bb31fef1d046d2711b3d9d921"/>
+      </folder>
+      <folder name="59" uri="59/" includeAllFiles="false" includeAllFolders="false">
+        <file name="f8a0970d32046ac53abfb27aa0b0bae3aff41c"/>
+      </folder>
+      <folder name="5a" uri="5a/" includeAllFiles="false" includeAllFolders="false">
+        <file name="64af7b5f002057125c9d6228e49154c4a83e14"/>
+      </folder>
+      <folder name="5b" uri="5b/" includeAllFiles="false" includeAllFolders="false">
+        <file name="1b3246ddc825daab887688a363124b3f001973"/>
+        <file name="4e3cfbd99f8bbf7db10b242d9fbfa94482f7ff"/>
+        <file name="9d3ba0f9c3fe0b2a35a6651ac05731dda80c53"/>
+      </folder>
+      <folder name="5c" uri="5c/" includeAllFiles="false" includeAllFolders="false">
+        <file name="4d6938ac58d6c8cedfc02910359e6f12a78a1c"/>
+      </folder>
+      <folder name="5e" uri="5e/" includeAllFiles="false" includeAllFolders="false">
+        <file name="f9deea1cf43ba5fc6b3eaeff06d8df329a4ec8"/>
+      </folder>
+      <folder name="5f" uri="5f/" includeAllFiles="false" includeAllFolders="false">
+        <file name="2a4028e17240ae49823f7b0be6a561ba457496"/>
+        <file name="68ed4bd78ff78ba0efebca78b34949bbecaf14"/>
+      </folder>
+      <folder name="60" uri="60/" includeAllFiles="false" includeAllFolders="false">
+        <file name="ee04326ffbcf73f4e432a4991df5d9edf5b4a2"/>
+      </folder>
+      <folder name="62" uri="62/" includeAllFiles="false" includeAllFolders="false">
+        <file name="899df65d90850180c91ac69a56b234c7247b30"/>
+      </folder>
+      <folder name="65" uri="65/" includeAllFiles="false" includeAllFolders="false">
+        <file name="17c14a836784f7443699f19ffc1e7102dfd879"/>
+      </folder>
+      <folder name="66" uri="66/" includeAllFiles="false" includeAllFolders="false">
+        <file name="1c384f4b8aff55018e179db9f6fd362a1a67e9"/>
+      </folder>
+      <folder name="67" uri="67/" includeAllFiles="false" includeAllFolders="false">
+        <file name="e759c88e9d3a1e8ec219184c64f81aef619195"/>
+      </folder>
+      <folder name="68" uri="68/" includeAllFiles="false" includeAllFolders="false">
+        <file name="73742e28c18176b464140247375402899d8eaa"/>
+      </folder>
+      <folder name="69" uri="69/" includeAllFiles="false" includeAllFolders="false">
+        <file name="c875348291d60e8b9e914f085fa2c0fd47164d"/>
+      </folder>
+      <folder name="6a" uri="6a/" includeAllFiles="false" includeAllFolders="false">
+        <file name="0f7beb7223cd0a4176033b09ad35d6d9949617"/>
+        <file name="88bce542c52b690dca7bd5fa51c04ec9373033"/>
+        <file name="c96d69ddc27e559770062e2feb49e491770765"/>
+      </folder>
+      <folder name="6b" uri="6b/" includeAllFiles="false" includeAllFolders="false">
+        <file name="807b6ddaa561aa629107500f79f78d700030e1"/>
+      </folder>
+      <folder name="6d" uri="6d/" includeAllFiles="false" includeAllFolders="false">
+        <file name="f9b6f3c03f0198c4c1973ac2fba6ce90dadc68"/>
+      </folder>
+      <folder name="6f" uri="6f/" includeAllFiles="false" includeAllFolders="false">
+        <file name="32f9d1b78d3f5af0cde40629396ea529411f53"/>
+      </folder>
+      <folder name="70" uri="70/" includeAllFiles="false" includeAllFolders="false">
+        <file name="cbbb912a915aebfe8b34f40c9bf6cb20fb1832"/>
+      </folder>
+      <folder name="71" uri="71/" includeAllFiles="false" includeAllFolders="false">
+        <file name="bddae5c05cc1f64d6806c208a175225e3ed755"/>
+      </folder>
+      <folder name="74" uri="74/" includeAllFiles="false" includeAllFolders="false">
+        <file name="2c2da043f4f5d93c414dca3a725ab2204d9817"/>
+        <file name="66121426f977bead310316772cfc33d2c64ee0"/>
+      </folder>
+      <folder name="75" uri="75/" includeAllFiles="false" includeAllFolders="false">
+        <file name="3cc7deabc36271f3c57507c2875eb7b7fdad66"/>
+      </folder>
+      <folder name="77" uri="77/" includeAllFiles="false" includeAllFolders="false">
+        <file name="17d5ba020ecd688b588360af643e3f56636401"/>
+      </folder>
+      <folder name="78" uri="78/" includeAllFiles="false" includeAllFolders="false">
+        <file name="65078bfe5c2bc0ae65071e57c1b9881d2919dc"/>
+        <file name="7f76d5376af0698c5528d33825840bca7520f8"/>
+      </folder>
+      <folder name="7c" uri="7c/" includeAllFiles="false" includeAllFolders="false">
+        <file name="1f4155c889bee38958c19ce3a4672ea28964d3"/>
+        <file name="3245aec7311f88aa72688a2f835c12ecec1d28"/>
+        <file name="6cba87b69ce5456b48917a0979f97a93de4ce0"/>
+        <file name="e5f1922c1841604f9576d77bf6cbf3cd93ab51"/>
+      </folder>
+      <folder name="7e" uri="7e/" includeAllFiles="false" includeAllFolders="false">
+        <file name="aa1e60c76557efbd5212684bc203e420f9149c"/>
+      </folder>
+      <folder name="7f" uri="7f/" includeAllFiles="false" includeAllFolders="false">
+        <file name="b3ddb5d05e2cb3068263b5557c94e8e7655c0d"/>
+      </folder>
+      <folder name="80" uri="80/" includeAllFiles="false" includeAllFolders="false">
+        <file name="70a8c6312c911965e299e992b733a606b29f8b"/>
+        <file name="d8c1eef49bd21f958908c3cf938559cbec0ba7"/>
+        <file name="e13137e74765fb9fe96bf09366ba716211c197"/>
+      </folder>
+      <folder name="81" uri="81/" includeAllFiles="false" includeAllFolders="false">
+        <file name="ba6df96857e9984cd4c4cb601a656f825f8048"/>
+      </folder>
+      <folder name="82" uri="82/" includeAllFiles="false" includeAllFolders="false">
+        <file name="e3a754b6a0fcb238b03c0e47d05219fbf9cf89"/>
+      </folder>
+      <folder name="83" uri="83/" includeAllFiles="false" includeAllFolders="false">
+        <file name="cb403961bc565a5d62ad567de7e8b3dc2a8d24"/>
+      </folder>
+      <folder name="84" uri="84/" includeAllFiles="false" includeAllFolders="false">
+        <file name="62855082849093349cc6de8a0c4521f62a2ba9"/>
+        <file name="ff5d446b90ce4f43ae76c03ffb1e9801764e38"/>
+      </folder>
+      <folder name="86" uri="86/" includeAllFiles="false" includeAllFolders="false">
+        <file name="0fe0e6b19f3d51ff6aa09aa414dc35ca38b667"/>
+        <file name="962018a7d62bd789d8480431c3974a9a939e1c"/>
+      </folder>
+      <folder name="87" uri="87/" includeAllFiles="false" includeAllFolders="false">
+        <file name="e97b219cda987ab7f357c7f33c095faea72340"/>
+      </folder>
+      <folder name="89" uri="89/" includeAllFiles="false" includeAllFolders="false">
+        <file name="f1a3f8ae995ce7807a0f41395e28b7897dbfcb"/>
+      </folder>
+      <folder name="8a" uri="8a/" includeAllFiles="false" includeAllFolders="false">
+        <file name="ca0d6db3b157d3fb46baa951bb25ef08c9b70b"/>
+      </folder>
+      <folder name="8b" uri="8b/" includeAllFiles="false" includeAllFolders="false">
+        <file name="a9561cd784c5b2582da79a31fbf5c485afaeb6"/>
+      </folder>
+      <folder name="8c" uri="8c/" includeAllFiles="false" includeAllFolders="false">
+        <file name="652dcbdc40366da481c59f16c4c4e8c9f2b5f7"/>
+      </folder>
+      <folder name="8d" uri="8d/" includeAllFiles="false" includeAllFolders="false">
+        <file name="0d0c8d4f2ef5bee282cdfc1b91bdbb5faf760e"/>
+      </folder>
+      <folder name="8e" uri="8e/" includeAllFiles="false" includeAllFolders="false">
+        <file name="21d06b1535ba46e9254eeadee43f6c757ef9eb"/>
+        <file name="2d4c4e9d0eb0c743e06d8e67ce7d5a45d9d2b5"/>
+        <file name="73e069fad542c2c80f4ec3d9f75961c45a3ad7"/>
+      </folder>
+      <folder name="8f" uri="8f/" includeAllFiles="false" includeAllFolders="false">
+        <file name="03ec1a5e7293ca5954272c525f43663e671b6e"/>
+      </folder>
+      <folder name="90" uri="90/" includeAllFiles="false" includeAllFolders="false">
+        <file name="2ce095943e336a32b1bde03bb68da946f61bbe"/>
+      </folder>
+      <folder name="91" uri="91/" includeAllFiles="false" includeAllFolders="false">
+        <file name="f631bbd8efa33f2d17273e000274354b3d715b"/>
+      </folder>
+      <folder name="92" uri="92/" includeAllFiles="false" includeAllFolders="false">
+        <file name="6d2d5ec834af227f1c9e145906022cb8220853"/>
+        <file name="f1201a76ee9ab1efd3a441a550f01e2c9aadba"/>
+      </folder>
+      <folder name="94" uri="94/" includeAllFiles="false" includeAllFolders="false">
+        <file name="37adeaa5aadc72ee41d5e1ac5a28cb777ef7c1"/>
+        <file name="62c79883924ff57f6e46ab3f8076a5ef728d71"/>
+        <file name="850c080e7fee4f23ecee1bced3b92b50b1b217"/>
+      </folder>
+      <folder name="95" uri="95/" includeAllFiles="false" includeAllFolders="false">
+        <file name="4f6b0ca5bb38384ca9a01e14ed76b88de5a5a4"/>
+        <file name="ec8c763f125b75493b8e2310a9447c4ceeafb3"/>
+      </folder>
+      <folder name="97" uri="97/" includeAllFiles="false" includeAllFolders="false">
+        <file name="91e10a404469db3870b7766d54f28e2a2afbda"/>
+        <file name="e78d1d5722b2f57306c73acb92205d15c05fa9"/>
+      </folder>
+      <folder name="99" uri="99/" includeAllFiles="false" includeAllFolders="false">
+        <file name="1ef64abe5f00a74826c833e83d4d08050f1800"/>
+        <file name="38ba72299793dcd58fc221bbcb58167f4ef32e"/>
+        <file name="5d9340b0998f7ac9dd760181e519fcf4202225"/>
+      </folder>
+      <folder name="9a" uri="9a/" includeAllFiles="false" includeAllFolders="false">
+        <file name="29cb2d5020f41aca48e3515e4097b510fa7a66"/>
+        <file name="83552a54e3474ea8dcea176f7faa8aba35dbda"/>
+      </folder>
+      <folder name="9b" uri="9b/" includeAllFiles="false" includeAllFolders="false">
+        <file name="139a0222648d034718a58aa459666cb4aeecb0"/>
+        <file name="b7c4ecf3050317711647940c39c14f2943c302"/>
+      </folder>
+      <folder name="9d" uri="9d/" includeAllFiles="false" includeAllFolders="false">
+        <file name="fcef02c5da780e93430547518ad3d42abdd9bf"/>
+      </folder>
+      <folder name="9f" uri="9f/" includeAllFiles="false" includeAllFolders="false">
+        <file name="bc49a7ea6590ec64bca5203a04979b284e3a47"/>
+      </folder>
+      <folder name="a0" uri="a0/" includeAllFiles="false" includeAllFolders="false">
+        <file name="ad1e7ce2553f1abd43433d606919d32e7b7ca6"/>
+        <file name="bc4d5e05a97d13d7a8f2b53848e7a9dfa83bf5"/>
+      </folder>
+      <folder name="a1" uri="a1/" includeAllFiles="false" includeAllFolders="false">
+        <file name="50709076f468c1d7211e6031e21405b6fe8b9e"/>
+        <file name="b652e5bebb7b53e48b5837da6733149bee6587"/>
+      </folder>
+      <folder name="a2" uri="a2/" includeAllFiles="false" includeAllFolders="false">
+        <file name="ae6cdd14012280b3f5a3f21ef5c16c20082b5e"/>
+        <file name="ec22891cced1e4454bffe0c53df02a39c9cd94"/>
+      </folder>
+      <folder name="a3" uri="a3/" includeAllFiles="false" includeAllFolders="false">
+        <file name="72ec32e525cfcb1c836d836013d35835970d0f"/>
+        <file name="f4d138273caaaa1887ad01fd4f64273cea5b96"/>
+      </folder>
+      <folder name="a4" uri="a4/" includeAllFiles="false" includeAllFolders="false">
+        <file name="1519f1433dfa460fcafd5aba2e09d8d5d1ccf2"/>
+      </folder>
+      <folder name="a5" uri="a5/" includeAllFiles="false" includeAllFolders="false">
+        <file name="5daac314e978dbf0eac00380e526f215241e6c"/>
+      </folder>
+      <folder name="a6" uri="a6/" includeAllFiles="false" includeAllFolders="false">
+        <file name="278b39ecbb6125a3a0acc967a4919ce166b3b3"/>
+        <file name="f5ed5b3d929ae1dc2fc171ac4f3222bae8b7e7"/>
+      </folder>
+      <folder name="a7" uri="a7/" includeAllFiles="false" includeAllFolders="false">
+        <file name="87b6fe7946951d0409cad3baa3d269bc5be85a"/>
+        <file name="e3ec24daaca28b7d862c02df9ee65d0564ab7f"/>
+      </folder>
+      <folder name="a8" uri="a8/" includeAllFiles="false" includeAllFolders="false">
+        <file name="d1ec0d59788229cee5e8e819ae401af40a252b"/>
+      </folder>
+      <folder name="aa" uri="aa/" includeAllFiles="false" includeAllFolders="false">
+        <file name="44d8f79b6c5e6743f671d89e9ecea02ad8ef01"/>
+      </folder>
+      <folder name="ac" uri="ac/" includeAllFiles="false" includeAllFolders="false">
+        <file name="0b5a28051ae482f0d7f8767b0131386e8f1f6e"/>
+        <file name="263154c1bb944cdc08e48c68ef7c790d0b3f4e"/>
+      </folder>
+      <folder name="ad" uri="ad/" includeAllFiles="false" includeAllFolders="false">
+        <file name="78f19da4607384aa0af1a10cac0b43063131c4"/>
+      </folder>
+      <folder name="ae" uri="ae/" includeAllFiles="false" includeAllFolders="false">
+        <file name="3b2ffa7aa659a0002fc776818167a7f410b6d7"/>
+      </folder>
+      <folder name="af" uri="af/" includeAllFiles="false" includeAllFolders="false">
+        <file name="76aa3149def59a922ba3a3a98933482535f012"/>
+      </folder>
+      <folder name="b0" uri="b0/" includeAllFiles="false" includeAllFolders="false">
+        <file name="087c6f5b4769835e37191526e05cff753540f1"/>
+        <file name="b2c1019975041e90737a9751af84ad6f7795e5"/>
+      </folder>
+      <folder name="b2" uri="b2/" includeAllFiles="false" includeAllFolders="false">
+        <file name="090d3d42e5943dddaf949294e0f42fc5c6acea"/>
+      </folder>
+      <folder name="b3" uri="b3/" includeAllFiles="false" includeAllFolders="false">
+        <file name="ae0d6e81474fb91c615b01d220eca13dbcdc4e"/>
+      </folder>
+      <folder name="b4" uri="b4/" includeAllFiles="false" includeAllFolders="false">
+        <file name="554b412c1c2324dd6f268e418f3deb42e4407e"/>
+        <file name="bc259f21e490a9883c5ab0fa0b1bad1736e867"/>
+      </folder>
+      <folder name="b5" uri="b5/" includeAllFiles="false" includeAllFolders="false">
+        <file name="997bba586103bcac1b3ec8cb086ea2dc76c857"/>
+      </folder>
+      <folder name="b7" uri="b7/" includeAllFiles="false" includeAllFolders="false">
+        <file name="d2e9f8ed2e9512263b602c0c657f13e88f9346"/>
+      </folder>
+      <folder name="b8" uri="b8/" includeAllFiles="false" includeAllFolders="false">
+        <file name="4f1e94377c24e1d5743f8642d3c8c94e0daefc"/>
+        <file name="58cd07f4ac372add6bfc106666bcd32317e6d4"/>
+        <file name="922c91ca4ce59afaa1d01dbb7979d2f2bf3442"/>
+        <file name="f199e9042a1c59b52cff3a2d2c81eb7f8bde07"/>
+      </folder>
+      <folder name="b9" uri="b9/" includeAllFiles="false" includeAllFolders="false">
+        <file name="cdddc6fb5d44569c9c6158a413f386314a5470"/>
+      </folder>
+      <folder name="bb" uri="bb/" includeAllFiles="false" includeAllFolders="false">
+        <file name="7c969ddbe6cacd5e837119a1a9e1b2f018a49c"/>
+      </folder>
+      <folder name="be" uri="be/" includeAllFiles="false" includeAllFolders="false">
+        <file name="2ad8dc275c1f9671f28ad1eae5daaa8d6d4a87"/>
+        <file name="a7227ba1235298c35a6dc3847aac69d7a7016f"/>
+        <file name="cc6600425b9b65527e587844ff7cc81eee8b8f"/>
+      </folder>
+      <folder name="c0" uri="c0/" includeAllFiles="false" includeAllFolders="false">
+        <file name="6aaa8d7cf1ebd80838d7ff444411e266ac0836"/>
+      </folder>
+      <folder name="c1" uri="c1/" includeAllFiles="false" includeAllFolders="false">
+        <file name="db34019044badba8c8e3be6cab8dec01e86421"/>
+        <file name="f064f3a7044a00e62611f8cb59ccef0e4015ae"/>
+      </folder>
+      <folder name="c5" uri="c5/" includeAllFiles="false" includeAllFolders="false">
+        <file name="b302b9f27aed5710f0b3fe1f8032c8d2969937"/>
+      </folder>
+      <folder name="c6" uri="c6/" includeAllFiles="false" includeAllFolders="false">
+        <file name="64667f5185df061ec90ed1fb920d3fe78da23c"/>
+        <file name="95ea9404294ec1a5279b7f992ed5a12f7ecd22"/>
+      </folder>
+      <folder name="c7" uri="c7/" includeAllFiles="false" includeAllFolders="false">
+        <file name="4be2874e552aa7c6e940915aaf93d20efdcad9"/>
+      </folder>
+      <folder name="c9" uri="c9/" includeAllFiles="false" includeAllFolders="false">
+        <file name="05a6f038b1de7891102bfe67a789456ab5e12b"/>
+      </folder>
+      <folder name="cb" uri="cb/" includeAllFiles="false" includeAllFolders="false">
+        <file name="401c9217ae4a0f1ecd0c5b55188912bb783860"/>
+        <file name="e6e65d84b890799da5545f5a2376a9dc6ac7a8"/>
+      </folder>
+      <folder name="cc" uri="cc/" includeAllFiles="false" includeAllFolders="false">
+        <file name="6e0e587bc6f44e22806f67986bdf21d1eb10f1"/>
+        <file name="6ea1e645c9847fdbb8b9e25d3a1ea48e1f196e"/>
+      </folder>
+      <folder name="cd" uri="cd/" includeAllFiles="false" includeAllFolders="false">
+        <file name="f9574d4ae68c7afc0880e65acc6ef39878bf48"/>
+      </folder>
+      <folder name="ce" uri="ce/" includeAllFiles="false" includeAllFolders="false">
+        <file name="7f32a8f245331d7feff607712d5d583b8f6486"/>
+      </folder>
+      <folder name="d0" uri="d0/" includeAllFiles="false" includeAllFolders="false">
+        <file name="84e1c0af34f79cf4add2069bfb9e05088b569e"/>
+      </folder>
+      <folder name="d2" uri="d2/" includeAllFiles="false" includeAllFolders="false">
+        <file name="9307b58f1b3b380e6f4efed634686b62780535"/>
+      </folder>
+      <folder name="d3" uri="d3/" includeAllFiles="false" includeAllFolders="false">
+        <file name="b90483b786fb735b1b37fdc5e7f6f08958b86f"/>
+      </folder>
+      <folder name="d5" uri="d5/" includeAllFiles="false" includeAllFolders="false">
+        <file name="8eabbd49e406fe094035e482ec5452bbe52083"/>
+      </folder>
+      <folder name="d6" uri="d6/" includeAllFiles="false" includeAllFolders="false">
+        <file name="351586d5835b8ab286897e45e414fec51109cc"/>
+      </folder>
+      <folder name="d7" uri="d7/" includeAllFiles="false" includeAllFolders="false">
+        <file name="5430d85412ec4bff00e26bcbed41ed76e1cdda"/>
+        <file name="8cc70c3c28e954d723924fcfffe952b5b58e08"/>
+        <file name="9173bda63c83f48169a0d7cd858358fb6c6f7c"/>
+      </folder>
+      <folder name="db" uri="db/" includeAllFiles="false" includeAllFolders="false">
+        <file name="0a9514eb6fb0c2c1746fd08ab7dba6b198a859"/>
+      </folder>
+      <folder name="dc" uri="dc/" includeAllFiles="false" includeAllFolders="false">
+        <file name="413b113f5c2fe68bfd7accffb7d38d306857dd"/>
+      </folder>
+      <folder name="dd" uri="dd/" includeAllFiles="false" includeAllFolders="false">
+        <file name="7c19bb5295a17e4aa2fdc6e0a72b5df0fe1de7"/>
+        <file name="dd0280804f67ba7cb2869d633160b960baec7d"/>
+        <file name="f6b31a7d3b3a993ce11d9c6abc7879cd1e52d3"/>
+      </folder>
+      <folder name="e0" uri="e0/" includeAllFiles="false" includeAllFolders="false">
+        <file name="5a351bdb0ad9567c1ed2c3136459c790465d23"/>
+      </folder>
+      <folder name="e1" uri="e1/" includeAllFiles="false" includeAllFolders="false">
+        <file name="2a3fd09c311939a45de65460766a63d94aca31"/>
+        <file name="50e35443313b388858a44cc597f078eb199db8"/>
+      </folder>
+      <folder name="e3" uri="e3/" includeAllFiles="false" includeAllFolders="false">
+        <file name="7ef380346dfe186b88b7f0861b765d084d13f8"/>
+      </folder>
+      <folder name="e6" uri="e6/" includeAllFiles="false" includeAllFolders="false">
+        <file name="87f4d35800d5ae792cac8712815c3cd236cb71"/>
+        <file name="9de29bb2d1d6434b8b29ae775ad8c2e48c5391"/>
+      </folder>
+      <folder name="e8" uri="e8/" includeAllFiles="false" includeAllFolders="false">
+        <file name="bbe63b3500a40ba341409151b44c2bc57db93c"/>
+        <file name="fc338f3c5eb65f29f2c84f8d66744d20eea090"/>
+        <file name="fc3f7c48a67d76e608f771bb2ac680631aac79"/>
+      </folder>
+      <folder name="ec" uri="ec/" includeAllFiles="false" includeAllFolders="false">
+        <file name="0a747d6e1b63519f96c861167c5d0999d1eac5"/>
+      </folder>
+      <folder name="ed" uri="ed/" includeAllFiles="false" includeAllFolders="false">
+        <file name="b9dafef066bf869e3742f94011b13d223c73af"/>
+      </folder>
+      <folder name="ee" uri="ee/" includeAllFiles="false" includeAllFolders="false">
+        <file name="73e319dcf1e9dd6131b702a05dc4f122f68cc0"/>
+      </folder>
+      <folder name="ef" uri="ef/" includeAllFiles="false" includeAllFolders="false">
+        <file name="0a6af05fd98f2e5b819116e0d2ace56bc1d724"/>
+      </folder>
+      <folder name="f0" uri="f0/" includeAllFiles="false" includeAllFolders="false">
+        <file name="601cf489999d36744b7ea2eee4aac1e7383087"/>
+      </folder>
+      <folder name="f1" uri="f1/" includeAllFiles="false" includeAllFolders="false">
+        <file name="9ea554741da32d2aa62d260ee2014f5acc63dc"/>
+      </folder>
+      <folder name="f3" uri="f3/" includeAllFiles="false" includeAllFolders="false">
+        <file name="980e837b2d28f9cb5784438e97720d6ece716d"/>
+      </folder>
+      <folder name="f4" uri="f4/" includeAllFiles="false" includeAllFolders="false">
+        <file name="4620f65dfcc68d72702080ef740ecd0d3c10d4"/>
+        <file name="b7798041518660940f1300a39e372026f66370"/>
+      </folder>
+      <folder name="f7" uri="f7/" includeAllFiles="false" includeAllFolders="false">
+        <file name="ad188ce63c3539283b3de07e4f408bc74cbb26"/>
+      </folder>
+      <folder name="f8" uri="f8/" includeAllFiles="false" includeAllFolders="false">
+        <file name="167e5a376d9e95ea0443ea821d3b616ae98861"/>
+      </folder>
+      <folder name="f9" uri="f9/" includeAllFiles="false" includeAllFolders="false">
+        <file name="1f657f0bcf6815a8820e57f373efae3bb6be1a"/>
+      </folder>
+      <folder name="fd" uri="fd/" includeAllFiles="false" includeAllFolders="false">
+        <file name="a7b0fac612fd802cde559c34dfa162b858d3d4"/>
+        <file name="f24a42cd7c03289ea8d2b5094e629e34057f9f"/>
+      </folder>
+      <folder name="fe" uri="fe/" includeAllFiles="false" includeAllFolders="false">
+        <file name="e650ea27a8b57d338b99d175b83e7510b30316"/>
+      </folder>
+      <folder name="ff" uri="ff/" includeAllFiles="false" includeAllFolders="false">
+        <file name="7ff277ed21368b5bdb320be9b3262963068298"/>
+      </folder>
+      <folder name="info" uri="info/" includeAllFiles="false" includeAllFolders="false"/>
+      <folder name="pack" uri="pack/" includeAllFiles="false" includeAllFolders="false"/>
+    </folder>
+    <folder name="refs" uri="refs/" includeAllFiles="false" includeAllFolders="false">
+      <folder name="heads" uri="heads/" includeAllFiles="false" includeAllFolders="false">
+        <file name="develop"/>
+        <file name="master"/>
+      </folder>
+      <folder name="remotes" uri="remotes/" includeAllFiles="false" includeAllFolders="false">
+        <folder name="origin" uri="origin/" includeAllFiles="false" includeAllFolders="false">
+          <file name="develop"/>
+          <file name="master"/>
+        </folder>
+      </folder>
+      <folder name="tags" uri="tags/" includeAllFiles="false" includeAllFolders="false"/>
+    </folder>
+    <file name="COMMIT_EDITMSG"/>
+    <file name="config"/>
+    <file name="description"/>
+    <file name="FETCH_HEAD"/>
+    <file name="HEAD"/>
+    <file name="index"/>
+    <file name="ORIG_HEAD"/>
+  </folder>
+  <folder name="emlib" uri="emlib/" includeAllFiles="false" includeAllFolders="false">
+    <file name="em_int.c"/>
+    <file name="em_msc.c"/>
+    <file name="em_pcnt.c"/>
+    <file name="em_wdog.c"/>
+  </folder>
+  <folder name="external-libraries" uri="external-libraries/" includeAllFiles="false" includeAllFolders="false">
+    <folder name="drivers" uri="drivers/" includeAllFiles="false" includeAllFolders="false">
+      <folder name="inc" uri="inc/" includeAllFiles="false" includeAllFolders="false">
+        <file name="ANTENNA.h"/>
+        <file name="AS3933.h"/>
+        <file name="CC1101.h"/>
+        <file name="CC1101_def.h"/>
+        <file name="CC1190.h"/>
+        <file name="checkCommand.h"/>
+        <file name="dhcp.h"/>
+        <file name="ethernet.h"/>
+        <file name="ethernetUDP.h"/>
+        <file name="helpfunctions.h"/>
+        <file name="HWinit.h"/>
+        <file name="RADIO.h"/>
+        <file name="RADIO_CONFIG.h"/>
+        <file name="socket.h"/>
+        <file name="w5100.h"/>
+        <file name="WAKEUP.h"/>
+      </folder>
+      <folder name="src" uri="src/" includeAllFiles="false" includeAllFolders="false">
+        <file name="ANTENNA.c"/>
+        <file name="AS3933.c"/>
+        <file name="CC1101.c"/>
+        <file name="CC1190.c"/>
+        <file name="checkCommand.c"/>
+        <file name="dhcp.c"/>
+        <file name="ethernet.c"/>
+        <file name="ethernetUDP.c"/>
+        <file name="helpfunctions.c"/>
+        <file name="HWinit.c"/>
+        <file name="RADIO.c"/>
+        <file name="socket.c"/>
+        <file name="w5100.c"/>
+        <file name="WAKEUP.c"/>
+      </folder>
+    </folder>
+    <folder name="utils" uri="utils/" includeAllFiles="false" includeAllFolders="false">
+      <folder name="inc" uri="inc/" includeAllFiles="false" includeAllFolders="false">
+        <file name="CRC.h"/>
+        <file name="diffieHellman.h"/>
+        <file name="DMA_LEUART.h"/>
+        <file name="EEPROM_DRV.h"/>
+        <file name="EEPROM_handler.h"/>
+        <file name="MISC.h"/>
+        <file name="revisionDef.h"/>
+        <file name="RFPacketHelper.h"/>
+        <file name="RTC.h"/>
+        <file name="TestModes.h"/>
+        <file name="TIMER.h"/>
+        <file name="UART.h"/>
+        <file name="util.h"/>
+        <file name="WorkModes.h"/>
+      </folder>
+      <folder name="src" uri="src/" includeAllFiles="false" includeAllFolders="false">
+        <file name="CRC.c"/>
+        <file name="diffieHellman.c"/>
+        <file name="DMA_LEUART.c"/>
+        <file name="EEPROM_DRV.c"/>
+        <file name="EEPROM_handler.c"/>
+        <file name="MISC.c"/>
+        <file name="ram_interrupts.c"/>
+        <file name="RFPacketHelper.c"/>
+        <file name="RTC.c"/>
+        <file name="TestModes.c"/>
+        <file name="TIMER.c"/>
+        <file name="UART.c"/>
+        <file name="WorkModes.c"/>
+      </folder>
+    </folder>
+    <file name=".git"/>
+  </folder>
+  <folder name="inc" uri="inc/" includeAllFiles="false" includeAllFolders="false">
+    <file name="config.h"/>
+  </folder>
+  <folder name="local-drivers" uri="local-drivers/" includeAllFiles="false" includeAllFolders="false">
+    <folder name="inc" uri="inc/" includeAllFiles="false" includeAllFolders="false">
+      <file name="HWinit_loc.h"/>
+    </folder>
+    <folder name="src" uri="src/" includeAllFiles="false" includeAllFolders="false">
+      <file name="HWinit_loc.c"/>
+    </folder>
+  </folder>
+  <folder name="src" uri="src/" includeAllFiles="false" includeAllFolders="false">
+    <file name="main.c"/>
+  </folder>
+  <file name=".gitignore"/>
+  <file name=".gitmodules"/>
+  <file name="Ethernet_W5100.hwconf"/>
+  <sourceFolder></sourceFolder>
+  <property key="projectCommon.buildArtifactType" value="EXE"/>
+  <includePath languageCompatibility="c asm" uri="unresolved:$%7BProjDirPath%7D/inc/"/>
+  <module builtin="true" id="com.silabs.ide.si32.sdk.efm32.v2.kit"/>
+  <module builtin="true" id="com.silabs.ide.si32.sdk.efm32.v2.common.bsp">
+    <exclude pattern=".*"/>
+  </module>
+  <module builtin="true" id="com.silabs.ide.si32.sdk.efm32.v2.common.CMSIS">
+    <exclude pattern=".*"/>
+  </module>
+  <module builtin="true" id="com.silabs.ide.si32.sdk.efm32.v2.common.drivers">
+    <exclude pattern=".*"/>
+  </module>
+  <module builtin="true" id="com.silabs.ide.si32.sdk.efm32.v2.part"/>
+  <module builtin="true" id="com.silabs.ide.si32.sdk.efm32.v2.common.emlib">
+    <include pattern="emlib/em_system.c"/>
+    <include pattern="emlib/em_emu.c"/>
+    <include pattern="emlib/em_cmu.c"/>
+    <include pattern="emlib/em_device.c"/>
+    <include pattern="emlib/em_chip.c"/>
+    <include pattern="emlib/em_aes.c"/>
+    <include pattern="emlib/em_gpio.c"/>
+    <include pattern="emlib/em_rtc.c"/>
+    <include pattern="emlib/em_timer.c"/>
+    <include pattern="emlib/em_usart.c"/>
+  </module>
+  <configuration name="com.silabs.ide.si32.gcc.debug#com.silabs.ide.si32.gcc:4.8.3.20131129" label="GNU ARM v4.8.3 - Debug" kitCompatibility="com.silabs.ide.kit.none" partCompatibility="com.silabs.mcu.si32.efm32.efm32hg.efm32hg310f64" stockConfigCompatibility="com.silabs.ide.toolchain.core.debug">
+    <excludedPath>emlib/em_pcnt.c</excludedPath>
+    <description></description>
+    <outputFileBase>${ProjName}</outputFileBase>
+    <prebuildStep></prebuildStep>
+    <postbuildStep></postbuildStep>
+    <includePath languageCompatibility="c" uri="unresolved:$%7BProjDirPath%7D/local-drivers/inc/"/>
+    <includePath languageCompatibility="c" uri="unresolved:$%7BProjDirPath%7D/local-utils/inc/"/>
+    <includePath languageCompatibility="c" uri="unresolved:$%7BProjDirPath%7D/external-libraries/drivers/inc/"/>
+    <includePath languageCompatibility="c" uri="unresolved:$%7BProjDirPath%7D/external-libraries/utils/inc/"/>
+    <toolOption toolId="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.linker.base" optionId="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.linker.nostdlibs" value="false"/>
+    <toolOption toolId="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.linker.base" optionId="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.linker.floatingpoint.enable" value="false"/>
+    <toolOption toolId="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.linker.base" optionId="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.linker.floatingpoint.type" value="floatingpoint.type.softfp"/>
+  </configuration>
+  <configuration name="com.silabs.ide.si32.gcc.release#com.silabs.ide.si32.gcc:4.8.3.20131129" label="GNU ARM v4.8.3 - Release" kitCompatibility="com.silabs.kit.si32.efm32.efm32hg.slstk3400a" partCompatibility="com.silabs.mcu.si32.efm32.efm32hg.efm32hg322f64" stockConfigCompatibility="com.silabs.ide.toolchain.core.release">
+    <excludedPath>emlib/em_pcnt.c</excludedPath>
+    <description></description>
+    <outputFileBase>${ProjName}</outputFileBase>
+    <prebuildStep></prebuildStep>
+    <postbuildStep></postbuildStep>
+    <toolOption toolId="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.linker.base" optionId="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.linker.nostdlibs" value="false"/>
+    <toolOption toolId="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.linker.base" optionId="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.linker.floatingpoint.enable" value="false"/>
+    <toolOption toolId="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.linker.base" optionId="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.linker.floatingpoint.type" value="floatingpoint.type.softfp"/>
+  </configuration>
+</project>

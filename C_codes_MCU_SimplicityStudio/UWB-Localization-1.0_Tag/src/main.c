@@ -297,7 +297,7 @@ int main(void){
                         LEUART_Enable(LEUART0, leuartDisable);
                 #endif
 
-
+/*
                                         // FLAG6: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
                                                 RTC_delay_ms(10);
                                                 for(int i = 0; i < 10; i++){
@@ -306,6 +306,7 @@ int main(void){
                                                         LED_clearLED();
                                                         RTC_delay_ms(3);
                                                 }
+*/
 
 /*************************************************************************************************************
  * 										ACK to Base Station!																					   ***
@@ -626,6 +627,7 @@ int main(void){
                                 #endif
                         #endif
                 }
+                								/*
                                         // FLAG_to_find_gap between_starting_and_ending: DO NOTHING FOR 0,15 SECOND; FOR OBSERVATION IN THE Oscilloscope
                                                 RTC_delay_ms(10);
                                                 for(int i = 0; i < 5; i++){
@@ -634,6 +636,7 @@ int main(void){
                                                         LED_clearLED();
                                                         RTC_delay_ms(3);
                                                 }
+                                                */
         }
 }
 

@@ -529,7 +529,7 @@ void sendPacket(uint32_t wakeupid, uint8_t option, uint8_t *data, uint8_t len, u
 
 void wake_up_function_without_ACK(uint32_t wakeupid, uint8_t option, uint16_t n_measurements)
 {
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 2; i++)
 	{
 #if PRINT
 		sprintf(string_buffer,
@@ -551,7 +551,7 @@ void wake_up_function_without_ACK(uint32_t wakeupid, uint8_t option, uint16_t n_
 		// Send WakeUp Packet
 		cc1101_send_wakeup_packet_16bit_addr(&xfer, wakeupid, MY_BASE_ID, option, n_measurements);
 
-		antUse = switch_antenna(antUse);
+		antUse = switch_antenna(antUse); // antenna swiching
 	}
 
 }
