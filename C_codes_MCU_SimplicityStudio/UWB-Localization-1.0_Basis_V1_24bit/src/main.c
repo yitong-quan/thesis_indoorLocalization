@@ -351,8 +351,8 @@ int main(void) {
 			check_command_setNODES(buffer, NODE_IDs, NODE_NUMBERS);					// check command setNODES
 
 			error = check_command_find(buffer);										// check command find
-			//allow 'ack' to be printed out
-			if (error)
+
+			/*if (error)
 			{
 				strcpy(string_buffer, "NACK\r\n");
 				error = printMSG(string_buffer, strlen(string_buffer));
@@ -365,7 +365,7 @@ int main(void) {
 				error = printMSG(string_buffer, strlen(string_buffer));
 				error = false;
 				uartLength = 0;
-			}
+			}*/
 			memset(buffer, '\0', sizeof(buffer));
 		}
 	}
@@ -401,15 +401,11 @@ void sendPacket(uint32_t wakeupid, uint8_t option, uint8_t *data, uint8_t len, u
 	// Try to send the wakeup again if it fails
 	if (wake_up_function(wakeupid, option, n_measurements))
 	{
-		sprintf(string_buffer, "Tag not waked up! \r\n");
-		error = printMSG(string_buffer, strlen(string_buffer));
 		return;
 	}
 
 	if (!send_NODE_IDs(wakeupid, NODE_IDs))						// send the node IDs to the Tag
 	{
-		sprintf(string_buffer, "ACK of Tag receivement from nodeID is missing! \r\n");
-		error = printMSG(string_buffer, strlen(string_buffer));
 		return;
 	}
 
@@ -941,7 +937,7 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 	RFPacket_encrypt_AES128CBC(CC1101_send, &idx, AES_encryption_key, AES_initVector);
 
 
-	MAX_NUM_OF_TRIES = 5; // change to 5 from 10 , Yitong
+
 	// Send packet
 	while (num_of_tries < MAX_NUM_OF_TRIES)
 	{
@@ -956,8 +952,6 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 			cc1101_change_config_to(CC1101_DATA_38kBaud_CONFIG, paTableData);
 			//acknowledged = cc1101_check_ack(&xfer, &wakeupid, &MY_BASE_ID, AES_decryption_key, AES_initVector, 75);  //85?
 			acknowledged = cc1101_check_ack(&xfer, &wakeupid, &MY_BASE_ID, AES_decryption_key, AES_initVector, 75);  //85?
-			sprintf(string_buffer, "num_of_tries to send the NodeID: %d\r\n", num_of_tries);
-			error = printMSG(string_buffer, strlen(string_buffer));
 
 			if (acknowledged) 					// ACK!
 			{
