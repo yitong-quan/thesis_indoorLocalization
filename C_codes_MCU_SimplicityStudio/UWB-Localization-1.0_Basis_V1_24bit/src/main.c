@@ -352,7 +352,7 @@ int main(void) {
 
 			error = check_command_find(buffer);										// check command find
 			//allow 'ack' to be printed out
-			if (error)
+/*			if (error)
 			{
 				strcpy(string_buffer, "NACK\r\n");
 				error = printMSG(string_buffer, strlen(string_buffer));
@@ -365,7 +365,7 @@ int main(void) {
 				error = printMSG(string_buffer, strlen(string_buffer));
 				error = false;
 				uartLength = 0;
-			}
+			}*/
 			memset(buffer, '\0', sizeof(buffer));
 		}
 	}
@@ -488,42 +488,42 @@ void sendPacket(uint32_t wakeupid, uint8_t option, uint8_t *data, uint8_t len, u
 				{
 					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (89.73 * UWB_data[n] + 25.4));		// y = 0.9925  * x - 5.205
 					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n] * 0.9734 - 159.5));
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
+					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
 					error = printMSG(string_buffer, strlen(string_buffer));
 				}
 				if(NODE_ADDRESS == 0x2020)
 				{
 					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (90.42 * UWB_data[n] + 5.531));		// y = 0.9993  * x - 0.24217
 					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n] * 1.034 -291.3));		// y = 0.9993  * x - 0.24217error = printMSG(string_buffer, strlen(string_buffer));
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
+					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
 					error = printMSG(string_buffer, strlen(string_buffer));
 				}
 				if(NODE_ADDRESS == 0x3E3E)
 				{
 					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (91.91 * UWB_data[n] + 23.44));		// y = 1.00547 * x - 14.103
 					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n] * 0.9893 -218.1));		// y = 1.00547 * x - 14.103
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
+					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
 					error = printMSG(string_buffer, strlen(string_buffer));
 				}
 				if(NODE_ADDRESS == 0x4D4D)
 				{
 					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (89.84 * UWB_data[n] + 21.37));		// y = 1.01452 * x - 8.1253
 					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n] * 1.052 -688.6));		// y = 1.01452 * x - 8.1253
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
+					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
 					error = printMSG(string_buffer, strlen(string_buffer));
 				}
 				if(NODE_ADDRESS == 0x5A5A)
 				{
 					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1.0 * UWB_data[n] * 100 - 0));		// y = 1.01015 * x - 4.9066
 					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n] * 1.017 -339));
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
+					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
 					error = printMSG(string_buffer, strlen(string_buffer));
 				}
 				if(NODE_ADDRESS == 0x6E6E)
 				{
 					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (91.74 * UWB_data[n] + 15.89));		// y = 0.9993  * x - 0.24217
 					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n] * 1.074 -796.4));		// y = 0.9993  * x - 0.24217
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
+					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
 					error = printMSG(string_buffer, strlen(string_buffer));
 				}
 			}
@@ -956,8 +956,9 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 			cc1101_change_config_to(CC1101_DATA_38kBaud_CONFIG, paTableData);
 			//acknowledged = cc1101_check_ack(&xfer, &wakeupid, &MY_BASE_ID, AES_decryption_key, AES_initVector, 75);  //85?
 			acknowledged = cc1101_check_ack(&xfer, &wakeupid, &MY_BASE_ID, AES_decryption_key, AES_initVector, 75);  //85?
-			sprintf(string_buffer, "num_of_tries to send the NodeID: %d\r\n", num_of_tries);
-			error = printMSG(string_buffer, strlen(string_buffer));
+			sprintf(string_buffer, "#tries2Tx NodeID: %d\r\n", num_of_tries);  //Yitong
+			error = printMSG(string_buffer, strlen(string_buffer));  //Yitong
+			memset(string_buffer, '\0', sizeof(string_buffer)); //Yitong
 
 			if (acknowledged) 					// ACK!
 			{
@@ -984,8 +985,12 @@ void USART1_RX_IRQHandler(void) {
 		uint8_t comLength = 0;
 		UART_receive[i] = USART_Rx(USART1 );
 		uint32_t rounds = 0;
-		while (i < 256 && rounds < 140000) {
+		//while (i < 256 && rounds < 140000) {  //yitong
+		while (i < 256 && rounds < 1500) {
 			rounds++;
+			sprintf(string_buffer, "R:%d \r\n", (int) rounds); //Yitong
+			printMSG(string_buffer, strlen(string_buffer));  //Yitong
+			memset(string_buffer, '\0', sizeof(string_buffer)); //Yitong
 			if (USART1 ->STATUS & USART_STATUS_RXDATAV) {
 				i++;
 				UART_receive[i] = USART_Rx(USART1 );       // store the data
