@@ -115,6 +115,16 @@ void LEUART0_IRQHandler(void);
 #endif
 
 uint8_t counterDebug = 0; // Yitong
+void blink_LED(uint8_t ms, uint8_t loopNum)// Yitong
+{
+	for (int iyyi=0; iyyi<loopNum; iyyi++ )
+	{
+		LED_setLED(COL_RED);
+		RTC_delay_ms(ms);
+		LED_clearLED();
+		RTC_delay_ms(ms);
+	}
+}
 
 int main(void){
 	/* Chip errata */
@@ -204,6 +214,8 @@ int main(void){
 		LED_setLED(COL_RED);
 		RTC_delay_ms(10);
 		LED_clearLED();
+
+		//blink_LED(10,5);
 
 		// Feed Watchdog
 		#if WDOG_ENABLED
