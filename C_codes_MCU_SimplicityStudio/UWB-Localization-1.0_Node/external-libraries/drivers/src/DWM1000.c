@@ -2221,13 +2221,14 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 	uint8_t MSG_TYPE = FUNC_CODE_POLL;
 	uint64_t poll_tx_timestamp = 0;
 	uint64_t resp_rx_timestamp = 0;
-	uint16_t count1 = 3;  // 45 Patrick set 45, too much. Yitong  0x16470720 >>
-	uint16_t count2 = 1;
+	uint8_t count1 = 3;  // 45 Patrick set 45, too much. Yitong  0x16470720 >>
+	uint8_t count2 = 1;
+	uint8_t count3 = 3;	// yitong
 	uint8_t debug_num = 205; // Yitong
 
 	state1 = RECEIVER_ON_STATE;
 
-	while(((measurement_numbers > 0 && count1 > 0) && count2 > 0)) // Yitong 0x12380721 <<
+	while(((measurement_numbers > 0 && count1 > 0) && count2 > 0) && (count3>0)) // Yitong 0x12380721 <<
 	{
 		switch (state1)
 		{
@@ -2279,6 +2280,7 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 
 			case STATE_RESPONSE_RECEIVE:
 				blink_LED(5,2);  //yitong
+				count3 = count3 - 1;  // Yitong, to prevent loooping forever between STATE_POLL_TRANSMIT to STATE_RESPONSE_RECEIVE
 				MSG_TYPE = FUNC_CODE_RESPONSE;
 				state1 = DWM1000_response_receive_state(rx_buffer, &RANGE_TAG_ID, &MY_NODE_ID, &MSG_TYPE, &resp_rx_timestamp);
 			break;
@@ -2296,7 +2298,6 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 		}
 	}
 }
-
 
 void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t *NODE_ADD)
 {
