@@ -258,7 +258,7 @@ int main(void){
 			LEUART_Enable(LEUART0, leuartDisable);
 		#endif
 
-
+		localization = STATE_UWB;  //add by yitong
 		DWM1000_SPI_Wake_Up(wakeup_buffer, 50);						// Wake up DWM1000 Module																						// wake up DWM1000 with SPI
 		DWM1000_Chip_INIT();										// init the DWM1000 Module
 
@@ -283,7 +283,7 @@ void GPIO_EVEN_IRQHandler(void)
 {
 	if(localization == STATE_WAKE_UP)
 	{
-		if (GPIO_IntGetEnabled() & (1 << CC1101_GDO0_PIN))
+		if (GPIO_IntGetEnabled() & (1 << CC1101_GDO0_PIN)) //pin 6 in cc1101, pin 23 in EFM32
 		{
 			radio_handle_transfer_end(&xfer);
 			/* Clear interrupt flag. */

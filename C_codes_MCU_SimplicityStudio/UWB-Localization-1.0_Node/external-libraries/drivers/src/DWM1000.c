@@ -2223,12 +2223,14 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 	uint64_t resp_rx_timestamp = 0;
 	uint8_t count1 = 3;  // 45 Patrick set 45, too much. Yitong  0x16470720 >>
 	uint8_t count2 = 1;
-	uint8_t count3 = 3;	// yitong
+	uint8_t count3 = 10;	// yitong
+	uint8_t count4 = 10;	// yitong
 	uint8_t debug_num = 205; // Yitong
+	RTC_delay_ms(100); // Yiton
 
 	state1 = RECEIVER_ON_STATE;
 
-	while(((measurement_numbers > 0 && count1 > 0) && count2 > 0) && (count3>0)) // Yitong 0x12380721 <<
+	while(((measurement_numbers > 0 && count1 > 0) && count2 > 0) && (count3>0) && (count4>0)) // Yitong 0x12380721 <<
 	{
 		switch (state1)
 		{
@@ -2238,7 +2240,7 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 				DWM1000_receiver();
 				blink_LED(2,3);  //yitong
 				state1 = STATE_WAIT_BLINK_RECEIVE;
-				RTC_start(1000); //600, 800 and 1000 works, but out of no reasons RTC_TIMEOUT will nerver set to be true.// too long, change from 'RTC_start(6000);' by Yitong
+				RTC_start(600); //600, 800 and 1000 works, but out of no reasons RTC_TIMEOUT will nerver set to be true.// too long, change from 'RTC_start(6000);' by Yitong
 			break;
 
 			case STATE_WAIT_BLINK_RECEIVE:
@@ -2254,6 +2256,7 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 
 			case STATE_BLINK_RECEIVE:
 				blink_LED(1,2);  //yitong
+				count4 = count4 - 1;  // Yitong, to prevent loooping forever between RECEIVER_ON_STATE to STATE_BLINK_RECEIVE
 				MSG_TYPE = FUNC_CODE_BLINK;
 				state1 = DWM1000_blink_receive_state(rx_buffer, &RANGE_TAG_ID, &MY_NODE_ID, &MSG_TYPE);
 			break;
