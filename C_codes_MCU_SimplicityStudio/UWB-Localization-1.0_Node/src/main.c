@@ -258,7 +258,7 @@ int main(void){
 			LEUART_Enable(LEUART0, leuartDisable);
 		#endif
 
-		localization = STATE_UWB;  //add by yitong
+		//localization = STATE_UWB;  //add by yitong
 		DWM1000_SPI_Wake_Up(wakeup_buffer, 50);						// Wake up DWM1000 Module																						// wake up DWM1000 with SPI
 		DWM1000_Chip_INIT();										// init the DWM1000 Module
 
