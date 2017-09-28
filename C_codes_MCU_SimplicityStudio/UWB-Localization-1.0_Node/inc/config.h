@@ -80,7 +80,7 @@ static volatile dwt_config_t config = {
 
 /* NODE DEFINES */
 #define NODE_WAKEUP_ID		  				0xCCCC
-#define NODE_ID								0x3E3E
+#define NODE_ID								0x5A5A
 #define TAG_ID 								0x310D		//0x00AC310D
 
 /* AES SETTINGS */

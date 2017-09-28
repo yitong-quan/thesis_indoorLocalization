@@ -941,11 +941,16 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 	RFPacket_encrypt_AES128CBC(CC1101_send, &idx, AES_encryption_key, AES_initVector);
 
 
-	MAX_NUM_OF_TRIES = 10; // change to 5 from 10 , Yitong
+	MAX_NUM_OF_TRIES = 5; // change to 5 from 10 , Yitong
 	// Send packet
 	while (num_of_tries < MAX_NUM_OF_TRIES)
 	{
 		// Send Data to Basis Station
+		if (num_of_tries > 1) {
+			sprintf(string_buffer, "num_of_tries to send the NodeID: %d\r\n", num_of_tries);  //yitong
+			printMSG(string_buffer, strlen(string_buffer));  //yitong
+			memset(string_buffer, '\0', sizeof(string_buffer));  //yitong
+		}
 		//RTC_start(50);
 		RTC_start(20);
 		// Send out packet if channel is free
@@ -956,13 +961,10 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 			cc1101_change_config_to(CC1101_DATA_38kBaud_CONFIG, paTableData);
 			//acknowledged = cc1101_check_ack(&xfer, &wakeupid, &MY_BASE_ID, AES_decryption_key, AES_initVector, 75);  //85?
 			acknowledged = cc1101_check_ack(&xfer, &wakeupid, &MY_BASE_ID, AES_decryption_key, AES_initVector, 75);  //85?
-			sprintf(string_buffer, "num_of_tries to send the NodeID: %d\r\n", num_of_tries);  //yitong
-			printMSG(string_buffer, strlen(string_buffer));  //yitong
-			memset(string_buffer, '\0', sizeof(string_buffer));  //yitong
 
 			if (acknowledged) 					// ACK!
 			{
-				sprintf(string_buffer, "#tries_send_NodeID: %d\r\n", num_of_tries);  //yitong
+				sprintf(string_buffer, "Nodes_IDs sent \r\n");  //yitong
 				printMSG(string_buffer, strlen(string_buffer));  //yitong
 				memset(string_buffer, '\0', sizeof(string_buffer));  //yitong
 
