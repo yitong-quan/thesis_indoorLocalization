@@ -2297,7 +2297,7 @@ void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t NODE_A
 		switch (state)
 		{
 			case STATE_SEND_BLINK:
-				state = DWM1000_blink_transmit_state(NODE_ADD, MY_TAG_ID);
+				state = DWM1000_blink_transmit_state(NODE_ADD, MY_TAG_ID); //with only one nodeID and tagID, while loops for othernodeID locates in the main function
 				//RTC_start(700);  // 10 can work. can be Changed to 300?? TODO Yitong
 				//RTC_start(100);
 				RTC_start(33); //23 works, 33works
