@@ -2223,10 +2223,10 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 	uint64_t resp_rx_timestamp = 0;
 	uint8_t count1 = 45;  //3... 45 Patrick set 45, too much. Yitong  0x16470720 >>
 	uint8_t count2 = 1;
-	uint8_t count3 = 2;	// yitong
-	uint8_t count4 = 2;	// yitong
+	uint8_t count3 = 3;	// yitong
+	uint8_t count4 = 3;	// yitong
 	uint8_t debug_num = 205; // Yitong
-	RTC_delay_ms(100); // Yiton
+	//RTC_delay_ms(100); // Yiton
 
 	state1 = RECEIVER_ON_STATE;
 
