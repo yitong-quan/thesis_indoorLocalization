@@ -2310,6 +2310,7 @@ void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t NODE_A
 			case STATE_RECEIVER_ON:
 				DWM1000_receiver();
 				state = STATE_RECEIVE_MODE;
+				//RTC_start(33); //add by yitong
 			break;
 
 			case STATE_RECEIVE_MODE:
@@ -2354,7 +2355,7 @@ void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t NODE_A
 				}
 				else
 				{
-					RTC_start(33); //add, Yitong
+					//RTC_start(33); //add, Yitong
 					state = STATE_RECEIVER_ON;
 				}
 			break;
