@@ -401,8 +401,8 @@ void sendPacket(uint32_t wakeupid, uint8_t option, uint8_t *data, uint8_t len, u
 	// Try to send the wakeup again if it fails
 	if (wake_up_function(wakeupid, option, n_measurements))
 	{
-		sprintf(string_buffer, "Tag not waked up! \r\n");
-		printMSG(string_buffer, strlen(string_buffer));
+//		sprintf(string_buffer, "Tag not waked up! \r\n");  //Yitong
+//		printMSG(string_buffer, strlen(string_buffer));  //Yitong
 		return;
 	}
 
@@ -964,9 +964,9 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 
 			if (acknowledged) 					// ACK!
 			{
-				sprintf(string_buffer, "Nd_id_Tx..");  //yitong
-				printMSG(string_buffer, strlen(string_buffer));  //yitong
-				memset(string_buffer, '\0', sizeof(string_buffer));  //yitong
+//				sprintf(string_buffer, "Nd_id_Tx..");  //yitong
+//				printMSG(string_buffer, strlen(string_buffer));  //yitong
+//				memset(string_buffer, '\0', sizeof(string_buffer));  //yitong
 
 				break; 							// ACK! -> leave while
 			}
