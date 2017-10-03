@@ -211,9 +211,9 @@ int main(void){
 		RTC_delay_ms(10);
 		LED_clearLED();
 
-		LED_setLED(COL_RED);
-		RTC_delay_ms(10);
-		LED_clearLED();
+//		LED_setLED(COL_RED);
+//		RTC_delay_ms(10);
+//		LED_clearLED();
 
 		//blink_LED(10,5);
 
@@ -262,7 +262,7 @@ int main(void){
 		DWM1000_SPI_Wake_Up(wakeup_buffer, 50);						// Wake up DWM1000 Module																						// wake up DWM1000 with SPI
 		DWM1000_Chip_INIT();										// init the DWM1000 Module
 
-		RTC_delay_ms(5); // add by Yitong
+		//RTC_delay_ms(5); // add by Yitong
 		DWM1000_UWB_NODE(N_MEASUREMENTS);							// start UWB NODE, works as initiator and starts the positioning. 25 positions
 
 		RTC_delay_ms(5); // add by Yitong

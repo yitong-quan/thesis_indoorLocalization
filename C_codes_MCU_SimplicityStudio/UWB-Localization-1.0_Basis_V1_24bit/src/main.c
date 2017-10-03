@@ -964,7 +964,7 @@ bool send_NODE_IDs(uint32_t wakeupid, uint8_t *buffer)
 
 			if (acknowledged) 					// ACK!
 			{
-				sprintf(string_buffer, "Nodes_IDs sent \r\n");  //yitong
+				sprintf(string_buffer, "Nd_id_Tx..");  //yitong
 				printMSG(string_buffer, strlen(string_buffer));  //yitong
 				memset(string_buffer, '\0', sizeof(string_buffer));  //yitong
 

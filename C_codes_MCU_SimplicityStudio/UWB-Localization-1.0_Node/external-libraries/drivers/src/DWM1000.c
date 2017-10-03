@@ -2201,6 +2201,7 @@ int64_t DWM1000_check_time_overflow(int64_t timeoverflow)
 	return timeoverflow;
 }
 
+/*
 //for debuging, Yitong
 void LED_blink_yitong(int ms, int num){
     for(int ij = 0; ij< num; ij++){
@@ -2210,6 +2211,7 @@ void LED_blink_yitong(int ms, int num){
             RTC_delay_ms(ms);//+++++++++++++++++++++!!!!!!!!!!!!!!!!!!!!!Yitong
     }
 }
+*/
 
 void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 {
@@ -2221,17 +2223,17 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 	uint8_t MSG_TYPE = FUNC_CODE_POLL;
 	uint64_t poll_tx_timestamp = 0;
 	uint64_t resp_rx_timestamp = 0;
-	uint8_t count1 = 45;  //3... 45 Patrick set 45, too much. Yitong  0x16470720 >>
+	uint16_t count1 = 45;  //3... 45 Patrick set 45, too much. Yitong  0x16470720 >>
 	uint8_t count2 = 1;
-	uint8_t count3 = 6;	// yitong
-	uint8_t count4 = 6;	// yitong
+	uint8_t count3 = 28;	// yitong
+	uint8_t count4 = 28;	// yitong
 	uint8_t debug_num = 205; // Yitong
-	RTC_delay_ms(100); // Yitong
+	//RTC_delay_ms(100); // Yitong
 
 	state1 = RECEIVER_ON_STATE;
 
-	//while(((measurement_numbers > 0 && count1 > 0) && count2 > 0) && (count3>0 && count4>0)) // Yitong 0x12380721 <<
-	while(((measurement_numbers > 0 && count1 > 0) && count2 > 0)) // Yitong 0x12380721 <<
+	while(((measurement_numbers > 0 && count1 > 0) && count2 > 0) && (count3>0 && count4>0)) // Yitong 0x12380721 <<
+	//while(((measurement_numbers > 0 && count1 > 0) && count2 > 0)) // Yitong 0x12380721 <<
 	{
 		switch (state1)
 		{
@@ -2239,10 +2241,10 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 				//debug_num =  debug_num + 1;
 				//debug_num =  debug_num + 10;
 				DWM1000_receiver();
-				blink_LED(2,3);  //yitong//--
+				//--blink_LED(2,3);  //yitong
 				count4 = count4 - 1;  // Yitong, to prevent loooping forever between RECEIVER_ON_STATE to STATE_WAIT_BLINK_RECEIVE
 				state1 = STATE_WAIT_BLINK_RECEIVE;
-				RTC_start(800); //600, 800 and 1000 works, but out of no reasons RTC_TIMEOUT will nerver set to be true.// too long, change from 'RTC_start(6000);' by Yitong
+				RTC_start(600); //600, 800 and 1000 works, but out of no reasons RTC_TIMEOUT will nerver set to be true.// too long, change from 'RTC_start(6000);' by Yitong
 			break;
 
 			case STATE_WAIT_BLINK_RECEIVE:
@@ -2257,14 +2259,13 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 			break;
 
 			case STATE_BLINK_RECEIVE:
-				blink_LED(1,2);  //yitong//----
+				//----blink_LED(1,2);  //yitong
 				MSG_TYPE = FUNC_CODE_BLINK;
 				state1 = DWM1000_blink_receive_state(rx_buffer, &RANGE_TAG_ID, &MY_NODE_ID, &MSG_TYPE);
 			break;
 
 			case STATE_POLL_TRANSMIT:
-				//LED_blink_yitong(2,5);//2ms,1time, Yitong
-				blink_LED(3,2);  //yitong//----
+				//----blink_LED(3,2);  //yitong
 				count3 = count3 - 1;  // Yitong, to prevent loooping forever between STATE_POLL_TRANSMIT to STATE_WAIT_RESPONSE_RECEIVE
 				state1 = DWM1000_poll_transmit_state(RANGE_TAG_ID, MY_NODE_ID, &poll_tx_timestamp);
 				RTC_start(80); //30...80
@@ -2284,13 +2285,13 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 			break;
 
 			case STATE_RESPONSE_RECEIVE:
-				blink_LED(5,2);  //yitong//--
+				//--blink_LED(5,2);  //yitong
 				MSG_TYPE = FUNC_CODE_RESPONSE;
 				state1 = DWM1000_response_receive_state(rx_buffer, &RANGE_TAG_ID, &MY_NODE_ID, &MSG_TYPE, &resp_rx_timestamp);
 			break;
 
 			case STATE_FINAL_TRANSMIT:
-				blink_LED(2,6);  //yitong//
+				//blink_LED(2,6);  //yitong
 				DWM1000_send_final_message(FINAL_message, RANGE_TAG_ID, MY_NODE_ID, FINAL_MESSAGE_LENGTH, poll_tx_timestamp, resp_rx_timestamp);
 				measurement_numbers--;
 				state1 = STATE_POLL_TRANSMIT;
