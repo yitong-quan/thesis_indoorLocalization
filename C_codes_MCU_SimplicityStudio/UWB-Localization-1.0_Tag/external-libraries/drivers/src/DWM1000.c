@@ -2288,11 +2288,14 @@ void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t NODE_A
 	uint64_t final_tx_timestamp = 0;
 
 	uint8_t count = 1;
+	uint8_t count2 = 9;
+	uint64_t debugNum1 = 0;
+	uint64_t count3 = 1800;
 
 	//DWM1000_Chip_INIT();
 
 	//while(measurement_numbers && count > 0)
-	while(measurement_numbers > 0 && count > 0) // Yitong, replace
+	while(((measurement_numbers > 0 && count > 0) && count2 > 0) && count3 > 0) // Yitong, replace
 	{
 		switch (state)
 		{
@@ -2308,12 +2311,14 @@ void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t NODE_A
 			break;
 
 			case STATE_RECEIVER_ON:
+				count2 = count2 - 1; //Yitong, preventing looping forever
 				DWM1000_receiver();
 				state = STATE_RECEIVE_MODE;
 				//RTC_start(33); //add by yitong
 			break;
 
 			case STATE_RECEIVE_MODE:
+				debugNum1 = debugNum1 + 1; //Yitong, to find out the value to set in while
 				if(RTC_TIMEOUT)
 				{
 					count = 0;
@@ -2330,6 +2335,7 @@ void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t NODE_A
 			break;
 
 			case STATE_WAIT_FINAL_RECEIVE:
+				count3 = count3 - 1; //Yitong, to find out the value to set in while
 			break;
 
 			case STATE_FINAL_RECEIVE:
