@@ -2225,8 +2225,46 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 	uint64_t resp_rx_timestamp = 0;
 	uint16_t count1 = 45;  //3... 45 Patrick set 45, too much. Yitong  0x16470720 >>
 	uint8_t count2 = 1;
-	uint8_t count3 = 28;	// yitong
-	uint8_t count4 = 28;	// yitong
+	uint8_t count3 = 0;	// yitong
+	uint8_t count4 = 0;	// yitong
+
+	switch (NODE_ID)
+	{
+		case 0x2020:
+			count3 = 2;	// yitong
+			count4 = 2;	// yitong
+		break;
+
+		case 0x3E3E:
+			count3 = 8;	// yitong
+			count4 = 8;	// yitong
+		break;
+
+		case 0x4D4D:
+			count3 = 16; //14;	// yitong
+			count4 = 16; //14;	// yitong
+		break;
+
+		case 0x5A5A:
+			count3 = 22; //20;	// yitong
+			count4 = 22; //20;	// yitong
+		break;
+
+		case 0x6E6E:
+			count3 = 28;	// yitong
+			count4 = 28;	// yitong
+		break;
+
+		case 0x1C1C:
+			count3 = 16;	// yitong REPLACE 4D4D WITH 1C1C
+			count4 = 16;	// yitong
+		break;
+
+		default:
+		break;
+	}
+
+
 	uint8_t debug_num = 205; // Yitong
 	//RTC_delay_ms(100); // Yitong
 
