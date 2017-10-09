@@ -2246,13 +2246,13 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 		break;
 
 		case 0x5A5A:
-			count3 = 22; //20;	// yitong
-			count4 = 22; //20;	// yitong
+			count3 = 23;//22; //20;	// yitong
+			count4 = 23;//22; //20;	// yitong
 		break;
 
 		case 0x6E6E:
-			count3 = 28;	// yitong
-			count4 = 28;	// yitong
+			count3 = 29; //28;	// yitong
+			count4 = 30; //28;	// yitong
 		break;
 
 		case 0x1C1C:
