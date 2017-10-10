@@ -1,0 +1,7 @@
+2 version of implementing code te determine nodes position in 'determineNodesPositionBaseOnDistToEachOthers.m'
+
+%%	nodes oder x2, x3, x1, x5, x6
+    %     locations fixed: x1(0,0)  x3(+6,0) for v2
+    %     locations fixed: x2(0,0)  x3(-6,0) for v1
+
+I chssoing version2 since it is more easy for me to recover the experiment scenario
