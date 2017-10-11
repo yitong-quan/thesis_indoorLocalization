@@ -3,21 +3,14 @@
     %     locations fixed: x2(0,0)  x3(-6,0) for v1
     
 % clear;
-experiment = 4; % [1 2 3 4]
-
 nodesNumber = 5;
-circle_center = [1000, 4750];
-circle_angle = [0:pi/50:2*pi];
-circle_x = 1000+3000*cos(circle_angle);
-circle_y = 4750+3000*sin(circle_angle);
+experiment = 4; % [1 2 3 4]
 
 switch experiment
     case 1
         distances2all_abs = importdata('dist_1st_tagOnCircleCenter.mat');
     case 2
         distances2all_abs = importdata('dist_2nd_tag_beginFromCenter2_0x2_0x3_back_from_0x1.mat');
-            case 3
-        distances2all_abs = importdata('dist_3rd_tag_beginFromCenter2_0x2_0x3_back_from_0x1_up_down.mat');
     case 4
         distances2all_abs = importdata('dist_4th_8shape.mat');
     otherwise
@@ -37,29 +30,26 @@ string =sprintf('experiment %d', experiment);
 figure; title(string);hold on; % axis square; axis tight;
 plot(positionOfNodes(1,:), positionOfNodes(2,:), 'd');
 
-switch experiment
-    case 1
-        %--only for experiment 1: plot the circle base on the optical measurements,
-        %--base on which the certen of the circle for experi 2&3 is (1000, 4750)
-        % optical_measurement = [4250, 5910, 4730, 4670, 5570];
-        %     for i = 1 : size(positionOfNodes, 2)
-        %         h(i) = plotCircle(positionOfNodes(1, i), positionOfNodes(2, i), ...
-        %             optical_measurement(i), 0*pi, 2*pi); % 0, 2*pi); %
-        %     end
-        % just plot the circle center
-        plot(circle_center(1), circle_center(2), '+');
-    case 2
-        %plot the circle centered in (1000, 4750) which
-        %is the traj of experi_2 & traj_projection of experi_3
-        plot(circle_center(1), circle_center(2), '+');
-        plot(circle_x, circle_y,'-+');
-    case 3
-        plot(circle_center(1), circle_center(2), '+');
-        plot(circle_x, circle_y,'-+');        
-    case 4
-        plot(circle_center(1), circle_center(2), '+');
-    otherwise
-        warning('please specify the experiment number #')
+if experiment == 1
+    %only for experiment 1: plot the circle base on the optical measurements,
+    %base on which the certen of the circle for experi 2&3 is (1000, 4750)
+    optical_measurement = [4250, 5910, 4730, 4670, 5570];
+    %     for i = 1 : size(positionOfNodes, 2)
+    %         h(i) = plotCircle(positionOfNodes(1, i), positionOfNodes(2, i), ...
+    %             optical_measurement(i), 0*pi, 2*pi); % 0, 2*pi); %
+    %     end
+    % just plot the circle center
+    plot(circle_x, circle_y,'-+');
+end
+
+if experiment == 2
+    %plot the circle centered in (1000, 4750) which
+    %is the traj of experi_2 & traj_projection of experi_3
+    plot(1000, 4750, '+');
+    circle_angle = [0:pi/50:2*pi];
+    circle_x = 1000+3000*cos(circle_angle);
+    circle_y = 4750+3000*sin(circle_angle);
+    plot(circle_x, circle_y,'-+');
 end
 
 for j = 1:size(distances2all_abs, 2)

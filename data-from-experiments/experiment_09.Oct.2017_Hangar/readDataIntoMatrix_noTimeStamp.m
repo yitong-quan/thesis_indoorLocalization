@@ -1,19 +1,11 @@
 %% output: data (deal with no time stamp data file)
 %% 
 clear;
-%fileID = fopen('0x1C1C-10m.log'); %'0x2020, 0x3E3E, 0x4D4D, 0x6E6E-2m.log'
-fileID = fopen('1st_tagOnCircleCenter - Copy.log'); 
-%{
-% tline = fgetl(fid);
-% while ischar(tline)
-%     disp(tline);
-%     tline = fgetl(fid);
-% end
+%fileID = fopen('1st_tagOnCircleCenter - Copy.log'); 
+%fileID = fopen('2nd_tag_beginFromCenter2_0x2_0x3_back_from_0x1 - Copy.log'); 
+fileID = fopen('3rd_tag_beginFromCenter2_0x2_0x3_back_from_0x1_up_down - Copy.log'); 
+%fileID = fopen('4th_8shape - Copy.log'); 
 
-% formatSpec = '%s, %d';
-% sizeA = [2 Inf];
-% A1 = fscanf(fileID,formatSpec,sizeA)
-%}
 
 A = textscan(fileID,'%s %c %d'); % '0x1C1C' ',' '235'
 id = [A{1,1}];
