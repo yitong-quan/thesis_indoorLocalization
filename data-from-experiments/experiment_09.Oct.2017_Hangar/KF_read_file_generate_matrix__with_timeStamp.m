@@ -13,7 +13,19 @@ read i_th line >> content
 %}
 %%
 clear;
-fileID = fopen('1st_tagOnCircleCenter_t - Copy_refined.log'); 
+experimentNumber = 2;
+    switch experimentNumber
+        case 1
+            fileID = fopen('1st_tagOnCircleCenter_t - Copy_refined.log'); 
+        case 2
+            fileID = fopen('2nd_tag_beginFromCenter2_0x2_0x3_back_from_0x1_t - Copy_refined.log'); 
+        case 3
+            fileID = fopen('3rd_tag_beginFromCenter2_0x2_0x3_back_from_0x1_up_down_t - Copy_refined.log'); 
+        case 4
+            fileID = fopen('4th_8shape_t - Copy_refined.log'); 
+        otherwise
+            warning('please specify the experiment number #')
+    end
 
 
 %{

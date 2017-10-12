@@ -457,18 +457,6 @@ x3E3E , 6313
 0x5A5A , 0 
 0x6E6E , 0 
 
-17:17:11.333:
-num_of_tries to send the NodeID: 2
-
-17:17:11.426:
-num_of_tries to send the NodeID: 3
-
-17:17:11.520:
-num_of_tries to send the NodeID: 4
-
-17:17:11.614:
-ACK of Tag receivement from nodeID is missing! 
-
 17:17:12.176:
 0x2020 , 5210 
 0x3E3E , 3381 
@@ -1775,36 +1763,6 @@ x2020 , 0
 0x5A5A , 0 
 0x6E6E , 0 
 
-17:19:21.232:
-num_of_tries to send the NodeID: 2
-
-17:19:21.357:
-num_of_tries to send the Node
-17:19:21.372:
-ID: 3
-
-17:19:21.482:
-num_of_tries to send the NodeID: 4
-
-17:19:21.591:
-ACK of Tag receivement from nodeID is missing! 
-
-17:19:23.529:
-num_of_tries to send the NodeID: 
-17:19:23.544:
-2
-
-17:19:23.654:
-num_of_tries to send the NodeID: 3
-
-17:19:23.763:
-num_of_tries to send t
-17:19:23.778:
-he NodeID: 4
-
-17:19:23.888:
-ACK of Tag receivement from nodeID is missing! 
-
 17:19:24.482:
 0x2020 , 5830 
 0x3E3E , 3874 
@@ -1813,46 +1771,6 @@ ACK of Tag receivement from nodeID is missing!
 17:19:24.497:
  7570 
 0x6E6E , 9118 
-
-17:19:26.247:
-num_of_tries to send the NodeID: 2
-
-17:19:26.372:
-num_of_tries to send the NodeID: 3
-
-17:19:26.497:
-num_of_tries to send the NodeID: 4
-
-17:19:26.622:
-ACK of Tag rec
-17:19:26.638:
-eivement from nodeID is missing! 
-
-17:19:27.591:
-num_of_tries to send the NodeID: 2
-
-17:19:27.685:
-num_of_tries to send the NodeID: 3
-
-17:19:27.779:
-num_of_tries to send the NodeID: 4
-
-17:19:27.872:
-ACK of Tag receivement from nodeID is missing! 
-
-17:19:49.233:
-num_of_tries to send the NodeID: 2
-17:19:49.249:
-
-
-17:19:49.343:
-num_of_tries to send the NodeID: 3
-
-17:19:49.436:
-num_of_tries to send the NodeID: 4
-
-17:19:49.530:
-ACK of Tag receivement from nodeID is missing! 
 
 17:19:50.999:
 0x2020 , 0 
@@ -1880,38 +1798,6 @@ E , 3574
 0x1C1C , 2884 
 0x5A5A , 0 
 0x6E6E , 0 
-
-17:20:24.067:
-num_of_
-17:20:24.082:
-tries to send the NodeID: 2
-
-17:20:24.192:
-num_of_tries to send the NodeID: 3
-
-17:20:24.301:
-num_of_tries to send the NodeID: 4
-
-17:20:24.410:
-ACK of Tag 
-17:20:24.426:
-receivement from nodeID is missing! 
-
-17:20:37.818:
-num_of_tries to send the NodeID: 2
-
-17:20:37.927:
-num_of_tries to s
-17:20:37.943:
-end the NodeID: 3
-
-17:20:38.052:
-num_of_tries to send the NodeID: 4
-
-17:20:38.162:
-ACK of
-17:20:38.177:
- Tag receivement from nodeID is missing! 
 
 17:20:48.210:
 0x2020 , 0 

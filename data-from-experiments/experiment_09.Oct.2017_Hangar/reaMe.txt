@@ -5,3 +5,6 @@
     %     locations fixed: x2(0,0)  x3(-6,0) for v1
 
 I chssoing version2 since it is more easy for me to recover the experiment scenario
+
+
+3rd 4th data are not processed yet, sentences to be deleted
