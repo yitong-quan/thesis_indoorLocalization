@@ -292,40 +292,6 @@ C , 6524
 0x5A5A , 6935 
 0x6E6E , 5243 
 
-14:42:03.462:
-num_of_tries to send the NodeID: 2
-
-14:42:03.584:
-num_of_tries to send the NodeID: 3
-
-14:42:03.700:
-num_of_tries to send the N
-14:42:03.716:
-odeID: 4
-
-14:42:03.832:
-ACK of Tag receivement from nodeID is missing! 
-
-14:42:04.348:
-num_of
-14:42:04.364:
-_tries to send the NodeID: 2
-
-14:42:04.485:
-num_of_trie
-14:42:04.501:
-s to send the NodeID: 3
-
-14:42:04.602:
-num_of_tries to 
-14:42:04.617:
-send the NodeID: 4
-
-14:42:04.733:
-ACK of Tag receivement
-14:42:04.749:
- from nodeID is missing! 
-
 14:42:09.894:
 0x2020 , -291 
 0x3E3E , -218 

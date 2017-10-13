@@ -39,6 +39,12 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     switch experimentNumber
         case 1
             data = importdata('data_t_dist_1st_tagOnCircleCenter.mat');
+        case 2
+            data = importdata('data_t_dist_2nd_tag_beginFromCenter2_0x2_0x3_back_from_0x1.mat');
+        case 3
+            data = importdata('dist_3rd_tag_beginFromCenter2_0x2_0x3_back_from_0x1_up_down.mat');
+        case 4
+            data = importdata('dist_4th_8shape.mat');
         otherwise
             warning('please specify the experiment number #')
     end
@@ -70,7 +76,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     % measurements_data_noisy = repmat([sqrt(50^2 + 50^2); sqrt(100^2 + 50^2); sqrt(100^2 + 100^2); sqrt(50^2 + 100^2)], 1, size(measurements_data_noisy, 2));  
 %}
     %% initiation
-    x_0 = [circle_center, 1, 1]';
+    x_0 = [circle_center, 0.1, 0.1]';
     P_0 = eye(4, 4); % TODO, choose to be all one, a litle too big, but it should converge at the end if the KF work 
 
     % control-input model matrix(control matrix) B, control-input(control vector) is zero
@@ -146,13 +152,13 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
  %}   
     % measurement noise covariance R
     %R_all = factor_R * eye(nodes_Nums);
-    R_all = factor_R * diag(([3.900095115, 3.83763106, 4.0818845734, 2.7939164184, 2.9198114402]/100).^2); % base on calibration analysis; TODO
+    R_all = factor_R * diag(([24.70555794, 29.76394171, 28.30651397, 27.9094253, 21.65470671]/1000).^2); % base on calibration analysis; TODO
     % TODO, correct Q & R, they are square matrices
 
     % H matrix
     syms N_xy x_m Z_e
     numNodes = nodes_Nums; % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    N_x_n = sym('N_x_n%d%d', [2 numNodes]); % posNodes %[n_x1 n_x2 n_x3; n_y1 n_y2 n_y3]. i.e. 'N_x_n21' means the y_posi of the ist node 
+    N_x_n = sym('N_x_n%d%d', [2 numNodes]); % posNodes %[n_x1 n_x2 n_x3; n_y1 n_y2 n_y3]. i.e. 'N_x_n21' means the y_posi of the 1st node 
     x_m = sym('x_m%d', [4 1]); % time_updated state vector
     Z_e_all = [     % Z_e: expected measurements (all nodes are presented)
                 sqrt( (N_x_n(1,1) - x_m(1))^2 + (N_x_n(2,1) - x_m(2))^2 );
@@ -171,8 +177,34 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     % K = zeros(4, nodes_Nums, size(measurements_data_noisy,2)); % Kalman Gain matrix
     X(:, 1) = x_0;
     P(:, :, 1) = P_0;
-
     z_all = measurements_data_noisy;
+    
+    figure;    hold on;
+    switch experimentNumber
+        case 1
+            %{--only for experiment 1: plot the circle base on the optical measurements,
+            %--base on which the certen of the circle for experi 2&3 is (1000, 4750)
+            % optical_measurement = [4250, 5910, 4730, 4670, 5570];
+            %     for i = 1 : size(positionOfNodes, 2)
+            %         h(i) = plotCircle(positionOfNodes(1, i), positionOfNodes(2, i), ...
+            %             optical_measurement(i), 0*pi, 2*pi); % 0, 2*pi); %
+            %}     end
+            % just plot the circle center
+            plot(circle_center(1), circle_center(2), '*');
+        case 2
+            %plot the circle centered in (1000, 4750) which
+            %is the traj of experi_2 & traj_projection of experi_3
+            plot(circle_center(1), circle_center(2), '*');
+            plot(circle_x, circle_y,'-');
+        case 3
+            plot(circle_center(1), circle_center(2), '*');
+            plot(circle_x, circle_y,'-');
+        case 4
+            plot(circle_center(1), circle_center(2), '*');
+        otherwise
+            warning('please specify the experiment number #')
+    end
+    plot(positionOfNodes(1,:), positionOfNodes(2,:), 'd');
 %{
     if measurements_missing % here each colimn misses a certain numbers of data
         % delete(replaced with NaN) randomly some elements in each column to simulate missing data
@@ -268,10 +300,11 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
 %% plot position on map 
 % for loop here can be removed, only used to collapse the code
     for i = 1:1
-        h = figure;
-        plot(X(1,:), X(2,:), '-ob');
+        %h = figure;
+        h = plot(X(1,:), X(2,:), 'ob');
         % load real positions
-%         real_X = importdata('..\..\trajectory\goodTraj01\position01.mat'); 
+        %{
+        % real_X = importdata('..\..\trajectory\goodTraj01\position01.mat'); 
         hold on;plot(real_X(1,:), real_X(2,:), '-+r');
         % calculate the mis_match of the estimation of EKF
         % TODO: how to determine the performance of the EKF, should P also be taken into account?
@@ -282,7 +315,12 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         title(str);
         str = [str, '   .fig'];
         savefig(h,str);
+        %}
     end
-
-
+    
+    for j = 10:size(X,2)
+        h2 = plot(X(1,j-9:j), X(2,j-9:j), '-+r');
+        pause(0.15);
+        delete(h2);
+    end
 end

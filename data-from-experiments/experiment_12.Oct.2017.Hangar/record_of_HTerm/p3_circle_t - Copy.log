@@ -983,34 +983,18 @@ C1C , 5990
 0x6E6E , 2931 
 
 14:49:32.799:
-num_of_tries to send the NodeID: 2
-
-14:49:32.915:
-num_of_tries to send the NodeID: 3
-
-14:49:33.031:
-num_of_tries to send the NodeID: 4
-
-14:49:33.131:
-ACK of Tag receivement from nodeID is m
-14:49:33.147:
-issing! 
+0x2020 , 0 
+0x3E3E , 0 
+0x1C1C , 0 
+0x5A5A , 0 
+0x6E6E , 0 
 
 14:49:33.631:
-num_of_tries to send the NodeID: 2
-
-14:49:33.753:
-num_of_tries to send the NodeID: 3
-
-14:49:33.851:
-num_of_trie
-14:49:33.854:
-s to send the NodeID: 4
-
-14:49:33.953:
-ACK of Tag receivement fr
-14:49:33.969:
-om nodeID is missing! 
+0x2020 , 0 
+0x3E3E , 0 
+0x1C1C , 0 
+0x5A5A , 0 
+0x6E6E , 0 
 
 14:49:34.554:
 0x2020 , 5732 
@@ -1291,20 +1275,11 @@ A , 6983
 0x6E6E , 8044 
 
 14:50:08.561:
-num_of_tries to send the NodeID: 2
-
-14:50:08.630:
-num_of_tries to send the Nod
-14:50:08.646:
-eID: 3
-
-14:50:08.762:
-num_of_tries to send the NodeID: 4
-
-14:50:08.862:
-ACK of Tag rec
-14:50:08.877:
-eivement from nodeID is missing! 
+0x2020 , 0 
+0x3E3E , 0 
+0x1C1C , 0 
+0x5A5A , 0 
+0x6E6E , 0 
 
 14:50:09.831:
 0x2020 , -291 

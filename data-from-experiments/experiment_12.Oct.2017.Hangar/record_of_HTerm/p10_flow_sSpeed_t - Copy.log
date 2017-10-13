@@ -343,16 +343,11 @@ C1C , 5173
 0x6E6E , 7243 
 
 15:59:14.858:
-num_of_tries to send the NodeID: 2
-
-15:59:14.974:
-num_of_tries to send the NodeID: 3
-
-15:59:15.096:
-num_of_tries to send the NodeID: 4
-
-15:59:15.228:
-ACK of Tag receivement from nodeID is missing! 
+0x2020 , 0 
+0x3E3E , 0 
+0x1C1C , 0 
+0x5A5A , 0 
+0x6E6E , 0 
 
 15:59:17.900:
 0x2020 , -291 

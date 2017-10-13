@@ -152,7 +152,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
  %}   
     % measurement noise covariance R
     %R_all = factor_R * eye(nodes_Nums);
-    R_all = factor_R * diag(([3.900095115, 3.83763106, 4.0818845734, 2.7939164184, 2.9198114402]/100).^2); % base on calibration analysis; TODO
+    R_all = factor_R * diag(([24.70555794, 29.76394171, 28.30651397, 27.9094253, 21.65470671]/1000).^2); % base on calibration analysis; TODO
     % TODO, correct Q & R, they are square matrices
 
     % H matrix
@@ -179,7 +179,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     P(:, :, 1) = P_0;
     z_all = measurements_data_noisy;
     
-    figure;
+    figure;    hold on;
     switch experimentNumber
         case 1
             %{--only for experiment 1: plot the circle base on the optical measurements,
@@ -190,21 +190,20 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
             %             optical_measurement(i), 0*pi, 2*pi); % 0, 2*pi); %
             %}     end
             % just plot the circle center
-            plot(circle_center(1), circle_center(2), '+');
+            plot(circle_center(1), circle_center(2), '*');
         case 2
             %plot the circle centered in (1000, 4750) which
             %is the traj of experi_2 & traj_projection of experi_3
-            plot(circle_center(1), circle_center(2), '+');
-            plot(circle_x, circle_y,'-+');
+            plot(circle_center(1), circle_center(2), '*');
+            plot(circle_x, circle_y,'-');
         case 3
-            plot(circle_center(1), circle_center(2), '+');
-            plot(circle_x, circle_y,'-+');
+            plot(circle_center(1), circle_center(2), '*');
+            plot(circle_x, circle_y,'-');
         case 4
-            plot(circle_center(1), circle_center(2), '+');
+            plot(circle_center(1), circle_center(2), '*');
         otherwise
             warning('please specify the experiment number #')
     end
-    hold on;
     plot(positionOfNodes(1,:), positionOfNodes(2,:), 'd');
 %{
     if measurements_missing % here each colimn misses a certain numbers of data
@@ -302,7 +301,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
 % for loop here can be removed, only used to collapse the code
     for i = 1:1
         %h = figure;
-        plot(X(1,:), X(2,:), '-ob');
+        h = plot(X(1,:), X(2,:), 'ob');
         % load real positions
         %{
         % real_X = importdata('..\..\trajectory\goodTraj01\position01.mat'); 
@@ -318,6 +317,10 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         savefig(h,str);
         %}
     end
-
-
+    
+    for j = 10:size(X,2)
+        h2 = plot(X(1,j-9:j), X(2,j-9:j), '-+r');
+        pause(0.15);
+        delete(h2);
+    end
 end
