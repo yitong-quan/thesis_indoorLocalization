@@ -26,53 +26,90 @@
 %     end
 %}
 %%
-clear;
-experimentNum = 01.1;
+function data_format_refine_HTerm(experiNumber)
+experimentNum = double(experiNumber);
 last_time = '00:00:00.000:';
 
 switch experimentNum
-    case 01
-        fileID_r = fopen('1-CENTER_t - Copy.log', 'r');
-        fileID_w =fopen('1-CENTER_t - Copy_refined.log', 'w');   
-    case 01.1
-        fileID_r = fopen('1.1-CENTER_t - Copy.log', 'r');
-        fileID_w =fopen('1.1-CENTER_t - Copy_refined.log', 'w'); 
-    case 1
-        fileID_r = fopen('p1_circle_t - Copy.log', 'r');
-        fileID_w =fopen('p1_circle_t - Copy_refined.log', 'w');
-    case 3
-        fileID_r = fopen('p3_circle_t - Copy.log', 'r');
-        fileID_w =fopen('p3_circle_t - Copy_refined.log', 'w');
-    case 4
-        fileID_r = fopen('p4_circle_t - Copy.log', 'r');
-        fileID_w =fopen('p4_circle_t - Copy_refined.log', 'w');
-    case 5
-        fileID_r = fopen('p5_acht_t - Copy.log', 'r');
-        fileID_w =fopen('p5_acht_t - Copy_refined.log', 'w');
-    case 6
-        fileID_r = fopen('p6_acht_slow_t - Copy.log', 'r');
-        fileID_w =fopen('p6_acht_slow_t - Copy_refined.log', 'w');
-    case 7
-        fileID_r = fopen('p7_random_mSpeed_t - Copy.log', 'r');
-        fileID_w =fopen('p7_random_mSpeed_t - Copy_refined.log', 'w');
-    case 8
-        fileID_r = fopen('p8_random_sSpeed_t - Copy.log', 'r');
-        fileID_w =fopen('p8_random_sSpeed_t - Copy_refined.log', 'w');
-    case 9
-        fileID_r = fopen('p9_random_fSpeed_t - Copy.log', 'r');
-        fileID_w =fopen('p9_random_fSpeed_t - Copy_refined.log', 'w');
-    case 10
-        fileID_r = fopen('p10_flow_sSpeed_t - Copy.log', 'r');
-        fileID_w =fopen('p10_flow_sSpeed_t - Copy_refined.log', 'w');
-    case 11
-        fileID_r = fopen('p11_3d_random_t - Copy.log', 'r');
-        fileID_w =fopen('p11_3d_random_t - Copy_refined.log', 'w');
-    case 14
-        fileID_r = fopen('p14_random_sSpeed_t - Copy.log', 'r');
-        fileID_w =fopen('p14_random_sSpeed_t - Copy_refined.log', 'w');
+    case 1.1
+        string = '1C1C_1m_t';
+    case 1.2
+        string = '1C1C_2m_t';
+    case 1.3
+        string = '1C1C_3m_t';
+    case 1.4
+        string = '1C1C_4m_t';
+    case 1.5
+        string = '1C1C_5m_t';
+    case 1.6
+        string = '1C1C_6m_t';
+    case 1.7
+        string = '1C1C_7m_t';        
+    case 2.1
+        string = '2020_1m_t';
+    case 2.2
+        string = '2020_2m_t';
+    case 2.3
+        string = '2020_3m_t';
+    case 2.4
+        string = '2020_4m_t';
+    case 2.5
+        string = '2020_5m_t';
+    case 2.6
+        string = '2020_6m_t';
+    case 2.7
+        string = '2020_7m_t';        
+    case 3.1
+        string = '3E3E_1m_t';
+    case 3.2
+        string = '3E3E_2m_t';
+    case 3.3
+        string = '3E3E_3m_t';
+    case 3.4
+        string = '3E3E_4m_t';
+    case 3.5
+        string = '3E3E_5m_t';
+    case 3.6
+        string = '3E3E_6m_t';
+    case 3.7
+        string = '3E3E_7m_t';        
+    case 5.1
+        string = '5A5A_1m_t';
+    case 5.2
+        string = '5A5A_2m_t';
+    case 5.3
+        string = '5A5A_3m_t';
+    case 5.4
+        string = '5A5A_4m_t';
+    case 5.5
+        string = '5A5A_5m_t';
+    case 5.6
+        string = '5A5A_6m_t';
+    case 5.7
+        string = '5A5A_7m_t';        
+    case 6.1
+        string = '6E6E_1m_t';
+    case 6.2
+        string = '6E6E_2m_t';
+    case 6.3
+        string = '6E6E_3m_t';
+    case 6.4
+        string = '6E6E_4m_t';
+    case 6.5
+        string = '6E6E_5m_t';
+    case 6.6
+        string = '6E6E_6m_t';
+    case 6.7
+        string = '6E6E_7m_t';        
     otherwise
-        warning('please specify the experiment number #')
+        warning('please specify the experiment number #');
+        return;
 end
+str = [string, ' - Copy.log'];
+fileID_r = fopen(str, 'r');
+str = [string, ' - Copy_refined.log'];
+fileID_w =fopen(str, 'w');   
+
 
 tline = fgetl(fileID_r); % format char
 time_format = '^[0-9]+:[0-9]+:[0-9]+\.[0-9]+';
@@ -106,5 +143,5 @@ while ischar(tline)
 end
 fclose(fileID_w);
 fclose(fileID_r);
-
+end
 
