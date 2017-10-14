@@ -1,15 +1,5 @@
 
 
-17:28:12.645:
-
-17:28:14.769:
-
-17:28:27.536:
-
-17:28:32.359:
-
-17:28:39.411:num_of_tries to send the NodeID: 3num_of_tries to send the NodeID: 4ACK of Tag receivement from nodeID is missing! 
-
 17:28:40.212:
 0x6E6E , -796 
 
@@ -90,22 +80,6 @@
 
 17:28:54.629:
 0x6E6E , -796 
-
-17:28:58.865:
-
-17:29:00.954:ed Node IDsHow many Nodes do you want to connect?
-
-17:29:03.342:
-
-17:29:08.299:num_of_tries to send the NodeID: 3num_of_tries to send the NodeID: 4ACK of Tag receivement from nodeID is missing! 
-
-17:29:27.925:
-
-17:29:30.029:connect?Write down the 16 bit IDs of 1 Nodes in HEX
-
-17:29:31.947:
-
-17:29:36.694:num_of_tries to send the NodeID: 3num_of_tries to send the NodeID: 4ACK of Tag receivement from nodeID is missing! 
 
 17:29:37.495:
 0x2020 , -291 

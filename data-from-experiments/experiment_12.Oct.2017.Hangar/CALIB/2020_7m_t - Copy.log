@@ -1,26 +1,3 @@
-17:28:12.645:
-ÿ
-17:28:14.769:
-Please set all used Node IDs
-How many Nodes do you want to connect?
-
-17:28:27.536:
-Write down the 16 bit IDs of 1 Nodes in HEX
-
-17:28:32.359:
-Nodes IDs are set.
-
-17:28:39.411:
-num_of_tries to send the NodeID: 2
-
-17:28:39.511:
-num_of_tries to send the NodeID: 3
-
-17:28:39.590:
-num_of_tries to send the NodeID: 4
-
-17:28:39.674:
-ACK of Tag receivement from nodeID is missing! 
 
 17:28:40.212:
 0x6E6E , -
@@ -112,61 +89,6 @@ E6E , -796
 
 17:28:54.629:
 0x6E6E , -796 
-
-17:28:58.865:
-ÿ
-17:29:00.954:
-Please set all us
-17:29:00.969:
-ed Node IDs
-How many Nodes do you want to connect?
-
-17:29:03.342:
-Please set Node number before you set the IDs
-
-17:29:08.299:
-num_of_tries to send the NodeID: 2
-
-17:29:08.383:
-num_of_tries to send the NodeID: 3
-
-17:29:08.468:
-num_of_tries to
-17:29:08.484:
- send the NodeID: 4
-
-17:29:08.568:
-ACK of Tag receivement from nodeID is missing! 
-
-17:29:27.925:
-ÿ
-17:29:30.029:
-Please set all used Node IDs
-How many Nodes do you want to 
-17:29:30.045:
-connect?
-
-17:29:30.282:
-Write down the 16 bit IDs of 1 Nodes in HEX
-
-17:29:31.947:
-Nodes IDs are set.
-
-17:29:36.694:
-num_of_tries to send the NodeID: 2
-
-17:29:36.772:
-num_
-17:29:36.794:
-of_tries to send the NodeID: 3
-
-17:29:36.873:
-num_of_tries to send the NodeID: 4
-
-17:29:36.957:
-ACK of Tag re
-17:29:36.973:
-ceivement from nodeID is missing! 
 
 17:29:37.495:
 0x2020 , -291 

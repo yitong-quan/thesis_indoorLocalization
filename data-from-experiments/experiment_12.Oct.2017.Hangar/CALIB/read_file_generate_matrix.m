@@ -90,7 +90,7 @@ switch experimentNum
     otherwise
         warning('please specify the experiment number #')
 end
-str = [string, '.log'];
+str = [string, ' - Copy_refined.log'];
 fileID = fopen(str);  
 
 %{
