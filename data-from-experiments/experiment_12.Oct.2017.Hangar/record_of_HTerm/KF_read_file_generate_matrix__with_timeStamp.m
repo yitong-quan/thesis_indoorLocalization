@@ -12,40 +12,41 @@ read i_th line >> content
     end
 %}
 %%
-clear;
-experimentNum = 01;
+function KF_read_file_generate_matrix__with_timeStamp(experiNumber)
+experimentNum = experiNumber;
 
 switch experimentNum
     case 01
-       string = '1-CENTER_t - Copy';  
+       string = '1-CENTER_t';  
     case 01.1
-        string = '1.1-CENTER_t - Copy';  
+        string = '1.1-CENTER_t';  
     case 1
-        string = 'p1_circle_t - Copy';  
+        string = 'p1_circle_t';  
     case 3
-        string = 'p3_circle_t - Copy';  
+        string = 'p3_circle_t';  
     case 4
-        string = 'p4_circle_t - Copy';  
+        string = 'p4_circle_t';  
     case 5
-        string = 'p5_acht_t - Copy';  
+        string = 'p5_acht_t';  
     case 6
-        string = 'p6_acht_slow_t - Copy';  
+        string = 'p6_acht_slow_t';  
     case 7
-        string = 'p7_random_mSpeed_t - Copy';  
+        string = 'p7_random_mSpeed_t';  
     case 8
-        string = 'p8_random_sSpeed_t - Copy';  
+        string = 'p8_random_sSpeed_t';  
     case 9
-        string = 'p9_random_fSpeed_t - Copy';  
+        string = 'p9_random_fSpeed_t';  
     case 10
-        string = 'p10_flow_sSpeed_t - Copy';  
+        string = 'p10_flow_sSpeed_t';  
     case 11
-        string = 'p11_3d_random_t - Copy';   
+        string = 'p11_3d_random_t';   
     case 14
-        string = 'p14_random_sSpeed_t - Copy';  
+        string = 'p14_random_sSpeed_t';  
     otherwise
         warning('please specify the experiment number #')
+        return
 end
-str = [string, '_refined.log'];
+str = [string, ' - Copy_refined.log'];
 fileID = fopen(str);  
 
 %{
@@ -98,8 +99,12 @@ end
 
 time_diff = diff(data_t_dist(:,1));
 %% below are use to remove dist with value of 0 (TODO or value smaller than 2000)
-data_t_dist(data_t_dist==0) = NaN;
-data_t_dist(1,1) = 0;
+d_dist = data_t_dist(:,2:end);
+d_dist(d_dist < 500) = NaN;
+data_t_dist = [data_t_dist(:,1), d_dist];
+str_data = ['data_t_dist_', string, '.mat'];
+save(str_data,'data_t_dist');
+end
 %{
 for jjj = 1:size(data_t_dist_calied,2)
     C = data_t_dist_calied(:,jjj);

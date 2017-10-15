@@ -37,8 +37,8 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     %data = importdata('data_t_dist_HT_temp_filled.mat');
     
     switch experimentNumber
-        case 1
-            data = importdata('data_t_dist_1st_tagOnCircleCenter.mat');
+        case 1.1
+            data = importdata('data_t_dist_1.1-CENTER_t.mat');
         case 2
             data = importdata('data_t_dist_2nd_tag_beginFromCenter2_0x2_0x3_back_from_0x1.mat');
         case 3

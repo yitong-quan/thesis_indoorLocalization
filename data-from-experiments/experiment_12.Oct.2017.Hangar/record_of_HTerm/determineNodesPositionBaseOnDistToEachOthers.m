@@ -3,7 +3,7 @@ if version == 2
     %% version2 ndoes oder x2, x3, x1, x5, x6
     %     locations fixed: x1(0,0)  x3(+6,0)
     P0 = rand(2,3)*100;
-    node1and3 = [0, 4.7; 0, 0];
+    node1and3 = [0, 5.12; 0, 0];
     options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','iter','MaxIterations',2000);
     [P,resnorm] = lsqnonlin(@myfun2,P0,[],[],options);
     P_all = [P(:,1), node1and3(:,2), node1and3(:,1), P(:,2), P(:,3)];
