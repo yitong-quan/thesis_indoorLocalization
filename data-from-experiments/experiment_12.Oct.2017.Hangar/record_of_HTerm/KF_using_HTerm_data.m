@@ -39,8 +39,8 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     switch experimentNumber
         case 1.1
             data = importdata('data_t_dist_1.1-CENTER_t.mat');
-        case 2
-            data = importdata('data_t_dist_2nd_tag_beginFromCenter2_0x2_0x3_back_from_0x1.mat');
+        case 1
+            data = importdata('data_t_dist_1-CENTER_t.mat');
         case 3
             data = importdata('dist_3rd_tag_beginFromCenter2_0x2_0x3_back_from_0x1_up_down.mat');
         case 4
@@ -56,12 +56,12 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     measurements_data_noisy = sqrt(measurements_data_noisy.^2 - 1.20274960392966^2);
     %}
     nodes_Nums = 5;
-    positionOfNodes = importdata('nodePos_v2_by_determineNodesPositionBaseOnDistToEachOthers.mat');
+    positionOfNodes = importdata('nodePos_by_determineNodesPositionBaseOnDistToEachOthers.mat');
     
-    circle_center = [1000, 4750]/1000; %unit from mm to m
+    circle_center = importdata('circleCenterPos_by_determineCircleCenterPositionBaseOnDistToEachOthers.mat'); %unit m
     circle_angle = [0:pi/50:2*pi];
-    circle_x = circle_center(1)+3*cos(circle_angle); %unit m
-    circle_y = circle_center(2)+3*sin(circle_angle); %unit m
+    circle_x = circle_center(1)+2.5*cos(circle_angle); %unit m
+    circle_y = circle_center(2)+2.5*sin(circle_angle); %unit m
     %{
     distances2all_abs = zeros(size(positionOfNodes, 2), size(real_X, 2));
     for i = 1 : size(positionOfNodes, 2)

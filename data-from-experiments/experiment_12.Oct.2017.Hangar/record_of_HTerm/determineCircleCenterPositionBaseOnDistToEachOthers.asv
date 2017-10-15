@@ -1,0 +1,24 @@
+
+%% version2 ndoes oder x2, x3, x1, x5, x6
+%     locations fixed: x1(0,0)  x3(+5.12,0)
+P0 = rand(2,1)*1;
+nodePositions = importdata('nodePos_by_determineNodesPositionBaseOnDistToEachOthers');
+options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','iter','MaxIterations',2000);
+[P,resnorm] = lsqnonlin(@myfun2,P0,[],[],options);
+
+%axis square;
+plot(nodePositions(1,:), nodePositions(2,:), '-d');
+hold on;
+plot(P(1,:), P(2,:), '-*');
+daspect([10,10,10]);
+
+function F = myfun2(P_center)
+nodePositions = importdata('nodePos_by_determineNodesPositionBaseOnDistToEachOthers');
+dist2eachOther = zeros(5,1);
+for i = 1:size(nodePositions,2)
+        dist2eachOther =  norm(P(:,i) - P_center) ;
+end
+% [(|P1-center|),(|P2-center|),(|P3-center|),(|P4-center|)]
+true_dist2eachOther = [4.76, 7.45, 8.74, 7.23, 5.12, 10.0, 10.89, 6.66, 10.05, 5.40]';
+F = dist2eachOther - true_dist2eachOther;
+end
