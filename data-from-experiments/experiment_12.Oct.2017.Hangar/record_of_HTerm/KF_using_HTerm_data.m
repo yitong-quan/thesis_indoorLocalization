@@ -42,13 +42,18 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         case 1
             data = importdata('data_t_dist_1-CENTER_t.mat');
         case 3
-            data = importdata('dist_3rd_tag_beginFromCenter2_0x2_0x3_back_from_0x1_up_down.mat');
+            data = importdata('data_t_dist_p3_circle_t.mat');
         case 4
-            data = importdata('dist_4th_8shape.mat');
+            data = importdata('data_t_dist_p4_circle_t.mat');
+        case 9
+            data = importdata('data_t_dist_p9_random_fSpeed_t.mat');            
         otherwise
             warning('please specify the experiment number #')
     end
     timeStamp = data(:,1); % unit second
+    time_diff = diff(timeStamp);
+    figure; 
+    plot(time_diff,'-+');
     measurements_data_noisy = data(:,2:end)';% unit mm
     measurements_data_noisy = measurements_data_noisy/1000; %unit from mm to m
     %{
@@ -76,7 +81,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     % measurements_data_noisy = repmat([sqrt(50^2 + 50^2); sqrt(100^2 + 50^2); sqrt(100^2 + 100^2); sqrt(50^2 + 100^2)], 1, size(measurements_data_noisy, 2));  
 %}
     %% initiation
-    x_0 = [circle_center, 0.1, 0.1]';
+    x_0 = [circle_center', 0.1, 0.1]';
     P_0 = eye(4, 4); % TODO, choose to be all one, a litle too big, but it should converge at the end if the KF work 
 
     % control-input model matrix(control matrix) B, control-input(control vector) is zero
@@ -181,7 +186,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     
     figure;    hold on;
     switch experimentNumber
-        case 1
+        case {1 1.1}
             %{--only for experiment 1: plot the circle base on the optical measurements,
             %--base on which the certen of the circle for experi 2&3 is (1000, 4750)
             % optical_measurement = [4250, 5910, 4730, 4670, 5570];
@@ -201,10 +206,17 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
             plot(circle_x, circle_y,'-');
         case 4
             plot(circle_center(1), circle_center(2), '*');
+            plot(circle_x, circle_y,'-');
+        case 9
+            plot(circle_center(1), circle_center(2), '*');
+            plot(circle_x, circle_y,'-');            
         otherwise
             warning('please specify the experiment number #')
     end
     plot(positionOfNodes(1,:), positionOfNodes(2,:), 'd');
+    str_title = sprintf('factorQ: %d; factorR: %d', factor_Q, factor_R);
+    title(str_title);
+    daspect([10,10,10]);
 %{
     if measurements_missing % here each colimn misses a certain numbers of data
         % delete(replaced with NaN) randomly some elements in each column to simulate missing data

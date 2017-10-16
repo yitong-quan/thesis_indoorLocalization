@@ -7,6 +7,7 @@
     [P,resnorm] = lsqnonlin(@myfun2,P0,[],[],options);
     P_all = [P(:,1), node1and3(:,2), node1and3(:,1), P(:,2), P(:,3)]; % [x2, x3, x1, x5, x6]
     %axis square;
+    figure; 
     plot(P_all(1,:), P_all(2,:), '-*');
     daspect([10,10,10]);
     
@@ -19,7 +20,11 @@
             dist2eachOther =  [dist2eachOther; norm(P(:,i) - P(:,j)) ];
         end
     end
-    % [(|P1-P2|),(|P1-P3|),(|P1-P4|),(|P1-P5|),(|P2-P3|)(|P2-P4|),(|P2-P5|),(|P3-P4|),(|P3-P5|),(|P4-P5|)]
-    true_dist2eachOther = [4.76, 7.45, 8.74, 7.23, 5.12, 10.0, 10.89, 6.66, 10.05, 5.40]';
+    %%%[(|P1-P2|),(|P1-P3|),(|P1-P4|),(|P1-P5|),(|P2-P3|)(|P2-P4|),(|P2-P5|),(|P3-P4|),(|P3-P5|),(|P4-P5|)]
+    %%without the radium of the pillar: 6cm, leads to Residual of 0.000843665
+    true_dist2eachOther = [4.76, 7.45, 8.74, 7.23, 5.12, 10.0, 10.89, 6.66, 10.05, 5.40]' ; %without the radium of the pillar
+    %%with radium of the pillar: 6cm, leads to Residual of 0.00371952
+    %true_dist2eachOther = [4.76, 7.45, 8.74, 7.23, 5.12, 10.0, 10.89, 6.66, 10.05, 5.40]' + 0.06; 
     F = dist2eachOther - true_dist2eachOther;
     end
+    

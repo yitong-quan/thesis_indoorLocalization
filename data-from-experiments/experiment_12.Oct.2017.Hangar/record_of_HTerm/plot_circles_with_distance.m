@@ -1,19 +1,23 @@
 %%  nodes oder x2, x3, x1, x5, x6
     %     locations fixed: x1(0,0)  x3(+6,0) for v2
     %     locations fixed: x2(0,0)  x3(-6,0) for v1
+    % unit mm
     
 % clear;
-experiment = 4; % [1 2 3 4]
+experiment = 1.1; % [1 2 3 4]
 
 nodesNumber = 5;
-circle_center = [1000, 4750];
+circle_center  = importdata('circleCenterPos_by_determineCircleCenterPositionBaseOnDistToEachOthers.mat');
+circle_center = 1000* circle_center;
 circle_angle = [0:pi/50:2*pi];
-circle_x = 1000+3000*cos(circle_angle);
-circle_y = 4750+3000*sin(circle_angle);
+circle_x = (circle_center(1)+1000 *2.5*cos(circle_angle)); %unit mm
+circle_y = ( circle_center(2)+1000 *2.5*sin(circle_angle)); %unit mm
 
 switch experiment
+    case 1.1
+        distances2all_abs = importdata('data_t_dist_1.1-CENTER_t.mat');    
     case 1
-        distances2all_abs = importdata('dist_1st_tagOnCircleCenter.mat');
+        distances2all_abs = importdata('data_t_dist_1-CENTER_t.mat');
     case 2
         distances2all_abs = importdata('dist_2nd_tag_beginFromCenter2_0x2_0x3_back_from_0x1.mat');
             case 3
@@ -24,18 +28,19 @@ switch experiment
         warning('please specify the experiment number #')
 end 
     
-    positionOfNodes = importdata('nodePos_v2_by_determineNodesPositionBaseOnDistToEachOthers.mat');
+    positionOfNodes = importdata('nodePos_by_determineNodesPositionBaseOnDistToEachOthers.mat');
 
 % change the unit from m to mm
 positionOfNodes = positionOfNodes*1000;
 % change the oder to adapt to the nodes oder x2, x3, x1, x5, x6
-distances2all_abs = [distances2all_abs(:,2), distances2all_abs(:,3), distances2all_abs(:,1), distances2all_abs(:,5), distances2all_abs(:,6)];
+distances2all_abs = [distances2all_abs(:,2), distances2all_abs(:,3), distances2all_abs(:,4), distances2all_abs(:,5), distances2all_abs(:,6)];
 distances2all_abs = distances2all_abs';
 %% make cross points of circles with Radius distances2all
 % make circles
 string =sprintf('experiment %d', experiment);
 figure; title(string);hold on; % axis square; axis tight;
 plot(positionOfNodes(1,:), positionOfNodes(2,:), 'd');
+plot(circle_center(1,:), circle_center(2,:), '*');
 
 switch experiment
     case 1
