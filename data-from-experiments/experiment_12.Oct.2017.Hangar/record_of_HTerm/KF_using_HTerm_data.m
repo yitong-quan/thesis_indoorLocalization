@@ -289,7 +289,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
             end
             k = k-1;
         end
-        if length(z) == 0 % if no measurements are coming, skip the measurement update step
+        if isempty(z) % if no measurements are coming, skip the measurement update step
             X(:, i) = x_minus;
             P(:, :, i) = P_minus;
         else
@@ -330,9 +330,9 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         %}
     end
     
-    for j = 10:size(X,2)
-        h2 = plot(X(1,j-9:j), X(2,j-9:j), '-+r');
-        pause(0.15);
+    for j = 5:size(X,2) %1:size(X,2)-9 
+        h2 = plot(X(1,j-4:j), X(2,j-4:j), '-+r'); %h2 = plot(X(1,j:j+9), X(2,j:j+9), '-+r'); 
+        pause([time_diff(j), 2]);
         delete(h2);
     end
 end
