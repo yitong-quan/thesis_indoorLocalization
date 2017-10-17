@@ -352,7 +352,13 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
 	pause_time = 0.2*[time_diff; 2];
     for j = 5:size(X,2) %1:size(X,2)-9 
         h2 = plot(X(1,j-4:j), X(2,j-4:j), '-+r'); %h2 = plot(X(1,j:j+9), X(2,j:j+9), '-+r'); 
+        Fram(j-4) = getframe(gcf);
         pause(pause_time(j));
         delete(h2);
     end
+    video_str = ['video_ekf_experiment', num2str(experimentNumber), '.avi'];
+    video = VideoWriter(video_str);
+    open(video)
+    writeVideo(video, Fram)
+    close(video)
 end
