@@ -232,7 +232,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         otherwise
             warning('please specify the experiment number #')
     end
-    plot(positionOfNodes(1,:), positionOfNodes(2,:), 'd');
+    plot(positionOfNodes(1,:), positionOfNodes(2,:), 'rd');
     str_title = sprintf('experiment%d; factorQ: %d; factorR: %d', experimentNumber, factor_Q, factor_R);
     title(str_title);
     daspect([10,10,10]);
@@ -348,6 +348,9 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         savefig(h,str);
         %}
     end
+    mat_str = ['estimated_posi_with_timeSt_EKF_experi',  num2str(experimentNumber), '.mat'];
+    estimated_posi_with_timeSt = [X; timeStamp'];
+    save(mat_str, 'estimated_posi_with_timeSt');
     
 	pause_time = 0.2*[time_diff; 2];
     for j = 5:size(X,2) %1:size(X,2)-9 
