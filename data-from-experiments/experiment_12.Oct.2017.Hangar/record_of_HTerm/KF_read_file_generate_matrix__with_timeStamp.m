@@ -16,9 +16,9 @@ function KF_read_file_generate_matrix__with_timeStamp(experiNumber)
 experimentNum = experiNumber;
 
 switch experimentNum
-    case 01
+    case 0.1
        string = '1-CENTER_t';  
-    case 01.1
+    case 0.11
         string = '1.1-CENTER_t';  
     case 1
         string = 'p1_circle_t';  

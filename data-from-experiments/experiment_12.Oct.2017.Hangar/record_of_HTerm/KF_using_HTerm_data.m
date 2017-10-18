@@ -37,10 +37,12 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     %data = importdata('data_t_dist_HT_temp_filled.mat');
     
     switch experimentNumber
-        case 1.1
+        case 0.11
             data = importdata('data_t_dist_1.1-CENTER_t.mat');
-        case 1
+        case 0.1
             data = importdata('data_t_dist_1-CENTER_t.mat');
+        case 1
+            data = importdata('data_t_dist_p1_circle_t.mat');            
         case 3
             data = importdata('data_t_dist_p3_circle_t.mat');
         case 4
@@ -205,7 +207,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     
     figure;    hold on;
     switch experimentNumber
-        case {1 1.1}
+        case {0.1 0.11}
             %{--only for experiment 1: plot the circle base on the optical measurements,
             %--base on which the certen of the circle for experi 2&3 is (1000, 4750)
             % optical_measurement = [4250, 5910, 4730, 4670, 5570];
@@ -215,6 +217,9 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
             %}     end
             % just plot the circle center
             plot(circle_center(1), circle_center(2), '*');
+        case 1
+            plot(circle_center(1), circle_center(2), '*');
+            plot(circle_x, circle_y,'-');            
         case 2
             %plot the circle centered in (1000, 4750) which
             %is the traj of experi_2 & traj_projection of experi_3
