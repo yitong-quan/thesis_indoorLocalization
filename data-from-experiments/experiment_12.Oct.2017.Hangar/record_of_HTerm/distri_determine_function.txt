@@ -1,0 +1,19 @@
+matlab function:
+
+lillietest
+	vector x comes from a distribution in the normal family
+
+jbtest
+	x comes from a normal distribution with an unknown mean and variance
+
+kstest
+	x comes from a standard normal distribution
+
+vartest(x,v)
+	x comes from a normal distribution with variance v
+
+ttest
+	x comes from a normal distribution with mean equal to zero and unknown variance
+
+ztest(x,m,sigma)
+	comes from a normal distribution with mean m and a standard deviation sigma

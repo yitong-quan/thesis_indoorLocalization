@@ -73,7 +73,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     str_title0 = sprintf('experiment%d  Time Difference', experimentNumber);
     title(str_title0);
     ylabel('time difference(s)'); xlabel('step');
-    plot_str = ['time_diff_experi', num2str(experimentNumber), '.fig'];
+    plot_str = ['time_diff_each_experi/time_diff_experi', num2str(experimentNumber), '.fig'];
     savefig(h0, plot_str);
     measurements_data_noisy = data(:,2:end)';% unit mm
     measurements_data_noisy = measurements_data_noisy/1000; %unit from mm to m
@@ -364,7 +364,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         pause(pause_time(j));
         delete(h2);
     end
-    video_str = ['video_ekf_experiment', num2str(experimentNumber), '.avi'];
+    video_str = ['1video_ekf_experiment', num2str(experimentNumber), '.avi'];
     video = VideoWriter(video_str);
     open(video)
     writeVideo(video, Fram)
