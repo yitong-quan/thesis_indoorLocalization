@@ -1,0 +1,7 @@
+% result
+% XXXXX lillie test rejects
+% ----------   jb test DONT rejects
+% XXXXX  t test rejects
+% XXXXX  var test rejects
+% ----------   z test DONT rejects
+% XXXXX  ks test rejects
