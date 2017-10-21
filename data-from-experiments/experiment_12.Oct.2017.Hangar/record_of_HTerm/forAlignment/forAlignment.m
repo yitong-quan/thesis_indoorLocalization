@@ -1,11 +1,11 @@
 clear
 %% calculate the translateion matrix R and T
-expNum = 1;
+expNum = 4;
 
 str_ekf = ['../estimated_posi_with_timeSt_EKF_experi', num2str(expNum), '.mat'];
 data_ekf = importdata(str_ekf);
-% str_US = ['../../record_of_ultra_sound_system/positionBeforeMakedBetterFromJoan/mat_positions', num2str(expNum), '.mat'];
-str_US = ['../../record_of_ultra_sound_system/positionsBetterFromJoan/mat_positions', num2str(expNum), '.mat'];
+str_US = ['../../record_of_ultra_sound_system/positionBeforeMakedBetterFromJoan/mat_positions', num2str(expNum), '.mat'];
+% str_US = ['../../record_of_ultra_sound_system/positionsBetterFromJoan/mat_positions', num2str(expNum), '.mat'];
 data_US = importdata(str_US);
 data_US = data_US';
 % replace outliar with the closest 'correct' position
@@ -45,6 +45,13 @@ figure; hold on;
 title_stri = ['exp', num2str(expNum), ' comparision of EKF and USS'];
 title(title_stri);
 plot(afterRT_data_US_trimed(1,:), afterRT_data_US_trimed(2,:), 'b+');
+% plot the circle 
+circle_center = importdata('../circleCenterPos_by_determineCircleCenterPositionBaseOnDistToEachOthers.mat');
+circle_angle = [0:pi/50:2*pi];
+circle_x = circle_center(1)+2.5*cos(circle_angle); %unit m
+circle_y = circle_center(2)+2.5*sin(circle_angle); %unit m
+plot(circle_x,circle_y, 'g');
+        daspect([10,10,10]);
 time_diff = diff(data_ekf(5,:))'; % unit second
 pause(3);
 	pause_time = 0.002*[time_diff; 2];
@@ -53,7 +60,8 @@ pause(3);
         h3 = plot(afterRT_data_US_trimed(1,j-4:j), afterRT_data_US_trimed(2,j-4:j), '-ob');
         hold on;
         h2 = plot(data_ekf(1,j-4:j), data_ekf(2,j-4:j), '-or'); %h2 = plot(X(1,j:j+9), X(2,j:j+9), '-+r');
-        legend('USS loc', 'USS', 'EKF');
+        legend('USS loc', 'circle marker', 'USS', 'EKF');
+
         Fram(j-4) = getframe(gcf);
         
         % pause(pause_time(j));
@@ -71,10 +79,10 @@ pause(3);
 % afterRT = R0 * nodes_optimal + t0;
 function F = myfun(x)
 
-expNum = 3;
+expNum = 4;
 str_ekf = ['../estimated_posi_with_timeSt_EKF_experi', num2str(expNum), '.mat'];
-% str_US = ['../../record_of_ultra_sound_system/positionBeforeMakedBetterFromJoan/mat_positions', num2str(expNum), '.mat'];
-str_US = ['../../record_of_ultra_sound_system/positionsBetterFromJoan/mat_positions', num2str(expNum), '.mat'];
+str_US = ['../../record_of_ultra_sound_system/positionBeforeMakedBetterFromJoan/mat_positions', num2str(expNum), '.mat'];
+% str_US = ['../../record_of_ultra_sound_system/positionsBetterFromJoan/mat_positions', num2str(expNum), '.mat'];
 
 data_ekf = importdata(str_ekf);
 data_US = importdata(str_US);
