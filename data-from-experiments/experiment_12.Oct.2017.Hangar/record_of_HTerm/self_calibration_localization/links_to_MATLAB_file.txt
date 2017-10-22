@@ -1,3 +1,3 @@
-calibration free please run the following file
+for original calibration free please run the following file
 
 D:\Yitong\GitHub\thesis_indoorLocalization\Calibration-Free Localization\cali_free_lsqnonlin_importDistData.m

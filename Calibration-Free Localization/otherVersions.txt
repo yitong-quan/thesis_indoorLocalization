@@ -1,0 +1,4 @@
+other Version
+
+FOR experiment in Hangar 12.Oct
+C:\Users\Yitong\Documents\GitHub\thesis_indoorLocalization\data-from-experiments\experiment_12.Oct.2017.Hangar\record_of_HTerm\self_calibration_localization\cali_free_lsqnonlin_importDistData_12octHangar.m
