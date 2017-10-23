@@ -22,9 +22,6 @@ end
 % data with the row_index of timeStampNeed_data_US
 data_US_trimed = data_US(:,timeStampNeed_data_US);
 
-%R0 = zeros(2);
-% theta = 0;
-% t0 = zeros(2,1);
 % M0 = [ [cos(theta), -sin(theta); sin(theta), cos(theta)], t0];
 x0 = 100*rand(1,3); % M = [theta, t1, t2]
 options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','iter','MaxIterations',2000);
@@ -32,13 +29,19 @@ options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','i
 M = [ [cos(x(1)), -sin(x(1)); sin(x(1)), cos(x(1))], x(2:3)'];
 %% plot the location of EKF and the location of the USS
 afterRT_data_US_trimed = M(:,[1,2]) * data_US_trimed(2:3,:) + M(:,end);
-figure; plot(data_ekf(1,:), data_ekf(2,:),'r-o'); hold on;
+h1 = figure; plot(data_ekf(1,:), data_ekf(2,:),'r-o'); hold on;
 plot(afterRT_data_US_trimed(1,:), afterRT_data_US_trimed(2,:), 'b-+');
-plot(data_US_trimed(2,:), data_US_trimed(3,:), 'g-+');
- legend('EKF', 'USS trimed', 'USS trimed RT');
+% plot(data_US_trimed(2,:), data_US_trimed(3,:), 'g-+'); no need to plot the original position of Assist-data
+legend('UWB', 'Assist');
 title_stri = ['exp', num2str(expNum), '  theta=', num2str(x(1)), '  t1=', num2str(x(2)), '  t2=', num2str(x(3))];
 title(title_stri);
 daspect([10,10,10]);
+if expNum == 4
+    savefig(h1, 'beforeBetterFromJoan\new_compari_exp4.fig');
+else
+    str_fig = ['afterBetterFromJoan\new_compari_exp', num2str(expNum), '.fig'];
+    savefig(h1, str_fig);
+end    
 
 %% plot the traj of EKF(moving) and the location of the USS(after RT)
 figure; hold on;
@@ -60,7 +63,7 @@ pause(3);
         h3 = plot(afterRT_data_US_trimed(1,j-4:j), afterRT_data_US_trimed(2,j-4:j), '-ob');
         hold on;
         h2 = plot(data_ekf(1,j-4:j), data_ekf(2,j-4:j), '-or'); %h2 = plot(X(1,j:j+9), X(2,j:j+9), '-+r');
-        legend('USS loc', 'circle marker', 'USS', 'EKF');
+        legend('Assist traj', 'circle marker', 'Assist', 'UWB');
 
         Fram(j-4) = getframe(gcf);
         
