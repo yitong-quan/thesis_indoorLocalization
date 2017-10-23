@@ -55,6 +55,7 @@ for ii = 1:6
     str = sprintf('experi: %d;   x num:%d;   resnorm %0.4e ', expNum, x_num, resnorm_opt);
     title(str);
     legend('Tag traj', 'Node');
+    daspect([10,10,10]);
     
     x0 = x + 10*rand(size(x));
 end

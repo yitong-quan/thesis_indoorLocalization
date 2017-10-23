@@ -1,0 +1,1 @@
+remember to record the position of the node using the USS (and the UWB)
