@@ -21,21 +21,7 @@ or 100, for missing with a pattern, 1st, 2nd, 3rd, 4th, 1st, 2nd, 3rd...
 %%
 function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumber) %, measurements_missing, MaxNumMeasMissedWithinSet, traj_name
     format longG
-%{    
-%     %% import measuremnets data from recording
-%     %measurements_data_noisy = importdata('..\..\trajectory\goodTraj01\noisy_measuremnts_data2.mat'); % load noisy_measurements
-%     distances2all_abs = importdata('..\..\trajectory\goodTraj01\distances2all_abs_without_noise.mat'); % load measurements without noise
-%     rng(1,'twister');s = rng;rng(s); % Save and Restore the Generator Settings, this make the measurements_data_noisy will always be the same
-%     measurements_data_noisy = distances2all_abs + factor_R * randn(size(distances2all_abs));
-%     nodes_Nums = 4;
-%     positionOfNodes = [-5 -5; 5 -5; 5 5; -5 5]'; % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-%}
-    %% import trajectory positions & generate noisy measuremnets data
-    % file_name = ['..\..\trajectory\goodTraj' traj_name '\position' traj_name '.mat']; 
-%     file_name = ['position' traj_name '.mat']; 
-%     real_X = importdata(file_name); 
-    %data = importdata('data_t_dist_HT_temp_filled.mat');
-    
+    %% import and process original-data
     switch experimentNumber
         case 0.11
             data = importdata('data_t_dist_1.1-CENTER_t.mat');
@@ -81,6 +67,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     % substract the height, we get the horizontal distances
     measurements_data_noisy = sqrt(measurements_data_noisy.^2 - 1.20274960392966^2);
     %}
+    
     nodes_Nums = 5;
     positionOfNodes = importdata('nodePos_by_determineNodesPositionBaseOnDistToEachOthers.mat');
     
@@ -88,19 +75,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     circle_angle = [0:pi/50:2*pi];
     circle_x = circle_center(1)+2.5*cos(circle_angle); %unit m
     circle_y = circle_center(2)+2.5*sin(circle_angle); %unit m
-    %{
-    distances2all_abs = zeros(size(positionOfNodes, 2), size(real_X, 2));
-    for i = 1 : size(positionOfNodes, 2)
-        distances2each_xy = [real_X(1:2, :) - repmat(positionOfNodes(:,i), 1, size(real_X, 2))];
-        distances2each_abs = sqrt(distances2each_xy(1,:).^2 + distances2each_xy(2,:).^2);
-        distances2all_abs(i, :) = distances2each_abs;
-    end
-    rng(1,'twister');s = rng;rng(s); % Save and Restore the Generator Settings, this make the measurements_data_noisy will always be the same
-    measurements_data_noisy = distances2all_abs + factor_R * randn(size(distances2all_abs));    
-    
-   %% for small test, use a series measurements data generate when Tag stays at origin all the time
-    % measurements_data_noisy = repmat([sqrt(50^2 + 50^2); sqrt(100^2 + 50^2); sqrt(100^2 + 100^2); sqrt(50^2 + 100^2)], 1, size(measurements_data_noisy, 2));  
-%}
+
     %% initiation
     x_0 = [circle_center', 0.1, 0.1]';
     P_0 = eye(4, 4); % TODO, choose to be all one, a litle too big, but it should converge at the end if the KF work 
@@ -109,77 +84,10 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     B = ones(4, 4);
     u = zeros(4, 1);
     
-
- %{   
-    switch traj_name %sigma should be the same as the title of the traj_plot
-        case '1' 
-            sigma = 0.165;
-        case '2'
-            sigma = 0.17;
-        case '3'
-            sigma = 0.18;
-        case '4'
-            sigma = 0.185;
-        case '5'
-            sigma = 0.19;
-        case '6'
-            sigma = 0.195;
-        case '7'
-            sigma = 0.2; %TODO: not sure, need to be checked
-        case '8'
-            sigma = 0.205;
-        case '9'
-            sigma = 0.235;
-        case '10'
-            sigma = 0.215;
-        case '11'
-            sigma = 0.26;
-        case '12'
-            sigma = 0.27;%TODO: not sure, need to be checked
-        case '13'
-            sigma = 0.285;
-        case '14'
-            sigma = 0.3;
-        case '15'
-            sigma = 0.31;
-        case '16'
-            sigma = 0.335;
-        case '17'
-            sigma = 0.36;
-        case '18'
-            sigma = 0.375;
-        case '19'
-            sigma = 0.39;
-        case '20'
-            sigma = 0.415;
-        case '21'
-            sigma = 0.43;
-        case '22'
-            sigma = 0.475;
-        case '23'
-            sigma = 0.485;
-        case '24'
-            sigma = 0.625;
-        case '25'
-            sigma = 0.635;
-        case '26'
-            sigma = 0.675;
-        case '27'
-            sigma = 0.715;
-        case '28'
-            sigma = 0.855;%TODO: not sure, need to be checked
-        case '29'
-            sigma = 0.975;
-        case '30'
-            sigma = 0.985; %TODO: not sure, need to be checked                  
-        otherwise
-            error('>>>by programmer<<< !!! sigma unspecified, please check the simga value in traj_plot; <<<<<!!!!!!!<<<<< ')
-    end
- %}   
     % measurement noise covariance R
     %R_all = factor_R * eye(nodes_Nums);
     R_all = factor_R * diag(([24.70555794, 29.76394171, 28.30651397, 27.9094253, 21.65470671]/1000).^2); % base on calibration analysis; TODO
-    % TODO, correct Q & R, they are square matrices
+    %                                              TODO, correct Q & R, they are square matrices
 
     % H matrix
     syms N_xy x_m Z_e
@@ -196,7 +104,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     Z_e_all = simplify(Z_e_all);
     H_all_symbolic = simplify( jacobian(Z_e_all, x_m) ); %H_symbolic = simplify(jacobian(Z_e_all, x_m));
     
-    %% Kalman Filter
+    %% Kalman Filter initiation
      % notation symbols please check Page 30 in 'An Intro to the Kalman Filter, G. Welch G. Bishop' 
     X = zeros(4, size(measurements_data_noisy,2)); % state matrix
     P = zeros(4, 4, size(measurements_data_noisy,2)); % state covariance matrix
@@ -208,21 +116,11 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     figure;    hold on;
     switch experimentNumber
         case {0.1 0.11}
-            %{--only for experiment 1: plot the circle base on the optical measurements,
-            %--base on which the certen of the circle for experi 2&3 is (1000, 4750)
-            % optical_measurement = [4250, 5910, 4730, 4670, 5570];
-            %     for i = 1 : size(positionOfNodes, 2)
-            %         h(i) = plotCircle(positionOfNodes(1, i), positionOfNodes(2, i), ...
-            %             optical_measurement(i), 0*pi, 2*pi); % 0, 2*pi); %
-            %}     end
-            % just plot the circle center
             plot(circle_center(1), circle_center(2), '*');
         case 1
             plot(circle_center(1), circle_center(2), '*');
             plot(circle_x, circle_y,'-');            
         case 2
-            %plot the circle centered in (1000, 4750) which
-            %is the traj of experi_2 & traj_projection of experi_3
             plot(circle_center(1), circle_center(2), '*');
             plot(circle_x, circle_y,'-');
         case 3
@@ -282,11 +180,20 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
 
     end
 %}    
-    % EKF loop
+    
+    %% EKF loop
     for i = 2:size(measurements_data_noisy,2)
-        % time update
+        %% time update
         % sampling time interval
         dt = timeStamp(i) - timeStamp(i-1);
+        % adjust Q R by dt (0.91s is a threshold)
+        if dt > 0.91
+            Q_affected_by_dt = 1 + 15*(dt - 0.91);
+            R_affected_by_dt = 1 - 15*(dt -0.91);
+        else
+            Q_affected_by_dt = 1;
+            R_affected_by_dt = 1;
+        end
         % state transition model matrix A
         A = [1 0 dt 0; 0 1 0 dt; 0 0 1 0; 0 0 0 1];
         % process noise covariance Q
@@ -294,12 +201,14 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         sigma = 0.5;
         %since displacement cause by acceleration is G * sigma * randn(2,1) {acceleration is  sigma * randn(2,1)}
         Q = factor_Q * G * sigma^2 * G'; % I think the factor_Q should be deleted here.TODO: factor_Q^2 ???  factor_Q ???
+        Q = Q *Q_affected_by_dt; % adjust Q by dt
         
         x_minus= A * X(:, i - 1); %  + B * u; % TODO, think about if the accelerations should be included into state vectors
         P_minus = vpa(A * P(:, :, i-1) * A' + Q);
         
-        % measurement update
+        %% measurement update
         R = R_all;
+        R = R * R_affected_by_dt; % adjust R by dt
         Z_e = Z_e_all;
         H_symbolic = H_all_symbolic;
         z = z_all(:, i);

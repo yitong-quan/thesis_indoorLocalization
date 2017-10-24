@@ -1,10 +1,6 @@
 clear;
 close all;
-%{
-x_num = 55; %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< x_num
-nodes_num = 5; %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
-x0 = 5*rand(2,x_num);
-%}
+
 %% import data
 expNum = 3;
 switch expNum
@@ -47,25 +43,12 @@ for ii = 1:6
         x_opt = x;
         resnorm_opt = resnorm;
         resnorm_last = resnorm_opt;
-    end
-    figure;
-    axis square; hold on;
-    plot(x_opt(1,1:end-nodes_num), x_opt(2,1:end-nodes_num), 'b-*');
-    plot(x_opt(1,end-nodes_num+1:end), x_opt(2,end-nodes_num+1:end), 'r-d');
-    str = sprintf('experi: %d;   x num:%d;   resnorm %0.4e ', expNum, x_num, resnorm_opt);
-    title(str);
-    legend('Tag traj', 'Node');
-    daspect([10,10,10]);
-    
+    end    
     x0 = x + 10*rand(size(x));
 end
-% options = optimoptions(@lsqnonlin,'Algorithm','trust-region-reflective');
-% options.Algorithm = 'levenberg-marquardt';
-
-%options = optimoptions('lsqnonlin','Display','iter');
-% options.MaxFunctionEvaluations = 6000;
 resnorm_opt
-
+opt_tag = x_opt(:,1:end-nodes_num);
+opt_node = x_opt(:,end-nodes_num+1:end);
 %{
 for j = 1:nodes_num
     for i = 1:x_num-nodes_num
@@ -74,8 +57,19 @@ for j = 1:nodes_num
 end
 %}
 
-opt_tag = x_opt(:,1:end-nodes_num);
-opt_node = x_opt(:,end-nodes_num+1:end);
+%% plot the best result
+    figure;
+    hold on;
+    plot(x_opt(1,1:end-nodes_num), x_opt(2,1:end-nodes_num), 'b-*');
+    plot(x_opt(1,end-nodes_num+1:end), x_opt(2,end-nodes_num+1:end), 'r-d');
+    str = sprintf('experi: %d;   x num:%d;   resnorm %0.4e ', expNum, x_num, resnorm_opt);
+    title(str);
+    legend('Tag traj', 'Node');
+    daspect([10,10,10]);
+
+
+
+
 % [x,resnorm] = lsqnonlin(@myfun,x0);
 % x_xy = [x(1:length(x)/2); x(length(x)/2+1:end)];
 % x_xy
