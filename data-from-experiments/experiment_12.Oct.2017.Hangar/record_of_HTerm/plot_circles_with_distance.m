@@ -4,7 +4,7 @@
     % unit mm
     
 % clear;
-experiment = 1.1; % [1 2 3 4]
+experiment = 4; % [1.1 1 2 3 4]
 
 nodesNumber = 5;
 circle_center  = importdata('circleCenterPos_by_determineCircleCenterPositionBaseOnDistToEachOthers.mat');
@@ -23,7 +23,7 @@ switch experiment
             case 3
         distances2all_abs = importdata('dist_3rd_tag_beginFromCenter2_0x2_0x3_back_from_0x1_up_down.mat');
     case 4
-        distances2all_abs = importdata('dist_4th_8shape.mat');
+        distances2all_abs = importdata('data_t_dist_p4_circle_t.mat');
     otherwise
         warning('please specify the experiment number #')
 end 
@@ -63,6 +63,7 @@ switch experiment
         plot(circle_x, circle_y,'-+');        
     case 4
         plot(circle_center(1), circle_center(2), '+');
+        plot(circle_x, circle_y,'-+');    
     otherwise
         warning('please specify the experiment number #')
 end
@@ -81,6 +82,8 @@ for j = 1:size(distances2all_abs, 2)
     end
     axis square; axis tight;
     xlim([-5000 6000]); ylim([-1000 11000]);  
+    string =sprintf('j %d, experiment %d', j, experiment);
+    title(string);
     pause(0.15);
     delete(h); %delete(h_1);
 end

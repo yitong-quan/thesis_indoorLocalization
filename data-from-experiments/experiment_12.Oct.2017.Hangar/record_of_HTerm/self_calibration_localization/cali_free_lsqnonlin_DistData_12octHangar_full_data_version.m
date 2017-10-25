@@ -30,7 +30,8 @@ end
 % end
 % dist_data = dat_t_dist_trimed(:,2:end);
 %}
-dist_data = dat_t_dist(:,2:end);
+%dist_data = dat_t_dist(:,2:end);
+dist_data = dat_t_dist(50:200,2:end);
 dist_data = dist_data/1000; % unit from mm to m
 tag_num = size(dist_data,1); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
 nodes_num = size(dist_data,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
@@ -39,7 +40,7 @@ x0 = 1*rand(2,x_num);
 %% optimization
 resnorm_last = inf;
 options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','iter','MaxIterations',2000);
-for ii = 1:6
+for ii = 1:3
     [x,resnorm] = lsqnonlin(@myfun,x0,[],[],options);
     if resnorm < resnorm_last
         x_opt = x;
@@ -110,7 +111,8 @@ end
 %     end
 %     dist_data_inside_func = dat_t_dist_trimed_inside_func(:,2:end);
 %}     
-    dist_data_inside_func = dat_t_dist_inside_func(:,2:end);    
+    % dist_data_inside_func = dat_t_dist_inside_func(:,2:end);  
+    dist_data_inside_func = dat_t_dist_inside_func(50:200,2:end);    
 
     dist_data_inside_func = dist_data_inside_func/1000; % unit from mm to m
     tag_num = size(dist_data_inside_func,1); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
