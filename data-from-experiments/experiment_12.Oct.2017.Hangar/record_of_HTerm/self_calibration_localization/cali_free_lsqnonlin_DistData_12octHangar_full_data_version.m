@@ -35,7 +35,7 @@ dist_data = dist_data/1000; % unit from mm to m
 tag_num = size(dist_data,1); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
 nodes_num = size(dist_data,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
 x_num = tag_num + nodes_num;
-x0 = 10*rand(2,x_num);
+x0 = 1*rand(2,x_num);
 %% optimization
 resnorm_last = inf;
 options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','iter','MaxIterations',2000);
@@ -127,16 +127,28 @@ end
         end
     end
 
-F = zeros(size(dist_data_inside_func, 1), 1);
- for i = size(dist_data_inside_func, 1)
-    dist_this_tag_point = zeros(size(dist_data_inside_func, 2), 1);
-    for j = size(dist_data_inside_func, 2)
-        if ~ isnan(dist_data_inside_func(i,j))
-            dist_this_tag_point(j) = x_dist(i,j) - dist_data_inside_func(i,j);
+% F = zeros(size(dist_data_inside_func, 1), 1);
+%  for i = 1:size(dist_data_inside_func, 1)
+%     dist_this_tag_point = zeros(size(dist_data_inside_func, 2), 1);
+%     for j = 1:size(dist_data_inside_func, 2)
+%         if ~ isnan(dist_data_inside_func(i,j))
+%             dist_this_tag_point(j) = x_dist(i,j) - dist_data_inside_func(i,j);
+%         end
+%     end
+%     F(i) = sum(abs(dist_this_tag_point)); 
+%  end    
+
+  dist_this_tag_point = zeros(size(dist_data_inside_func));
+  for i = 1:size(dist_data_inside_func, 1)
+    for j = 1:size(dist_data_inside_func, 2)
+        % isnan(dist_data_inside_func(i,j))
+        if  ~isnan(dist_data_inside_func(i,j))
+            dist_this_tag_point(i,j) = x_dist(i,j) - dist_data_inside_func(i,j);
+            % disp(dist_this_tag_point(i,j))
         end
     end
-    F(i) = sum(abs(dist_this_tag_point)); 
-end    
+  end
+    F = sum(abs(dist_this_tag_point), 2); 
 
 end
 
