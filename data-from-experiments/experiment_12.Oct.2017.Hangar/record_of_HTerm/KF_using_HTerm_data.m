@@ -268,6 +268,10 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         
 
     end
+    
+%% Fill missing values, replace with previous value
+X(X==0)=NaN;
+X = fillmissing(X,'previous',2)
 %% plot RESIDUIAL
 figure;
 plot(RESIDUIAL','-+');
