@@ -185,7 +185,6 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
 %}    
     
     %% EKF loop
-    x_estimated = X(:, 1);
     for i = 2:size(measurements_data_noisy,2)
         %% time update
         % sampling time interval
@@ -207,7 +206,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         Q = factor_Q * G * sigma^2 * G'; % I think the factor_Q should be deleted here.TODO: factor_Q^2 ???  factor_Q ???
         Q = Q *Q_affected_by_dt; % adjust Q by dt
         
-        % x_minus= A * X(:, i - 1); %  + B * u; % for motion update, when no measurements are coming at all 
+        % x_minus= A * X(:, i - 1); %  + B * u; % for motion update, when no measurements a 
         x_minus= A * x_estimated; 
         P_minus = vpa(A * P(:, :, i-1) * A' + Q);
         
