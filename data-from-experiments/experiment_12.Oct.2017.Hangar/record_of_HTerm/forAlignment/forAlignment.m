@@ -1,6 +1,6 @@
 clear
 %% calculate the translateion matrix R and T
-expNum = 4;
+expNum = 5;
 
 str_ekf = ['../estimated_posi_with_timeSt_EKF_experi', num2str(expNum), '.mat'];
 data_ekf = importdata(str_ekf);
@@ -37,41 +37,48 @@ title_stri = ['exp', num2str(expNum), '  theta=', num2str(x(1)), '  t1=', num2st
 title(title_stri);
 daspect([10,10,10]);
 if expNum == 4
-    savefig(h1, 'beforeBetterFromJoan\new_compari_exp4.fig');
+    savefig(h1, 'beforeBetterFromJoan\outlier_removed_forAlignment_RT_ASSIS_2_UWB_exp4.fig');
 else
-    str_fig = ['afterBetterFromJoan\new_compari_exp', num2str(expNum), '.fig'];
+    str_fig = ['afterBetterFromJoan\outlier_removed_forAlignment_RT_ASSIS_2_UWB_exp', num2str(expNum), '.fig'];
     savefig(h1, str_fig);
 end    
 
 %% plot the traj of EKF(moving) and the location of the USS(after RT)
 figure; hold on;
-title_stri = ['exp', num2str(expNum), ' comparision of EKF and USS'];
+title_stri = ['exp', num2str(expNum), ' comparision of UWB and ASSIST'];
 title(title_stri);
 plot(afterRT_data_US_trimed(1,:), afterRT_data_US_trimed(2,:), 'b+');
+if expNum == 5 || expNum == 6
+else
 % plot the circle 
 circle_center = importdata('../circleCenterPos_by_determineCircleCenterPositionBaseOnDistToEachOthers.mat');
 circle_angle = [0:pi/50:2*pi];
 circle_x = circle_center(1)+2.5*cos(circle_angle); %unit m
 circle_y = circle_center(2)+2.5*sin(circle_angle); %unit m
 plot(circle_x,circle_y, 'g');
+end
         daspect([10,10,10]);
+
 time_diff = diff(data_ekf(5,:))'; % unit second
 pause(3);
-	pause_time = 0.002*[time_diff; 2];
+	pause_time = 0.01*[time_diff; 2];
     for j = 5:size(data_ekf,2) %1:size(X,2)-9 
         
         h3 = plot(afterRT_data_US_trimed(1,j-4:j), afterRT_data_US_trimed(2,j-4:j), '-ob');
         hold on;
         h2 = plot(data_ekf(1,j-4:j), data_ekf(2,j-4:j), '-or'); %h2 = plot(X(1,j:j+9), X(2,j:j+9), '-+r');
+        if expNum == 5 || expNum == 6
+        legend('Assist traj', 'Assist', 'UWB');
+        else
         legend('Assist traj', 'circle marker', 'Assist', 'UWB');
-
+        end
         Fram(j-4) = getframe(gcf);
         
         % pause(pause_time(j));
         delete(h2);
         delete(h3);
     end
-    video_str = ['video_comparision', num2str(expNum), '.avi'];
+    video_str = ['outlier_removed_video_comparision', num2str(expNum), '.avi'];
     video = VideoWriter(video_str);
     open(video)
     writeVideo(video, Fram)
@@ -82,7 +89,7 @@ pause(3);
 % afterRT = R0 * nodes_optimal + t0;
 function F = myfun(x)
 
-expNum = 4;
+expNum = 5;
 str_ekf = ['../estimated_posi_with_timeSt_EKF_experi', num2str(expNum), '.mat'];
 str_US = ['../../record_of_ultra_sound_system/positionBeforeMakedBetterFromJoan/mat_positions', num2str(expNum), '.mat'];
 % str_US = ['../../record_of_ultra_sound_system/positionsBetterFromJoan/mat_positions', num2str(expNum), '.mat'];

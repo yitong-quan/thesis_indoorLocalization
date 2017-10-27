@@ -185,6 +185,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
 %}    
     
     %% EKF loop
+    x_estimated = X(:, 1);
     for i = 2:size(measurements_data_noisy,2)
         %% time update
         % sampling time interval
@@ -206,7 +207,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         Q = factor_Q * G * sigma^2 * G'; % I think the factor_Q should be deleted here.TODO: factor_Q^2 ???  factor_Q ???
         Q = Q *Q_affected_by_dt; % adjust Q by dt
         
-        % x_minus= A * X(:, i - 1); %  + B * u; % for motion update, when no measurements a 
+        % x_minus= A * X(:, i - 1); %  + B * u; % for motion update, when no measurements are coming at all 
         x_minus= A * x_estimated; 
         P_minus = vpa(A * P(:, :, i-1) * A' + Q);
         
@@ -267,18 +268,20 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         
 
     end
-%% plot RESIDUIAL
-figure;
-plot(RESIDUIAL','-+');
-
-%% plot STD_MINUS_MAD
-figure;
-plot(STD_MINUS_MAD','-+');
+    
+%% Fill missing values, replace with previous value
+X(X==0)=NaN;
+X = fillmissing(X,'previous',2)
+% %% plot RESIDUIAL
+% figure;
+% plot(RESIDUIAL','-+');
+% 
+% %% plot STD_MINUS_MAD
+% figure;
+% plot(STD_MINUS_MAD','-+');
 
 %% plot position on map 
-% for loop here can be removed, only used to collapse the code
-    for i = 1:1
-        h = figure;
+        % h = figure;
         plot(X(1,:), X(2,:), 'ob');
         % load real positions
         %{
@@ -294,7 +297,7 @@ plot(STD_MINUS_MAD','-+');
         str = [str, '   .fig'];
         savefig(h,str);
         %}
-    end
+
     mat_str = ['estimated_posi_with_timeSt_EKF_experi',  num2str(experimentNumber), '.mat'];
     estimated_posi_with_timeSt = [X; timeStamp'];
     save(mat_str, 'estimated_posi_with_timeSt');
@@ -311,4 +314,7 @@ plot(STD_MINUS_MAD','-+');
     open(video)
     writeVideo(video, Fram)
     close(video)
+    
+    fig_str = ['traj_recovered_ekf_experiment',  num2str(experimentNumber), '.mat'];
+    savefig(mat_str, 'estimated_posi_with_timeSt');
 end

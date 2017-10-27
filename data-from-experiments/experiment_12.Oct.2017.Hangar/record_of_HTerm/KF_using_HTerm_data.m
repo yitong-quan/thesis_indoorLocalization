@@ -116,7 +116,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     INDEX_IAN =[]; % for debugging
     STD_MINUS_MAD = [0];
     
-    figure;    hold on;
+    h = figure;    hold on;
     switch experimentNumber
         case {0.1 0.11}
             plot(circle_center(1), circle_center(2), '*');
@@ -272,18 +272,16 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
 %% Fill missing values, replace with previous value
 X(X==0)=NaN;
 X = fillmissing(X,'previous',2)
-%% plot RESIDUIAL
-figure;
-plot(RESIDUIAL','-+');
-
-%% plot STD_MINUS_MAD
-figure;
-plot(STD_MINUS_MAD','-+');
+% %% plot RESIDUIAL
+% figure;
+% plot(RESIDUIAL','-+');
+% 
+% %% plot STD_MINUS_MAD
+% figure;
+% plot(STD_MINUS_MAD','-+');
 
 %% plot position on map 
-% for loop here can be removed, only used to collapse the code
-    for i = 1:1
-        h = figure;
+        % h = figure;
         plot(X(1,:), X(2,:), 'ob');
         % load real positions
         %{
@@ -299,21 +297,24 @@ plot(STD_MINUS_MAD','-+');
         str = [str, '   .fig'];
         savefig(h,str);
         %}
-    end
+
     mat_str = ['estimated_posi_with_timeSt_EKF_experi',  num2str(experimentNumber), '.mat'];
     estimated_posi_with_timeSt = [X; timeStamp'];
     save(mat_str, 'estimated_posi_with_timeSt');
     
-	pause_time = 0.2*[time_diff; 2];
+	pause_time = 0.1*[time_diff; 2];
     for j = 5:size(X,2) %1:size(X,2)-9 
         h2 = plot(X(1,j-4:j), X(2,j-4:j), '-+r'); %h2 = plot(X(1,j:j+9), X(2,j:j+9), '-+r'); 
         Fram(j-4) = getframe(gcf);
         pause(pause_time(j));
         delete(h2);
     end
-    video_str = ['1video_ekf_experiment', num2str(experimentNumber), '.avi'];
+    video_str = ['outliar_removed_video_ekf_experiment', num2str(experimentNumber), '.avi'];
     video = VideoWriter(video_str);
     open(video)
     writeVideo(video, Fram)
     close(video)
+    
+    fig_str = ['traj_recovered_ekf_experiment',  num2str(experimentNumber), '.fig'];
+    savefig(h, fig_str);
 end
