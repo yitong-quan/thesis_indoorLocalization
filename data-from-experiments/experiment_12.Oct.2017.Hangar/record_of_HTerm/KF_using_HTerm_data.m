@@ -234,12 +234,19 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         % calculate the std(z)-MAD(z) to see the outlier in the measurement
         std_minus_mad = std(z) -mad(z);
         STD_MINUS_MAD = [STD_MINUS_MAD; std_minus_mad];
+        
+        residual_with_nan = nan(5,1);
+        RESIDUIAL = [RESIDUIAL, residual_with_nan];
 %         if isempty(z) % if no measurements are coming, skip the measurement update step
 %             X(:, i) = x_minus;
 %             P(:, :, i) = P_minus;
 %             residual_with_nan = nan(5,1);
         if isempty(z) % if no measurements are coming, skip the whole update( motion and measurement update)
             continue
+%         elseif  length(z) == 1 % if only one node measurement coming, skip the whole update( motion and measurement update)
+%             continue
+%         elseif  length(z) == 2 % if only one node measurement coming, skip the whole update( motion and measurement update)
+%             continue            
         else
             H = vpa(eval(subs( subs(H_symbolic, x_m, x_minus), N_x_n, positionOfNodes))); %<<<change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 %{
@@ -248,22 +255,21 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
                 % HERE replace K = P_minus * H' * invs(H * P_minus * H' +R) with P_minus * H' / (H * P_minus * H' +R) 
                 %}
             K_k = P_minus * H' / (H * P_minus * H' + R); %<<< R >change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            %<<< add Z_e >change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            %<<< add Z_e >cha nge!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             residual = z - eval(subs( subs(Z_e, x_m, x_minus), N_x_n, positionOfNodes)); % <<<<<<wikipedia<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             x_estimated = x_minus + K_k * (residual); % <<<<<<wikipedia<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             X(:, i) = x_estimated;
             
             % refill the array with NaN in the index marked position,
             % exactly refill the NaN matrix with data
-            residual_with_nan = nan(5,1);
            for ijj = 1:length(index_ian) % is a number
-                residual_with_nan(index_ian(ijj)) = residual(ijj);
+                RESIDUIAL(index_ian(ijj), end) = residual(ijj);
            end
             P(:, :, i) = vpa((eye(length(x_0)) - K_k * H) * P_minus);
             %K(:, :, i) = K_k;
         end
         
-        RESIDUIAL = [RESIDUIAL, residual_with_nan];
+        
         INDEX_IAN = [INDEX_IAN; index_ian];
         
 
@@ -305,6 +311,8 @@ X = fillmissing(X,'previous',2)
 	pause_time = 0.1*[time_diff; 2];
     for j = 5:size(X,2) %1:size(X,2)-9 
         h2 = plot(X(1,j-4:j), X(2,j-4:j), '-+r'); %h2 = plot(X(1,j:j+9), X(2,j:j+9), '-+r'); 
+        str_title = sprintf('experiment%d; factorQ: %d; factorR: %d; j: %d', experimentNumber, factor_Q, factor_R, j);
+        title(str_title);
         Fram(j-4) = getframe(gcf);
         pause(pause_time(j));
         delete(h2);
