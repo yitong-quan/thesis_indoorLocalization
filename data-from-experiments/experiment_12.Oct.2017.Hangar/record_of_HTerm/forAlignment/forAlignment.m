@@ -1,6 +1,6 @@
 clear
 %% calculate the translateion matrix R and T
-expNum = 6;
+expNum = 4;
 
 str_ekf = ['../traj_recovered_ekf_experiment_old_Q1_R100/estimated_posi_with_timeSt_EKF_experi', num2str(expNum), '.mat'];
 data_ekf = importdata(str_ekf);
@@ -35,6 +35,8 @@ plot(afterRT_data_US_trimed(1,:), afterRT_data_US_trimed(2,:), 'b-+');
 legend('UWB', 'Assist');
 title_stri = ['exp', num2str(expNum), '  theta=', num2str(x(1)), '  t1=', num2str(x(2)), '  t2=', num2str(x(3))];
 title(title_stri);
+xlabel({'x / m'});
+ylabel({'y / m'});
 daspect([10,10,10]);
 if expNum == 4
     savefig(h1, 'beforeBetterFromJoan\outlier_removed_forAlignment_RT_ASSIS_2_UWB_exp4.fig');
@@ -49,6 +51,8 @@ title_stri = ['exp', num2str(expNum), ' comparision of UWB and ASSIST'];
 title(title_stri);
 plot(afterRT_data_US_trimed(1,:), afterRT_data_US_trimed(2,:), 'c');
 plot(data_ekf(1,:), data_ekf(2,:), 'g');
+xlabel({'x / m'});
+ylabel({'y / m'});
 % if expNum == 5 || expNum == 6
 % else
 % % plot the circle 
@@ -87,7 +91,7 @@ pause(3);
 % afterRT = R0 * nodes_optimal + t0;
 function F = myfun(x)
 
-expNum = 6;
+expNum = 4;
 str_ekf = ['../traj_recovered_ekf_experiment_old_Q1_R100/estimated_posi_with_timeSt_EKF_experi', num2str(expNum), '.mat'];
 str_US = ['../../record_of_ultra_sound_system/positionBeforeMakedBetterFromJoan/mat_positions', num2str(expNum), '.mat'];
 % str_US = ['../../record_of_ultra_sound_system/positionsBetterFromJoan/mat_positions', num2str(expNum), '.mat'];

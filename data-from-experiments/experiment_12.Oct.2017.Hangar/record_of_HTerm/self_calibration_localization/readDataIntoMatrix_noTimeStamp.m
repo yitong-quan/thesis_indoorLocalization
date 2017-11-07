@@ -4,8 +4,6 @@ clear;
 
 fileID = fopen('../p6_acht_slow_t - Copy_refined.log'); 
 
-
-
 A = textscan(fileID,'%s %c %d'); % '0x1C1C' ',' '235'
 id = [A{1,1}];
 dist = [A{1,3}];
