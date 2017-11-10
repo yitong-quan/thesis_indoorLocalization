@@ -1,13 +1,27 @@
+%%
+
+% Q5R1 JUMP:meas 0
+% outliersIndex = [53, 165, 166, 175,193,194,200,201,...
+%     202,204,204,206,212,213,214,215,216,217,218,219,...
+%     221,222,223,224,225,226,227,228,244,255,261,262,263];
+
+% Q5R1 JUMP:meas 0 1 2
+outliersIndex = [53, 121,122,155,167,168,169,170,171,195,196,199,...
+    200,201,202,203,205,206,221,223];
+
+
 experNum= 4;
 
 switch experNum
     case 4
         % X_ekf_output = importdata('exper4/estimated_posi_with_timeSt_EKF_experi4_0.8_1.mat');
         %  X_ekf_output = importdata('exper4/estimated_posi_with_timeSt_EKF_experi4_2_1.mat');
-        X_ekf_output = importdata('exper4/estimated_posi_with_timeSt_EKF_experi4_5_1.mat');
+        % X_ekf_output = importdata('exper4/estimated_posi_with_timeSt_EKF_experi4_5_1.mat');
+        X_ekf_output = importdata('exper4/estimated_posi_with_timeSt_EKF_experi4_5_1_jump012.mat');
         % RESIDUAL = importdata('exper4/exper4_RESIDUIAL_0.8_1.mat');
         % RESIDUAL = importdata('exper4/exper4_RESIDUIAL_2_1.mat');
-        RESIDUAL = importdata('exper4/exper4_RESIDUIAL_5_1.mat');
+        % RESIDUAL = importdata('exper4/exper4_RESIDUIAL_5_1.mat');
+        RESIDUAL = importdata('exper4/exper4_RESIDUIAL_5_1_jump012.mat');
         measurements = importdata('../data_t_dist_p4_circle_t.mat');
     case 6
         RESIDUAL = importdata('exper4/exper&_RESIDUIAL.mat');
@@ -15,7 +29,7 @@ switch experNum
         error('---------------!!!!!-------experNum not correct. not such file')
 end
 
-num_meas_each_time = sum(~isnan(RESIDUAL'), 2);
+num_meas_each_time = sum(~isnan(measurements(:,2:end)), 2);
 index_0_meas = find(num_meas_each_time==0);
 index_1_meas = find(num_meas_each_time==1);
 index_2_meas = find(num_meas_each_time==2);
@@ -34,7 +48,10 @@ plot(index_2_meas, X_ekf_output(1, index_2_meas),'dr');
 plot(index_3_meas, X_ekf_output(1, index_3_meas),'vm');
 plot(index_4_meas, X_ekf_output(1, index_4_meas),'ob');
 plot(index_5_meas, X_ekf_output(1, index_5_meas),'+g');
-legend('x posi', '0 measurement', '1 measurement', '2 measurements', '3 measurements', '4 measurements', '5 measurements');
+for jj = outliersIndex
+    plot(jj,X_ekf_output(1, jj), 'xk');
+end
+legend('x posi', '0 measurement', '1 measurement', '2 measurements', '3 measurements', '4 measurements', '5 measurements', 'outliers');
 title('y posi(UWB) v.s. #measurements');
 subplot(2,1,2)
 hold on;
@@ -45,8 +62,12 @@ plot(index_2_meas, X_ekf_output(2, index_2_meas),'dr');
 plot(index_3_meas, X_ekf_output(2, index_3_meas),'vm');
 plot(index_4_meas, X_ekf_output(2, index_4_meas),'ob');
 plot(index_5_meas, X_ekf_output(2, index_5_meas),'+g');
-legend('y posi', '0 measurement', '1 measurement', '2 measurements', '3 measurements', '4 measurements', '5 measurements');
+for jj = outliersIndex
+    plot(jj,X_ekf_output(2, jj), 'xk');
+end
+legend('y posi', '0 measurement', '1 measurement', '2 measurements', '3 measurements', '4 measurements', '5 measurements', 'outliers');
 title('y posi(UWB) v.s. #measurements');
+
 
 leng_RESIDUAL = length(RESIDUAL);
 std_RESIDUAL = zeros(leng_RESIDUAL,1);
@@ -64,11 +85,20 @@ plot(std_RESIDUAL, '-g');
 hold on;
 plot(mad_RESIDUAL, '-b');
 title('std(RESIDUAL) v.s. mad(RESIDUAL)');
-legend('std', 'mad');
+for jj = outliersIndex
+    plot(jj,std_RESIDUAL(jj), 'sk');
+    plot(jj,mad_RESIDUAL(jj), 'sk');
+end
+legend('std', 'mad', 'outliers');
 
+std_minus_mad = std_RESIDUAL - mad_RESIDUAL;
 subplot(2,1,2);
-plot(std_RESIDUAL - mad_RESIDUAL, '-r');
-legend('std - mad');
+plot(std_minus_mad, '-r');
+hold on;
+for jj = outliersIndex
+    plot(jj,std_minus_mad(jj), 'sk');
+end
+legend('std - mad', 'outliers');
 title('std(RESIDUAL) - mad(RESIDUAL)');
 
 figure;
@@ -111,7 +141,9 @@ plot(index_5_meas, X_ekf_output(2, index_5_meas),'+g');
 legend('y posi', '0 meas', '1 meas', '2 meas', '3 meas', '4 meas', '5 meas');
 title('y posi(UWB) v.s. #measurements');
 
-    for j = 2:size(X_ekf_output,2) %1:size(X,2)-9 
+outliers_overview = [outliersIndex',num_meas_each_time(outliersIndex), std_minus_mad(outliersIndex), zeros(size(outliersIndex))', RESIDUAL(:,outliersIndex)'];
+
+for j = 2:size(X_ekf_output,2) %1:size(X,2)-9 
         subplot(2,2,1)
         h2 = plot(X_ekf_output(1,j-1:j), X_ekf_output(2,j-1:j), '-ob'); %h2 = plot(X(1,j:j+9), X(2,j:j+9), '-+r');
             str_title0 = sprintf('step j = %d', j);

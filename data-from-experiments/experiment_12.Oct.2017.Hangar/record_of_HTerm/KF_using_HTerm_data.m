@@ -33,6 +33,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
             data = importdata('data_t_dist_p3_circle_t.mat');
         case 4
             data = importdata('data_t_dist_p4_circle_t.mat');
+            outlier_meas_index = importdata('outlier_removement\exper4\outlier_meas_index_experi4_5_1_jump012.mat');
         case 5
             data = importdata('data_t_dist_p5_acht_t.mat');
         case 6
@@ -60,8 +61,11 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     title(str_title0);
     ylabel('time difference(s)'); xlabel('step');
     plot_str = ['time_diff_each_experi/time_diff_experi', num2str(experimentNumber), '.fig'];
-    savefig(h0, plot_str);
+    % ----------- savefig(h0, plot_str);
     measurements_data_noisy = data(:,2:end)';% unit mm
+    measurements_data_noisy = measurements_data_noisy';
+    measurements_data_noisy(outlier_meas_index) = NaN;
+    measurements_data_noisy = measurements_data_noisy';
     measurements_data_noisy = measurements_data_noisy/1000; %unit from mm to m
     %{
     % substract the height, we get the horizontal distances
@@ -243,10 +247,10 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
 %             residual_with_nan = nan(5,1);
         if isempty(z) % if no measurements are coming, skip the whole update( motion and measurement update)
             continue
-%         elseif  length(z) == 1 % if only one node measurement coming, skip the whole update( motion and measurement update)
-%             continue
-%         elseif  length(z) == 2 % if only one node measurement coming, skip the whole update( motion and measurement update)
-%             continue            
+        elseif  length(z) == 1 % if only one node measurement coming, skip the whole update( motion and measurement update)
+            continue
+        elseif  length(z) == 2 % if only one node measurement coming, skip the whole update( motion and measurement update)
+            continue            
         else
             H = vpa(eval(subs( subs(H_symbolic, x_m, x_minus), N_x_n, positionOfNodes))); %<<<change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 %{
@@ -306,7 +310,7 @@ X = fillmissing(X,'previous',2)
 
     mat_str = ['estimated_posi_with_timeSt_EKF_experi',  num2str(experimentNumber), '.mat'];
     estimated_posi_with_timeSt = [X; timeStamp'];
-    save(mat_str, 'estimated_posi_with_timeSt');
+    % ----------- save(mat_str, 'estimated_posi_with_timeSt');
     
 	pause_time = 0.1*[time_diff; 2];
     for j = 5:size(X,2) %1:size(X,2)-9 
@@ -317,12 +321,12 @@ X = fillmissing(X,'previous',2)
         pause(pause_time(j));
         delete(h2);
     end
-    video_str = ['outliar_removed_video_ekf_experiment', num2str(experimentNumber), '.avi'];
-    video = VideoWriter(video_str);
-    open(video)
-    writeVideo(video, Fram)
-    close(video)
+    % ----------- video_str = ['outliar_removed_video_ekf_experiment', num2str(experimentNumber), '.avi'];
+    % ----------- video = VideoWriter(video_str);
+    % ----------- open(video)
+    % ----------- writeVideo(video, Fram)
+    % ----------- close(video)
     
     fig_str = ['traj_recovered_ekf_experiment',  num2str(experimentNumber), '.fig'];
-    savefig(h, fig_str);
+    % ----------- savefig(h, fig_str);
 end
