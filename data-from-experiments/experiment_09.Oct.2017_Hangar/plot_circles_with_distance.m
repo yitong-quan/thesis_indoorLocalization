@@ -74,6 +74,8 @@ for j = 1:size(distances2all_abs, 2)
 %         h(3) = plotCircle(positionOfNodes(1, 3), positionOfNodes(2, 3), ...
 %             distances2all_abs(3, j), (i+4)*pi/2, (i+5)*pi/2+pi/6); % (i+2)*pi/2, (i+3)*pi/2);
     end
+    title_string = ['j= ', num2str(j)];
+    title(title_string);
     axis square; axis tight;
     xlim([-5000 6000]); ylim([-1000 11000]);  
     pause(0.15);

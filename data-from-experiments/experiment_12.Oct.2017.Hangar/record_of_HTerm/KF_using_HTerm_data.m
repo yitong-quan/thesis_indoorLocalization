@@ -21,6 +21,8 @@ or 100, for missing with a pattern, 1st, 2nd, 3rd, 4th, 1st, 2nd, 3rd...
 %%
 function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumber) %, measurements_missing, MaxNumMeasMissedWithinSet, traj_name
     format longG
+    %% flag of remove_outlier_measurements
+    remove_outlier_meas = 0; 
     %% import and process original-data
     switch experimentNumber
         case 0.11
@@ -63,9 +65,27 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     plot_str = ['time_diff_each_experi/time_diff_experi', num2str(experimentNumber), '.fig'];
     % ----------- savefig(h0, plot_str);
     measurements_data_noisy = data(:,2:end)';% unit mm
-    % outlier_meas_index = outlier_meas_index(1,:);
-    idx_outlier_meas = sub2ind(size(measurements_data_noisy), outlier_meas_index(:,2), outlier_meas_index(:,1));
-    measurements_data_noisy(idx_outlier_meas) = NaN;
+    figure;
+    subplot(3,1,1)
+    ttemp = sum(~isnan(measurements_data_noisy), 1);
+    plot(ttemp')
+    title('#valuable measurements before removed outlier meas')
+    subplot(3,1,2)
+    plot([0;time_diff])
+    title('time diff between measurement-sets')
+    
+    if remove_outlier_meas == 1
+        idx_outlier_meas = sub2ind(size(measurements_data_noisy), outlier_meas_index(:,2), outlier_meas_index(:,1));
+        measurements_data_noisy(idx_outlier_meas) = NaN;
+    else
+    end
+
+    
+    subplot(3,1,3)
+    ttemp = sum(~isnan(measurements_data_noisy), 1);
+    plot(ttemp')
+    title('#valuable measurements after removed outlier meas')
+    
     measurements_data_noisy = measurements_data_noisy/1000; %unit from mm to m
     %{
     % substract the height, we get the horizontal distances
@@ -190,10 +210,14 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     
     %% EKF loop
     x_estimated = X(:, 1);
+    time_last = timeStamp(1);
+    meas_trust_factor = 1;
     for i = 2:size(measurements_data_noisy,2)
         %% time update
-        % sampling time interval
-        dt = timeStamp(i) - timeStamp(i-1);
+        % sampling time interval        
+        % dt = timeStamp(i) - timeStamp(i-1);
+        time_now = timeStamp(i);
+        dt = time_now - time_last;
         % adjust Q R by dt (0.91s is a threshold)
         if dt > 0.91
             Q_affected_by_dt = 1 + 15*(dt - 0.91);
@@ -217,7 +241,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         
         %% measurement update
         R = R_all;
-        R = R * R_affected_by_dt; % adjust R by dt
+
         Z_e = Z_e_all;
         H_symbolic = H_all_symbolic;
         
@@ -245,19 +269,23 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
 %             X(:, i) = x_minus;
 %             P(:, :, i) = P_minus;
 %             residual_with_nan = nan(5,1);
-        if isempty(z) % if no measurements are coming, skip the whole update( motion and measurement update)
-            continue
-        elseif  length(z) == 1 % if only one node measurement coming, skip the whole update( motion and measurement update)
-            continue
-        elseif  length(z) == 2 % if only one node measurement coming, skip the whole update( motion and measurement update)
-            continue            
+        % if isempty(z) || length(z) == 1 || length(z) == 2 % if only 0/1/2 node measurement are coming, skip the whole update( motion and measurement update)
+        if isempty(z) || length(z) == 1 % if only 0/1 node measurement are coming, skip the whole update( motion and measurement update)
+            meas_trust_factor = meas_trust_factor / 1000;
+            continue        
         else
+            meas_trust_factor = 1;
+            time_last = time_now;
             H = vpa(eval(subs( subs(H_symbolic, x_m, x_minus), N_x_n, positionOfNodes))); %<<<change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 %{
                 % Never use the inverse of a matrix to solve a linear system Ax=b with x=inv(A)*b, because it is slow and inaccurate.
                 % Replace inv(A)*b with A\b, Replace b*inv(A) with b/A, replace A*inv(B)*C with A*(B\C).
                 % HERE replace K = P_minus * H' * invs(H * P_minus * H' +R) with P_minus * H' / (H * P_minus * H' +R) 
-                %}
+            %}
+            
+            R = R * R_affected_by_dt; % adjust R by dt
+            R = R * meas_trust_factor; % adjust R by steps of ignored update due to missing measurements
+            
             K_k = P_minus * H' / (H * P_minus * H' + R); %<<< R >change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             %<<< add Z_e >cha nge!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             residual = z - eval(subs( subs(Z_e, x_m, x_minus), N_x_n, positionOfNodes)); % <<<<<<wikipedia<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
