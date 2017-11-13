@@ -63,9 +63,11 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     plot_str = ['time_diff_each_experi/time_diff_experi', num2str(experimentNumber), '.fig'];
     % ----------- savefig(h0, plot_str);
     measurements_data_noisy = data(:,2:end)';% unit mm
-    % outlier_meas_index = outlier_meas_index(1,:);
+    outlier_meas_index = outlier_meas_index
     idx_outlier_meas = sub2ind(size(measurements_data_noisy), outlier_meas_index(:,2), outlier_meas_index(:,1));
+    % measurements_data_noisy = measurements_data_noisy';
     measurements_data_noisy(idx_outlier_meas) = NaN;
+    % measurements_data_noisy = measurements_data_noisy';
     measurements_data_noisy = measurements_data_noisy/1000; %unit from mm to m
     %{
     % substract the height, we get the horizontal distances
@@ -279,7 +281,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     
 %% Fill missing values, replace with previous value
 X(X==0)=NaN;
-X = fillmissing(X,'previous',2);
+X = fillmissing(X,'previous',2)
 % %% plot RESIDUIAL
 % figure;
 % plot(RESIDUIAL','-+');
