@@ -35,7 +35,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
             data = importdata('data_t_dist_p3_circle_t.mat');
         case 4
             data = importdata('data_t_dist_p4_circle_t.mat');
-            outlier_meas_index = importdata('outlier_removement\exper4\outlier_meas_index_experi4_5_1_jump012.mat');
+            % outlier_meas_index = importdata('outlier_removement\exper4\outlier_meas_index_experi4_5_1_jump012.mat');
         case 5
             data = importdata('data_t_dist_p5_acht_t.mat');
         case 6
@@ -136,36 +136,11 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     X(:, 1) = x_0;
     P(:, :, 1) = P_0;
     z_all = measurements_data_noisy;
-    RESIDUIAL = zeros(size(measurements_data_noisy,1),1);
+    RESIDUAL = zeros(size(measurements_data_noisy,1),1);
     INDEX_IAN =[]; % for debugging
     STD_MINUS_MAD = [0];
     
-    h = figure;    hold on;
-    switch experimentNumber
-        case {0.1 0.11}
-            plot(circle_center(1), circle_center(2), '*');
-        case 1
-            plot(circle_center(1), circle_center(2), '*');
-            plot(circle_x, circle_y,'-');            
-        case 2
-            plot(circle_center(1), circle_center(2), '*');
-            plot(circle_x, circle_y,'-');
-        case 3
-            plot(circle_center(1), circle_center(2), '*');
-            plot(circle_x, circle_y,'-');
-        case 4
-            plot(circle_center(1), circle_center(2), '*');
-            plot(circle_x, circle_y,'-');
-        case 9
-            plot(circle_center(1), circle_center(2), '*');
-            plot(circle_x, circle_y,'-');            
-        otherwise
-            warning('please specify the experiment number #')
-    end
-    plot(positionOfNodes(1,:), positionOfNodes(2,:), 'rd');
-    str_title = sprintf('experiment%d; factorQ: %d; factorR: %d', experimentNumber, factor_Q, factor_R);
-    title(str_title);
-    daspect([10,10,10]);
+
 %{
     if measurements_missing % here each colimn misses a certain numbers of data
         % delete(replaced with NaN) randomly some elements in each column to simulate missing data
@@ -210,14 +185,14 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     
     %% EKF loop
     x_estimated = X(:, 1);
-    time_last = timeStamp(1);
+%     time_last = timeStamp(1);
     meas_trust_factor = 1;
     for i = 2:size(measurements_data_noisy,2)
         %% time update
         % sampling time interval        
-        % dt = timeStamp(i) - timeStamp(i-1);
-        time_now = timeStamp(i);
-        dt = time_now - time_last;
+        dt = timeStamp(i) - timeStamp(i-1);
+%         time_now = timeStamp(i);
+%         dt = time_now - time_last;
         % adjust Q R by dt (0.91s is a threshold)
         if dt > 0.91
             Q_affected_by_dt = 1 + 15*(dt - 0.91);
@@ -241,7 +216,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         
         %% measurement update
         R = R_all;
-        R = R * R_affected_by_dt; % adjust R by dt
+
         Z_e = Z_e_all;
         H_symbolic = H_all_symbolic;
         
@@ -264,24 +239,28 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         STD_MINUS_MAD = [STD_MINUS_MAD; std_minus_mad];
         
         residual_with_nan = nan(5,1);
-        RESIDUIAL = [RESIDUIAL, residual_with_nan];
+        RESIDUAL = [RESIDUAL, residual_with_nan];
 %         if isempty(z) % if no measurements are coming, skip the measurement update step
 %             X(:, i) = x_minus;
 %             P(:, :, i) = P_minus;
 %             residual_with_nan = nan(5,1);
         % if isempty(z) || length(z) == 1 || length(z) == 2 % if only 0/1/2 node measurement are coming, skip the whole update( motion and measurement update)
-        if isempty(z) || length(z) == 1 || length(z) == 2 % if only 0/1/2 node measurement are coming, skip the whole update( motion and measurement update)
-            meas_trust_factor = meas_trust_factor * 2;
+        if isempty(z) || length(z) == 1 % if only 0/1 node measurement are coming, skip the whole update( motion and measurement update)
+            % meas_trust_factor = meas_trust_factor / 1000;
             continue        
         else
             meas_trust_factor = 1;
-            time_last = time_now;
+%             time_last = time_now;
             H = vpa(eval(subs( subs(H_symbolic, x_m, x_minus), N_x_n, positionOfNodes))); %<<<change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 %{
                 % Never use the inverse of a matrix to solve a linear system Ax=b with x=inv(A)*b, because it is slow and inaccurate.
                 % Replace inv(A)*b with A\b, Replace b*inv(A) with b/A, replace A*inv(B)*C with A*(B\C).
                 % HERE replace K = P_minus * H' * invs(H * P_minus * H' +R) with P_minus * H' / (H * P_minus * H' +R) 
-                %}
+            %}
+            
+            R = R * R_affected_by_dt; % adjust R by dt
+            R = R * meas_trust_factor; % adjust R by steps of ignored update due to missing measurements
+            
             K_k = P_minus * H' / (H * P_minus * H' + R); %<<< R >change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             %<<< add Z_e >cha nge!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             residual = z - eval(subs( subs(Z_e, x_m, x_minus), N_x_n, positionOfNodes)); % <<<<<<wikipedia<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -291,7 +270,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
             % refill the array with NaN in the index marked position,
             % exactly refill the NaN matrix with data
            for ijj = 1:length(index_ian) % is a number
-                RESIDUIAL(index_ian(ijj), end) = residual(ijj);
+                RESIDUAL(index_ian(ijj), end) = residual(ijj);
            end
             P(:, :, i) = vpa((eye(length(x_0)) - K_k * H) * P_minus);
             %K(:, :, i) = K_k;
@@ -301,17 +280,64 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         
     end
     
+    leng_RESIDUAL = length(RESIDUAL);
+    std_RESIDUAL = zeros(leng_RESIDUAL,1);
+    mad_RESIDUAL = zeros(leng_RESIDUAL,1);
+    for i=1:length(RESIDUAL)
+        tmp = RESIDUAL(:,i);
+        tmp(isnan(tmp))=[];
+        std_RESIDUAL(i) = std(tmp);
+        mad_RESIDUAL(i) = mad(tmp);
+    end
+    figure;
+    subplot(2,1,1)
+    plot(std_RESIDUAL, '-g');
+    hold on;
+    plot(mad_RESIDUAL, '-b');
+    title('std(RESIDUAL) v.s. mad(RESIDUAL)');
+    legend('std', 'mad');
+    std_minus_mad = std_RESIDUAL - mad_RESIDUAL;
+    subplot(2,1,2);
+    plot(std_minus_mad, '-r');
+    legend('std - mad');
+    title('std(RESIDUAL) - mad(RESIDUAL)');
 %% Fill missing values, replace with previous value
 X(X==0)=NaN;
 X = fillmissing(X,'previous',2);
-% %% plot RESIDUIAL
+% %% plot RESIDUAL
 % figure;
-% plot(RESIDUIAL','-+');
+% plot(RESIDUAL','-+');
 % 
 % %% plot STD_MINUS_MAD
 % figure;
 % plot(STD_MINUS_MAD','-+');
-
+%% 
+    h = figure;    hold on;
+    switch experimentNumber
+        case {0.1 0.11}
+            plot(circle_center(1), circle_center(2), '*');
+        case 1
+            plot(circle_center(1), circle_center(2), '*');
+            plot(circle_x, circle_y,'-');            
+        case 2
+            plot(circle_center(1), circle_center(2), '*');
+            plot(circle_x, circle_y,'-');
+        case 3
+            plot(circle_center(1), circle_center(2), '*');
+            plot(circle_x, circle_y,'-');
+        case 4
+            plot(circle_center(1), circle_center(2), '*');
+            plot(circle_x, circle_y,'-');
+        case 9
+            plot(circle_center(1), circle_center(2), '*');
+            plot(circle_x, circle_y,'-');            
+        otherwise
+            warning('please specify the experiment number #')
+    end
+    plot(positionOfNodes(1,:), positionOfNodes(2,:), 'rd');
+    str_title = sprintf('experiment%d; factorQ: %d; factorR: %d', experimentNumber, factor_Q, factor_R);
+    title(str_title);
+    daspect([10,10,10]);
 %% plot position on map 
         % h = figure;
         plot(X(1,:), X(2,:), 'ob');
@@ -334,12 +360,12 @@ X = fillmissing(X,'previous',2);
     estimated_posi_with_timeSt = [X; timeStamp'];
     % ----------- save(mat_str, 'estimated_posi_with_timeSt');
     
-	pause_time = 0.2*[time_diff; 2];
+	pause_time = 0.1*[time_diff; 2];
     for j = 5:size(X,2) %1:size(X,2)-9 
         h2 = plot(X(1,j-4:j), X(2,j-4:j), '-+r'); %h2 = plot(X(1,j:j+9), X(2,j:j+9), '-+r'); 
         str_title = sprintf('experiment%d; factorQ: %d; factorR: %d; j: %d', experimentNumber, factor_Q, factor_R, j);
         title(str_title);
-        Fram(j-4) = getframe(gcf);
+        % Fram(j-4) = getframe(gcf);
         pause(pause_time(j));
         delete(h2);
     end
