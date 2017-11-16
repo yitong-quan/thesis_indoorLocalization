@@ -14,6 +14,7 @@ or 100, for missing with a pattern, 1st, 2nd, 3rd, 4th, 1st, 2nd, 3rd...
 %           traj_num: string : '01'
 %}
 %%
+% MaxNumMeasMissedWithinSet should be set to be 100 in this case(25ms40Hz)
 function [X, P, z_all] = EKF_25ms40Hz(factor_Q, factor_R, measurements_missing, ...
     MaxNumMeasMissedWithinSet, traj_name)
 
@@ -36,7 +37,7 @@ function [X, P, z_all] = EKF_25ms40Hz(factor_Q, factor_R, measurements_missing, 
     %% import trajectory positions 
     file_name = '25ms_40HzSamplingRate\stateVector.mat'; 
     real_X = importdata(file_name); 
-    real_X = real_X(:,1:100);
+    real_X = real_X(:,1:end);
     nodes_Nums = 5;    
     positionOfNodes = importdata('25ms_40HzSamplingRate\nodePos_12Oct.mat');
     %% & generate measuremnets data
@@ -46,15 +47,15 @@ function [X, P, z_all] = EKF_25ms40Hz(factor_Q, factor_R, measurements_missing, 
         distances2each_abs = sqrt(distances2each_xy(1,:).^2 + distances2each_xy(2,:).^2);
         distances2all_abs(i, :) = distances2each_abs;
     end
-    %% & add noisy to measuremnets data
+    %%  add noisy to measuremnets data
     rng(1,'twister');s = rng;rng(s); % Save and Restore the Generator Settings, this make the measurements_data_noisy will always be the same
-    measurements_data_noisy = distances2all_abs + factor_R * randn(size(distances2all_abs));    
+    measurements_data_noisy = distances2all_abs; % + factor_R * randn(size(distances2all_abs));    
     
    %% for small test, use a series measurements data generate when Tag stays at origin all the time
     % measurements_data_noisy = repmat([sqrt(50^2 + 50^2); sqrt(100^2 + 50^2); sqrt(100^2 + 100^2); sqrt(50^2 + 100^2)], 1, size(measurements_data_noisy, 2));  
 
     %% initiation
-    x_0 = [0 0 1.0 1.0]';
+    x_0 = [0 0 0.1 0.1]';
     P_0 = eye(4); % TODO, choose to be all one, a litle too big, but it should converge at the end if the KF work 
     % sampling time interval
     dt = 1/40;
@@ -119,7 +120,7 @@ function [X, P, z_all] = EKF_25ms40Hz(factor_Q, factor_R, measurements_missing, 
                     z_all(index_NaN_in_each_column(ll),kk) = NaN;
                 end
             end   
-        elseif MaxNumMeasMissedWithinSet == 100 % for missing with a pattern, 1st, 2nd, 3rd, 4th, 1st, 2nd, 3rd...
+        elseif MaxNumMeasMissedWithinSet == 100 % for missing with a pattern, only left this 1st, 2nd, 3rd, 4th, 1st, 2nd, 3rd...
                 index_not_NaN_in_each_column = repmat( linspace(1, nodes_Nums, nodes_Nums), [1 ceil(size(measurements_data_noisy,2)/nodes_Nums)]);
                 index_not_NaN_in_each_column = index_not_NaN_in_each_column(1:size(measurements_data_noisy,2));
                 temp_matrix = NaN(size(measurements_data_noisy));
@@ -139,6 +140,10 @@ function [X, P, z_all] = EKF_25ms40Hz(factor_Q, factor_R, measurements_missing, 
 
     end
     
+    numBunch = floor(size(measurements_data_noisy,2)/40);
+    for ji = 1:numBunch
+        measurements_data_noisy(:,(ji-1)*40+nodes_Nums:(ji-1)*40+40) = NaN;
+    end
     %% EKF loop
     for i = 2:size(measurements_data_noisy,2)
         % time update

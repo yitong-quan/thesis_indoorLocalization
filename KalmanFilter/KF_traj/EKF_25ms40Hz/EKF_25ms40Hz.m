@@ -37,7 +37,7 @@ function [X, P, z_all] = EKF_25ms40Hz(factor_Q, factor_R, measurements_missing, 
     %% import trajectory positions 
     file_name = '25ms_40HzSamplingRate\stateVector.mat'; 
     real_X = importdata(file_name); 
-    real_X = real_X(:,1:100);
+    real_X = real_X(:,400:500);
     nodes_Nums = 5;    
     positionOfNodes = importdata('25ms_40HzSamplingRate\nodePos_12Oct.mat');
     %% & generate measuremnets data
@@ -140,6 +140,10 @@ function [X, P, z_all] = EKF_25ms40Hz(factor_Q, factor_R, measurements_missing, 
 
     end
     
+    numBunch = floor(size(measurements_data_noisy,2)/40);
+    for ji = 1:numBunch
+        measurements_data_noisy(:,((ji-1)*40+1+nodes_Nums):((ji)*40)) = NaN;
+    end
     %% EKF loop
     for i = 2:size(measurements_data_noisy,2)
         % time update
