@@ -3,7 +3,7 @@
 clear;
 
 %% import data
-expNum = 3; % <<---- also need to change the one in the 'myfun' below
+expNum = 1; % <<---- also need to change the one in the 'myfun' below
 switch expNum
     case 1
         dat_t_dist = importdata('..\data_t_dist_p1_circle_t.mat');
@@ -45,16 +45,23 @@ for ij = 1:length(numNanMeas)
         group5 = [group5; sorted_dist_data(ij,:)];
     end
 end    
-tag_num = size(group0,1); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
-nodes_num = size(group0,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
+group_all = sorted_dist_data;
+data_for_opti = group0;
+myfun0 = @(x)parameterfun(x,data_for_opti); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< choose meas group 
+tag_num = size(data_for_opti,1); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
+nodes_num = size(data_for_opti,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
 x_num = tag_num + nodes_num;
 x0 = 10*(rand(2,x_num)-0.5);
-myfun0 = @(x)parameterfun(x,group0);
+
 %% optimization
 resnorm_last = inf;
 options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','iter','MaxIterations',2000);
-for ii = 1:10
+resnorm_record = [];
+x_record = [];
+for ii = 1:6
     [x,resnorm] = lsqnonlin(myfun0,x0,[],[],options);
+    resnorm_record = [resnorm_record; resnorm];
+    x_record = [x_record;x];
     if resnorm < resnorm_last
         x_opt = x;
         resnorm_opt = resnorm;
@@ -82,6 +89,10 @@ end
     title(str);
     legend('Tag traj', 'Node');
     daspect([10,10,10]);
+    
+    figure;
+    plot(resnorm_record);
+    title('resnorm record')
 
 %% parafun including meas data
 % A is the matrix of true meas marix
@@ -100,23 +111,24 @@ for i = 1:length(x_tags)
         x_dist(i,j) = norm(x_tags(:,i) - x_nodes(:,j));
     end
 end
-% dist_this_tag_point = zeros(size(A));
-% for i = 1:size(A, 1) % #tag
-%     for j = 1:size(A, 2) % #nodes
-%         % isnan(dist_data_inside_func(i,j))
-%         if  ~isnan(A(i,j))
-%             dist_this_tag_point(i,j) = x_dist(i,j) - A(i,j);
-%             % disp(dist_this_tag_point(i,j))
-%         end
-%     end
-% end
-% F = sum(abs(dist_this_tag_point), 2);
+
+
+% dist_this_tag_point = x_dist - A;
+% dist_this_tag_point(isnan(dist_this_tag_point)) = 0;
+% %F = sum(abs(dist_this_tag_point), 2);
+% F = sum((dist_this_tag_point).^2, 2);
+
     F_matrix = x_dist - A;
     F_matrix = F_matrix';
     F = [];
     for i = 1:nodes_num
         F = [F, F_matrix(i,:)];
     end
-    %replace NaN with 0 in the F
-    F(isnan(F)) = 0;
+    %replace NaN with [] in the F (with 0 has been tried, not working)
+    F(isnan(F)) = [];
+        % add the diff(x) into F
+    for jij = 2: length(x_tags)
+        dist_between_tag = 1*norm(x_tags(:,jij-1) - x_tags(:,jij));
+        F = [F, dist_between_tag];
+    end
 end

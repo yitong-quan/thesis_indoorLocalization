@@ -6,9 +6,10 @@
 % file locates in 'D:\Yitong\GitHub\thesis_indoorLocalization\data-from-experiments\experiment_12.Oct.2017.Hangar\record_of_HTerm\self_calibration_localization\...'
 clear
 %% process data
-expNum = 6;
+expNum = 3;
 
-str_self_calib_node = ['results/remove dataSet with NaN element/exper', num2str(expNum), '_opt_node.mat'];
+% str_self_calib_node = ['results/remove dataSet with NaN element/exper', num2str(expNum), '_opt_node.mat'];
+str_self_calib_node = ['results/full data/exper', num2str(expNum), 'group0_opt_node.mat'];
 data_self_calib_node = importdata(str_self_calib_node);
 node_po_hand_meas = importdata('../nodePos_by_determineNodesPositionBaseOnDistToEachOthers.mat');
 
@@ -30,7 +31,6 @@ data_US_trimed = data_US(:,timeStampNeed_data_US);
 %}
 
 %% (M)calculate the translateion matrix R and T
-% M0 = [ [cos(theta), -sin(theta); sin(theta), cos(theta)], [t1;t2]];
 x0 = 10*(rand(1,4)-0.5); % M = [theta, t1, t2, reflectionAboutXaxis(1or0)]
 options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','iter','MaxIterations',2000);
 resnorm_last = inf;
@@ -81,49 +81,15 @@ legend('node hand meas', 'node self calib', 'node self calib after RRT', 'Assit 
 title_stri = ['exp', num2str(expNum), '  reflection_X=', num2str(x_opt(4)), '  theta=', num2str(x_opt(1)), '  t1=', num2str(x_opt(2)), '  t2=', num2str(x_opt(3))];
 title(title_stri);
 
-%% video making
-% %% plot the traj of EKF(moving) and the location of the USS(after RT)
-% figure; hold on;
-% title_stri = ['exp', num2str(expNum), ' comparision of EKF and USS'];
-% title(title_stri);
-% plot(afterRT_data_US_trimed(1,:), afterRT_data_US_trimed(2,:), 'b+');
-% % plot the circle 
-% circle_center = importdata('../circleCenterPos_by_determineCircleCenterPositionBaseOnDistToEachOthers.mat');
-% circle_angle = [0:pi/50:2*pi];
-% circle_x = circle_center(1)+2.5*cos(circle_angle); %unit m
-% circle_y = circle_center(2)+2.5*sin(circle_angle); %unit m
-% plot(circle_x,circle_y, 'g');
-%         daspect([10,10,10]);
-% time_diff = diff(data_self_calib_node(5,:))'; % unit second
-% pause(3);
-% 	pause_time = 0.002*[time_diff; 2];
-%     for j = 5:size(data_self_calib_node,2) %1:size(X,2)-9 
-%         
-%         h3 = plot(afterRT_data_US_trimed(1,j-4:j), afterRT_data_US_trimed(2,j-4:j), '-ob');
-%         hold on;
-%         h2 = plot(data_self_calib_node(1,j-4:j), data_self_calib_node(2,j-4:j), '-or'); %h2 = plot(X(1,j:j+9), X(2,j:j+9), '-+r');
-%         legend('USS loc', 'circle marker', 'USS', 'EKF');
-% 
-%         Fram(j-4) = getframe(gcf);
-%         
-%         % pause(pause_time(j));
-%         delete(h2);
-%         delete(h3);
-%     end
-%     video_str = ['video_comparision', num2str(expNum), '.avi'];
-%     video = VideoWriter(video_str);
-%     open(video)
-%     writeVideo(video, Fram)
-%     close(video)
-
 
 %% optimazation used matrix
 % afterRT = R0 * nodes_optimal + t0;
 function F = myfun(x)
 
-expNum = 6;
+expNum = 3;
 
-str_self_calib_node = ['results/remove dataSet with NaN element/exper', num2str(expNum), '_opt_node.mat'];
+%str_self_calib_node = ['results/remove dataSet with NaN element/exper', num2str(expNum), '_opt_node.mat'];
+str_self_calib_node = ['results/full data/exper', num2str(expNum), 'group0_opt_node.mat'];
 data_self_calib_node = importdata(str_self_calib_node);
 node_po_hand_meas = importdata('../nodePos_by_determineNodesPositionBaseOnDistToEachOthers.mat');
 %{
