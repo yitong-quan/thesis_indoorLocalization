@@ -14,6 +14,7 @@ or 100, for missing with a pattern, 1st, 2nd, 3rd, 4th, 1st, 2nd, 3rd...
 %           traj_num: string : '01'
 %}
 %%
+% MaxNumMeasMissedWithinSet should be set to be 100 in this case(25ms40Hz)
 function [X, P, z_all] = EKF_25ms40Hz(factor_Q, factor_R, measurements_missing, ...
     MaxNumMeasMissedWithinSet, traj_name)
 
@@ -36,7 +37,7 @@ function [X, P, z_all] = EKF_25ms40Hz(factor_Q, factor_R, measurements_missing, 
     %% import trajectory positions 
     file_name = '25ms_40HzSamplingRate\stateVector.mat'; 
     real_X = importdata(file_name); 
-    real_X = real_X(:,1:500);
+    real_X = real_X(:,1:100);
     nodes_Nums = 5;    
     positionOfNodes = importdata('25ms_40HzSamplingRate\nodePos_12Oct.mat');
     %% & generate measuremnets data
@@ -119,7 +120,7 @@ function [X, P, z_all] = EKF_25ms40Hz(factor_Q, factor_R, measurements_missing, 
                     z_all(index_NaN_in_each_column(ll),kk) = NaN;
                 end
             end   
-        elseif MaxNumMeasMissedWithinSet == 100 % for missing with a pattern, 1st, 2nd, 3rd, 4th, 1st, 2nd, 3rd...
+        elseif MaxNumMeasMissedWithinSet == 100 % for missing with a pattern, only left this 1st, 2nd, 3rd, 4th, 1st, 2nd, 3rd...
                 index_not_NaN_in_each_column = repmat( linspace(1, nodes_Nums, nodes_Nums), [1 ceil(size(measurements_data_noisy,2)/nodes_Nums)]);
                 index_not_NaN_in_each_column = index_not_NaN_in_each_column(1:size(measurements_data_noisy,2));
                 temp_matrix = NaN(size(measurements_data_noisy));
