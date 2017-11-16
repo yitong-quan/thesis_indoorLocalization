@@ -1,7 +1,6 @@
 %% x(nodes, tag)
 
 clear;
-close all;
 
 %% import data
 expNum = 3; % <<---- also need to change the one in the 'myfun' below
@@ -49,19 +48,19 @@ end
 tag_num = size(group0,1); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
 nodes_num = size(group0,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
 x_num = tag_num + nodes_num;
-x0 = 10*rand(2,x_num);
+x0 = 10*(rand(2,x_num)-0.5);
 myfun0 = @(x)parameterfun(x,group0);
 %% optimization
 resnorm_last = inf;
 options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','iter','MaxIterations',2000);
-for ii = 1:1
+for ii = 1:10
     [x,resnorm] = lsqnonlin(myfun0,x0,[],[],options);
     if resnorm < resnorm_last
         x_opt = x;
         resnorm_opt = resnorm;
         resnorm_last = resnorm_opt;
     end    
-    x0 = x + 10*rand(size(x));
+    x0 = x + 10*(rand(size(x))-0.5);
 end
 resnorm_opt
 opt_tag = x_opt(:,nodes_num+1:end);
@@ -113,6 +112,7 @@ end
 % end
 % F = sum(abs(dist_this_tag_point), 2);
     F_matrix = x_dist - A;
+    F_matrix = F_matrix';
     F = [];
     for i = 1:nodes_num
         F = [F, F_matrix(i,:)];

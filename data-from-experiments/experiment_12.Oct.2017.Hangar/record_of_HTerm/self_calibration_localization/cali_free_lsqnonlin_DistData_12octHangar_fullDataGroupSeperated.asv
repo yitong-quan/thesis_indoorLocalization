@@ -1,7 +1,6 @@
 %% x(nodes, tag)
 
 clear;
-close all;
 
 %% import data
 expNum = 3; % <<---- also need to change the one in the 'myfun' below
@@ -54,14 +53,14 @@ myfun0 = @(x)parameterfun(x,group0);
 %% optimization
 resnorm_last = inf;
 options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','iter','MaxIterations',2000);
-for ii = 1:3
+for ii = 1:6
     [x,resnorm] = lsqnonlin(myfun0,x0,[],[],options);
     if resnorm < resnorm_last
         x_opt = x;
         resnorm_opt = resnorm;
         resnorm_last = resnorm_opt;
     end    
-    x0 = x + 10*rand(size(x));
+    x0 = x + 10*rand(size(x)-0.5);
 end
 resnorm_opt
 opt_tag = x_opt(:,nodes_num+1:end);
@@ -101,15 +100,23 @@ for i = 1:length(x_tags)
         x_dist(i,j) = norm(x_tags(:,i) - x_nodes(:,j));
     end
 end
-dist_this_tag_point = zeros(size(A));
-for i = 1:size(A, 1) % #tag
-    for j = 1:size(A, 2) % #nodes
-        % isnan(dist_data_inside_func(i,j))
-        if  ~isnan(A(i,j))
-            dist_this_tag_point(i,j) = x_dist(i,j) - A(i,j);
-            % disp(dist_this_tag_point(i,j))
-        end
+% dist_this_tag_point = zeros(size(A));
+% for i = 1:size(A, 1) % #tag
+%     for j = 1:size(A, 2) % #nodes
+%         % isnan(dist_data_inside_func(i,j))
+%         if  ~isnan(A(i,j))
+%             dist_this_tag_point(i,j) = x_dist(i,j) - A(i,j);
+%             % disp(dist_this_tag_point(i,j))
+%         end
+%     end
+% end
+% F = sum(abs(dist_this_tag_point), 2);
+    F_matrix = x_dist - A;
+    F_matrix = F_matrix';
+    F = [];
+    for i = 1:nodes_num
+        F = [F, F_matrix(i,:)];
     end
-end
-F = sum(abs(dist_this_tag_point), 2);
+    %replace NaN with 0 in the F
+    F(isnan(F)) = 0;
 end
