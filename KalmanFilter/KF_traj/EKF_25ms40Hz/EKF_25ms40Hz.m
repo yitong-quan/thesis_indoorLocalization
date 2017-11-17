@@ -37,7 +37,7 @@ function [X, P, z_all] = EKF_25ms40Hz(factor_Q, factor_R, measurements_missing, 
     %% import trajectory positions 
     file_name = '25ms_40HzSamplingRate\stateVector.mat'; 
     real_X = importdata(file_name); 
-    real_X = real_X(:,400:500);
+    real_X = real_X(:,1:end);
     nodes_Nums = 5;    
     positionOfNodes = importdata('25ms_40HzSamplingRate\nodePos_12Oct.mat');
     %% & generate measuremnets data
@@ -49,7 +49,7 @@ function [X, P, z_all] = EKF_25ms40Hz(factor_Q, factor_R, measurements_missing, 
     end
     %%  add noisy to measuremnets data
     rng(1,'twister');s = rng;rng(s); % Save and Restore the Generator Settings, this make the measurements_data_noisy will always be the same
-    measurements_data_noisy = distances2all_abs; % + factor_R * randn(size(distances2all_abs));    
+    measurements_data_noisy = distances2all_abs + 0.1*factor_R * randn(size(distances2all_abs));    
     
    %% for small test, use a series measurements data generate when Tag stays at origin all the time
     % measurements_data_noisy = repmat([sqrt(50^2 + 50^2); sqrt(100^2 + 50^2); sqrt(100^2 + 100^2); sqrt(50^2 + 100^2)], 1, size(measurements_data_noisy, 2));  

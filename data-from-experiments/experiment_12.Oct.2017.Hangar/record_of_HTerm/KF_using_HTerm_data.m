@@ -23,6 +23,8 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     format longG
     %% flag of remove_outlier_measurements
     remove_outlier_meas = 0; 
+    %% flag of using 25ms40Hz method
+    ms25Hz40 = 1;     
     %% import and process original-data
     switch experimentNumber
         case 0.11
@@ -58,6 +60,27 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         otherwise
             warning('please specify the experiment number #')
     end
+    
+    nodes_Nums = 5;
+    
+    %% if 25ms40Hz mode are activated
+    if ms25Hz40 == 1
+        temp_data = nan(size(data,1)*nodes_Nums, size(data,2));
+        for ji = 1:size(data,1)
+            for nodeName = 1:nodes_Nums %1:5
+                shift = nodeName-1; %0;4
+                row_temp_data = (ji-1)*5+nodeName;
+                
+                temp_data(row_temp_data,nodeName+1) = data(ji,nodeName+1);
+                temp_data(row_temp_data,1) = data(ji,1) - (4-shift)*1/40;
+            end
+        end
+        temp_data(1,:) = temp_data(1,:) + 0.1;
+        data = temp_data;
+    else
+        % do nothing
+    end
+    %% process data
     timeStamp = data(:,1); % unit second
     time_diff = diff(timeStamp);
     h0 = figure;
@@ -95,7 +118,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     measurements_data_noisy = sqrt(measurements_data_noisy.^2 - 1.20274960392966^2);
     %}
     
-    nodes_Nums = 5;
+    
     positionOfNodes = importdata('nodePos_by_determineNodesPositionBaseOnDistToEachOthers.mat');
     
     circle_center = importdata('circleCenterPos_by_determineCircleCenterPositionBaseOnDistToEachOthers.mat'); %unit m
@@ -243,14 +266,23 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         
         residual_with_nan = nan(5,1);
         RESIDUAL = [RESIDUAL, residual_with_nan];
-%         if isempty(z) % if no measurements are coming, skip the measurement update step
-%             X(:, i) = x_minus;
-%             P(:, :, i) = P_minus;
-%             residual_with_nan = nan(5,1);
+        %         if isempty(z) % if no measurements are coming, skip the measurement update step
+        %             X(:, i) = x_minus;
+        %             P(:, :, i) = P_minus;
+        %             residual_with_nan = nan(5,1);
         % if isempty(z) || length(z) == 1 || length(z) == 2 % if only 0/1/2 node measurement are coming, skip the whole update( motion and measurement update)
-        if isempty(z) || length(z) == 1 % if only 0/1 node measurement are coming, skip the whole update( motion and measurement update)
+        %% if 25ms40Hz mode are activated
+        if ms25Hz40 == 1
+            conditon_skip_meas_updata = isempty(z);
+            X(:, i) = x_minus;
+            P(:, :, i) = P_minus;
+        else
+            conditon_skip_meas_updata =  isempty(z) || length(z)==1;% if only 0/1 node measurement are coming, skip the whole update( motion and measurement update)
             % meas_trust_factor = meas_trust_factor / 1000;
-            continue        
+        end
+        
+        if conditon_skip_meas_updata 
+            continue
         else
             meas_trust_factor = 1;
 %             time_last = time_now;
@@ -363,7 +395,7 @@ X = fillmissing(X,'previous',2);
     estimated_posi_with_timeSt = [X; timeStamp'];
     % ----------- save(mat_str, 'estimated_posi_with_timeSt');
     
-	pause_time = 0.1*[time_diff; 2];
+	pause_time = 0.5*[time_diff; 2];
     for j = 5:size(X,2) %1:size(X,2)-9 
         h2 = plot(X(1,j-4:j), X(2,j-4:j), '-+r'); %h2 = plot(X(1,j:j+9), X(2,j:j+9), '-+r'); 
         str_title = sprintf('experiment%d; factorQ: %d; factorR: %d; j: %d', experimentNumber, factor_Q, factor_R, j);
