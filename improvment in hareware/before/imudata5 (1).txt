@@ -1,0 +1,313 @@
+Received Packet from NODE: 0x1C1C 
+DIST: 146 cm 
+Received Packet from NODE: 0x2020 
+DIST: 1204 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 0 cm 
+Received Packet from NODE: 0x4141 
+DIST: 366 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 530 cm 
+ACK
+2016-12-22 15:23:18.576
+Received Packet from NODE: 0x1C1C 
+DIST: 215 cm 
+Received Packet from NODE: 0x2020 
+DIST: 1182 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 0 cm 
+Received Packet from NODE: 0x4141 
+DIST: 0 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 0 cm 
+ACK
+2016-12-22 15:23:23.397
+Received Packet from NODE: 0x1C1C 
+DIST: 337 cm 
+Received Packet from NODE: 0x2020 
+DIST: 1156 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 0 cm 
+Received Packet from NODE: 0x4141 
+DIST: 149 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 621 cm 
+ACK
+2016-12-22 15:23:28.420
+Received Packet from NODE: 0x1C1C 
+DIST: 527 cm 
+Received Packet from NODE: 0x2020 
+DIST: 0 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 683 cm 
+Received Packet from NODE: 0x4141 
+DIST: 101 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 711 cm 
+ACK
+2016-12-22 15:23:37.421
+Received Packet from NODE: 0x1C1C 
+DIST: 552 cm 
+Received Packet from NODE: 0x2020 
+DIST: 0 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 0 cm 
+Received Packet from NODE: 0x4141 
+DIST: 0 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 0 cm 
+ACK
+2016-12-22 15:23:43.505
+Received Packet from NODE: 0x1C1C 
+DIST: 0 cm 
+Received Packet from NODE: 0x2020 
+DIST: 1149 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 0 cm 
+Received Packet from NODE: 0x4141 
+DIST: 0 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 0 cm 
+ACK
+2016-12-22 15:23:53.505
+Received Packet from NODE: 0x1C1C 
+DIST: 744 cm 
+Received Packet from NODE: 0x2020 
+DIST: 0 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 0 cm 
+Received Packet from NODE: 0x4141 
+DIST: 402 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 1049 cm 
+ACK
+2016-12-22 15:23:57.764
+Received Packet from NODE: 0x1C1C 
+DIST: 0 cm 
+Received Packet from NODE: 0x2020 
+DIST: 0 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 0 cm 
+Received Packet from NODE: 0x4141 
+DIST: 0 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 0 cm 
+ACK
+2016-12-22 15:24:04.394
+Received Packet from NODE: 0x1C1C 
+DIST: 0 cm 
+Received Packet from NODE: 0x2020 
+DIST: 0 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 0 cm 
+Received Packet from NODE: 0x4141 
+DIST: 0 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 0 cm 
+ACK
+2016-12-22 15:24:16.765
+Received Packet from NODE: 0x1C1C 
+DIST: 0 cm 
+Received Packet from NODE: 0x2020 
+DIST: 0 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 0 cm 
+Received Packet from NODE: 0x4141 
+DIST: 0 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 0 cm 
+ACK
+2016-12-22 15:24:36.733
+Received Packet from NODE: 0x1C1C 
+DIST: 94 cm 
+Received Packet from NODE: 0x2020 
+DIST: 1026 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 0 cm 
+Received Packet from NODE: 0x4141 
+DIST: 442 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 317 cm 
+ACK
+2016-12-22 15:24:41.959
+Received Packet from NODE: 0x1C1C 
+DIST: 466 cm 
+Received Packet from NODE: 0x2020 
+DIST: 731 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 931 cm 
+Received Packet from NODE: 0x4141 
+DIST: 610 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 75 cm 
+ACK
+2016-12-22 15:24:46.514
+Received Packet from NODE: 0x1C1C 
+DIST: 0 cm 
+Received Packet from NODE: 0x2020 
+DIST: 495 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 0 cm 
+Received Packet from NODE: 0x4141 
+DIST: 0 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 0 cm 
+ACK
+2016-12-22 15:24:50.975
+Received Packet from NODE: 0x1C1C 
+DIST: 873 cm 
+Received Packet from NODE: 0x2020 
+DIST: 264 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 736 cm 
+Received Packet from NODE: 0x4141 
+DIST: 753 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 462 cm 
+ACK
+2016-12-22 15:24:56.888
+Received Packet from NODE: 0x1C1C 
+DIST: 378 cm 
+Received Packet from NODE: 0x2020 
+DIST: 782 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 0 cm 
+Received Packet from NODE: 0x4141 
+DIST: 0 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 0 cm 
+ACK
+2016-12-22 15:25:24.718
+Received Packet from NODE: 0x1C1C 
+DIST: 700 cm 
+Received Packet from NODE: 0x2020 
+DIST: 454 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 684 cm 
+Received Packet from NODE: 0x4141 
+DIST: 569 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 384 cm 
+ACK
+2016-12-22 15:25:28.790
+Received Packet from NODE: 0x1C1C 
+DIST: 0 cm 
+Received Packet from NODE: 0x2020 
+DIST: 0 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 0 cm 
+Received Packet from NODE: 0x4141 
+DIST: 0 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 0 cm 
+ACK
+2016-12-22 15:25:32.971
+Received Packet from NODE: 0x1C1C 
+DIST: 0 cm 
+Received Packet from NODE: 0x2020 
+DIST: 237 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 636 cm 
+Received Packet from NODE: 0x4141 
+DIST: 0 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 0 cm 
+ACK
+2016-12-22 15:25:37.354
+Received Packet from NODE: 0x1C1C 
+DIST: 0 cm 
+Received Packet from NODE: 0x2020 
+DIST: 716 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 0 cm 
+Received Packet from NODE: 0x4141 
+DIST: 0 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 0 cm 
+ACK
+2016-12-22 15:25:44.905
+Received Packet from NODE: 0x1C1C 
+DIST: 0 cm 
+Received Packet from NODE: 0x2020 
+DIST: 0 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 579 cm 
+Received Packet from NODE: 0x4141 
+DIST: 0 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 1497 cm 
+ACK
+2016-12-22 15:25:50.318
+Received Packet from NODE: 0x1C1C 
+DIST: 0 cm 
+Received Packet from NODE: 0x2020 
+DIST: 0 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 467 cm 
+Received Packet from NODE: 0x4141 
+DIST: 0 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 1477 cm 
+ACK
+2016-12-22 15:25:55.341
+Received Packet from NODE: 0x1C1C 
+DIST: 0 cm 
+Received Packet from NODE: 0x2020 
+DIST: 702 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 390 cm 
+Received Packet from NODE: 0x4141 
+DIST: 0 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 0 cm 
+ACK
+2016-12-22 15:26:09.210
+Received Packet from NODE: 0x1C1C 
+DIST: 0 cm 
+Received Packet from NODE: 0x2020 
+DIST: 283 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 554 cm 
+Received Packet from NODE: 0x4141 
+DIST: 0 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 626 cm 
+ACK
+2016-12-22 15:26:14.373
+Received Packet from NODE: 0x1C1C 
+DIST: 0 cm 
+Received Packet from NODE: 0x2020 
+DIST: 216 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 598 cm 
+Received Packet from NODE: 0x4141 
+DIST: 0 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 0 cm 
+ACK
+2016-12-22 15:26:19.708
+Received Packet from NODE: 0x1C1C 
+DIST: 0 cm 
+2016-12-22 15:26:25.964
+Received Packet from NODE: 0x2020 
+DIST: 206 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 601 cm 
+Received Packet from NODE: 0x4141 
+DIST: 0 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 0 cm 
+ACK
+2016-12-22 15:26:28.366
+Received Packet from NODE: 0x1C1C 
+DIST: 658 cm 
+Received Packet from NODE: 0x2020 
+DIST: 498 cm 
+Received Packet from NODE: 0x3E3E 
+DIST: 636 cm 
+Received Packet from NODE: 0x4141 
+DIST: 0 cm 
+Received Packet from NODE: 0x5A5A 
+DIST: 358 cm 
+ACK
+2016-12-22 15:26:32.500
