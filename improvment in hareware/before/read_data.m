@@ -98,7 +98,7 @@ end
 time_diff = diff(data_t_dist(:,1));
 %% below are use to remove dist with value of 0 (TODO or value smaller than 2000)
 d_dist = data_t_dist(:,2:end);
-d_dist(d_dist < 500) = NaN;
+d_dist(d_dist == 0) = NaN;
 data_t_dist = [data_t_dist(:,1), d_dist];
 data_t_dist =data_t_dist(1:end-1,:);
 str_data = ['data_t_dist_', string, '.mat'];
