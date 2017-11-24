@@ -2225,38 +2225,38 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 	uint64_t resp_rx_timestamp = 0;
 	uint16_t count1 = 45;  //3... 45 Patrick set 45, too much. Yitong  0x16470720 >>
 	uint8_t count2 = 1;
-	uint8_t count3 = 0;	// yitong
+	uint8_t count3 = 2;	// yitong
 	uint8_t count4 = 0;	// yitong
 
 	switch (NODE_ID)
 	{
 		case 0x2020:
-			count3 = 2;	// yitong
+			//count3 = 2;	// yitong
 			count4 = 2;	// yitong
 		break;
 
 		case 0x3E3E:
-			count3 = 8;	// yitong
+			//count3 = 8;	// yitong
 			count4 = 8;	// yitong
 		break;
 
 		case 0x4D4D:
-			count3 = 16; //14;	// yitong
+			//count3 = 16; //14;	// yitong
 			count4 = 16; //14;	// yitong
 		break;
 
 		case 0x5A5A:
-			count3 = 23;//22; //20;	// yitong
+			//count3 = 23;//22; //20;	// yitong
 			count4 = 23;//22; //20;	// yitong
 		break;
 
 		case 0x6E6E:
-			count3 = 29; //28;	// yitong
+			//count3 = 29; //28;	// yitong
 			count4 = 30; //28;	// yitong
 		break;
 
 		case 0x1C1C:
-			count3 = 16;	// yitong REPLACE 4D4D WITH 1C1C
+			//count3 = 16;	// yitong REPLACE 4D4D WITH 1C1C
 			count4 = 16;	// yitong
 		break;
 
@@ -2265,7 +2265,7 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 	}
 
 
-	uint8_t debug_num = 205; // Yitong
+	//uint8_t debug_num = 205; // Yitong
 	//RTC_delay_ms(100); // Yitong
 
 	state1 = RECEIVER_ON_STATE;
@@ -2287,7 +2287,7 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 
 			case STATE_WAIT_BLINK_RECEIVE:
 				// TODO, SET LED BLINK HERE // <<<<<<<<<<<<<<<<<<<<<<<<  Yitong
-				debug_num++;
+				//debug_num++;
 				if(RTC_TIMEOUT)
 				{
 					// TODO, SET LED BLINK HERE // <<<<<<<<<<<<<<<<<<<<<<<<  Yitong
@@ -2306,7 +2306,7 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 				//----blink_LED(3,2);  //yitong
 				count3 = count3 - 1;  // Yitong, to prevent loooping forever between STATE_POLL_TRANSMIT to STATE_WAIT_RESPONSE_RECEIVE
 				state1 = DWM1000_poll_transmit_state(RANGE_TAG_ID, MY_NODE_ID, &poll_tx_timestamp);
-				RTC_start(80); //30...80
+				RTC_start(60); //30...80
 			break;
 
 			case STATE_WAIT_RESPONSE_RECEIVE:
@@ -2317,7 +2317,7 @@ void DWM1000_UWB_NODE(uint16_t measurement_numbers)
 			    }*/
 				if(RTC_TIMEOUT)
 				{
-					count1 = count1 - 1;  // Yitong  0x16470720 <<
+					count1 = count1 - 1;  // since count3 is introduced, count1 is useless // Yitong  0x16470720 <<
 					state1 = STATE_POLL_TRANSMIT;
 				}
 			break;

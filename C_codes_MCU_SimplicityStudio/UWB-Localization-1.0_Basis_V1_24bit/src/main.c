@@ -494,9 +494,11 @@ void sendPacket(uint32_t wakeupid, uint8_t option, uint8_t *data, uint8_t len, u
 				if(NODE_ADDRESS == 0x2020)
 				{
 					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (90.42 * UWB_data[n] + 5.531));		// y = 0.9993  * x - 0.24217
-					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n] * 1.034 -291.3));		// y = 0.9993  * x - 0.24217error = printMSG(string_buffer, strlen(string_buffer));
+					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n] * 1.034 -291.3));		// y = 0.9993  * x - 0.24217error = printMSG(string_buffer, strlen(string_buffer));
+					sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n] * 1.052 -688.6));		// USING 4D4D data,since it is 4D4D;
 					//sprintf(string_buffer, "0x%X , %ld \r\n", (int) NODE_ADDRESS, (long int) (1000 * UWB_data[n]));
 					error = printMSG(string_buffer, strlen(string_buffer));
+
 				}
 				if(NODE_ADDRESS == 0x3E3E)
 				{

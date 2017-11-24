@@ -2289,21 +2289,23 @@ void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t NODE_A
 
 	uint8_t count = 1;
 	uint8_t count2 = 9;
-	uint64_t debugNum1 = 0;
+	//uint64_t debugNum1 = 0;
 	uint64_t count3 = 1800;
 
 	//DWM1000_Chip_INIT();
 
 	//while(measurement_numbers && count > 0)
-	while(((measurement_numbers > 0 && count > 0) && count2 > 0) && count3 > 0) // Yitong, replace
+	//while(((measurement_numbers > 0 && count > 0) && count2 > 0) && count3 > 0) // Yitong, replace
+	while(((measurement_numbers > 0 && count > 0) ) && count3 > 0) // Yitong, replace
 	{
 		switch (state)
 		{
 			case STATE_SEND_BLINK:
+				RTC_delay_ms(5);
 				state = DWM1000_blink_transmit_state(NODE_ADD, MY_TAG_ID); //with only one nodeID and tagID, while loops for othernodeID locates in the main function
 				//RTC_start(700);  // 10 can work. can be Changed to 300?? TODO Yitong
 				//RTC_start(100);
-				RTC_start(110); //23 works, 33works 100works
+				RTC_start(110); //110, 23 works, 33works 100works
 				//>>>>>>>>>>>>>>>>>>>>>>>>> In order to make the time needed shorter, when not all the nodes can be contacted. can it be Changed to 300?? TODO Yitong
 				//>>>>>>>>>>>>>>>>>>>>>>>>> I am choosing 100m/(3*10^8)*factor, take a factor 3, then I get 10^(-6)s = 0.001ms
 				//>>>>>>>>>>>>>>>>>>>>>>>>> so choosing RTC_start(100) should be problem free, if there is no other things is needed to be done except ranging, (others might be waiting for respond or so)
@@ -2318,7 +2320,7 @@ void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t NODE_A
 			break;
 
 			case STATE_RECEIVE_MODE:
-				debugNum1 = debugNum1 + 1; //Yitong, to find out the value to set in while
+				//debugNum1 = debugNum1 + 1; //Yitong, to find out the value to set in while
 				if(RTC_TIMEOUT)
 				{
 					count = 0;
@@ -2335,6 +2337,10 @@ void DWM1000_UWB_TAG(float *range, uint16_t measurement_numbers, uint32_t NODE_A
 			break;
 
 			case STATE_WAIT_FINAL_RECEIVE:
+				//if(RTC_TIMEOUT)
+				//{
+				//	count = 0;
+				//}
 				count3 = count3 - 1; //Yitong, to find out the value to set in while
 			break;
 
