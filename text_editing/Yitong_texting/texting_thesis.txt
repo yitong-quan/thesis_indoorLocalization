@@ -1,0 +1,290 @@
+\chapter{Theoretical Background} 
+\label{3}
+In this chapter, the theoretical foundations relevant to this thesis will be explained, which are xxx,xxx,xxxx........
+
+
+\section{Localization with Distances}
+\label{3_1}
+In Geometry, the position of a point can be determined by several methods, such as Trilateration and Triangulation. For location determination in this thesis, Trilateration is used, which can be described as followed:
+
+In a two dimensional space, for instance, to determine the position of a point, at least 3 distances to 3 different fixed positions are required, except for the case that these 3 fixed positions lie on the same line.
+
+When the exact distances from a mobile Tag to 3 anchor Nodes are known, the position of this mobile Tag can be determined by the intersection point of circles around the Nodes with the corresponding radius. As shown in Figure\ref{figure3_1}
+
+\begin{figure}[ht]%
+\centering
+\includegraphics[width=0.6\textwidth]{figures/theoreticalBackground/3circles.PNG}%
+\caption{localize the position of a mobile tag with distances to other 3 anchor nodes \cite{Patrick}.}%
+\label{figure3_1}%
+\end{figure}
+
+When noises due to the inherent error of hardware are added to the distances from a mobile Tag to 3 anchor Nodes, the position of this mobile Tag lies within the intersection area of circles.
+
+
+\section{Distance Measurement System with Ultra-wide Band Signal}
+\label{3_2}
+
+
+\subsection{Ultra-wide Band}
+\label{3_2_1}
+Ultra-wide Band(UWB) is a radio technology for communications, with the properties of  low energy consumption level for short-range, high-bandwidth, covering large portion of the radio spectrum\cite{UWB_propoties}.
+
+XXXXXXXXXXXXXXX
+
+more about UWB, check P16 in Patrick' thesis 
+\cite{Patrick}.
+
+XXXXXXXXX
+
+
+
+\subsection{distance measurements}
+\label{3_2_2}
+One way to measure the distance \(d\) between the sender and the receiver, is to measure the signal running time \(\Delta t\) between the sending time of the sender and the receiving time of the receiver, based on the relation:
+
+\begin{equation}
+\label{eq:1}
+d = \Delta t \cdot c
+\end{equation}
+
+where $c$ is the speed of the UWB signal, which is the speed of speed, equals to 299,792,458 \(m/s\), or approximately $3\times10^8$  \(m/s\).
+
+In order to measure the above mentioned signal running time, the technique time of flight (ToF), sometimes called time of arrival (ToA), is used. ToF requires a precise time synchronization between each pair of sender and receiver, since the signal running time is calculated as the difference between timestamps from sender and receiver.
+
+XXXXXXX
+
+INSERT PIC (time of fly)
+
+XXXXXXXXXX
+
+To avoid the need of this time synchronization when calculating the signal running time, round-trip time (RTT), also called  round-trip delay time (RTD) can be used. The principle of RTT is shown in \autoref{fig:RTT}. In this procedure, two signals are sent sequentially. The first signal is sent from the transceiver 1 to the transceiver 2. Then the transceiver 2 reply to the transceiver 1 after some delay, due to internal processing in transceiver 2, or to make specified transmission time
+predictable and aligned with the transmit timestamp. In \autoref{fig:RTT}, $t_0, t_3, t_2, t_1$ are the timestamps of sending and receiving signals in transceiver 1 and 2. After signal 1 is received, transceiver 2 will send $t_2, t_1$ to transceiver 1 through signal 2. Using $t_0, t_3$, together with $t_2, t_1$, transceiver 1 can now calculate the distance using \autoref{eq:RRT},
+
+When $t_2$ is equal to $t_1$, then the above RTT is the procedure of ranging in Radar(radio detection and ranging) or Lidar(one of laser measurement system).
+
+For simplicity reason, in the following part of this thesis, transceiver 1 is represented as mobile tag, and transceiver as anchor node.
+
+\begin{equation}
+\label{eq:RRT}
+d = \frac{(t_0 - t_3) - (t_2 - t_1)}{2} \cdot c
+\end{equation}
+
+
+\begin{figure}[ht]%
+\centering
+\includegraphics[width=0.6\textwidth]{figures/theoreticalBackground/RRT}%
+\caption{principle of RRT \cite{Fabian_ToF}.}%
+\label{fig:RTT}%
+\end{figure}
+
+xxxxxxxxxxxxxxx
+
+TODO; change in \autoref{fig:RTT} Transcceiver 1 & 2, 'zeit' to 'time'
+
+xxxxxxxxxxxxxxx
+
+xxx
+
+Following are 3 of several implementations of RTT.
+
+\begin{itemize}
+	\item Single Sided Two Way Ranging (SSTWR). 
+\end{itemize}
+
+SSTWR is the basic implementation of RTT. The mobile tag send a message to the anchor node, which responds with another message back to mobile tag to finish the measuring process, as illustrated in \autoref{fig:SSTWR}. And each devices record their the transmission and reception
+timestamps of the messages, $T_{round}$ is defined as the subtraction of reception timestamp and transmission timestamp in mobile tag, while $T_{reply}$ as the subtraction of transmission timestamp and transmission timestamp in anchor node. So the time of flight, $T_{prop}$ can be calculated by \autoref{eq:SSTWR}. 
+
+\begin{figure}[ht]%
+\centering
+\includegraphics[width=0.6\textwidth]{figures/theoreticalBackground/SSTWR}%
+\caption{illustration of SSTWR \cite{DW1000_USER}.}%
+\label{fig:SSTWR}%
+\end{figure}
+
+\begin{equation}
+\label{eq:SSTWR}
+T_{prop}=\frac{T_{round}-T_{reply}}{2}
+\end{equation}
+
+Then the distance between mobile tag and anchor node can be calculated by \autoref{eq:T2d}. 
+
+
+\begin{equation}
+\label{eq:T2d}
+d = T_{prop} \cdot c
+\end{equation}
+
+
+SSTWR has the advantage of time and energy saving, since only 2 messages are sent for one measuring. However it has the disadvantage of inaccuracy when $T_{reply}$ is big, since the $T_{round}$ and $T_{reply}$ are measured in two different devices with different local clock offset\cite{DW1000_USER}.
+
+\begin{itemize}
+	\item Double Sided Two Way Ranging (DSTWR). 
+\end{itemize}
+
+DSTWR is an extended version of SSTWR, combining two RRT time measurements, and has a smaller errer about the ToF result in comparison with SSTWR even for large $T_{reply}$\cite{DW1000_USER}.
+
+\autoref{fig:DSTWR} illustrates the operation of DSTWR. The mobile tag first sends a message to the anchor node. Then the anchor node responds back to the mobile tag with another message, which serves as the end of the first RRT measurement and the begin of the second RRT measurement. Finally, the mobile tag sends back a third message to the anchor node and ends this ranging.
+
+\begin{figure}[ht]%
+\centering
+\includegraphics[width=0.6\textwidth]{figures/theoreticalBackground/DSTWR}%
+\caption{illustration of DSTWR \cite{DW1000_USER}.}%
+\label{fig:DSTWR}%
+\end{figure}
+
+The time of flight, $T_{prop}$ can be calculated by \autoref{eq:DSTWR}\cite{DW1000_USER}.
+
+\begin{equation}
+\label{eq:DSTWR}
+T_{prop}=\frac{T_{round1}\times T_{round2} -T_{reply1}\times T_{reply1}}{T_{round1}+T_{round2} +T_{reply1}+T_{reply1}}
+\end{equation}
+
+DSTWR has the advantage of small error in calculating ToF compare to SSTWR, and the disadvantage of requiring multiplication and division operations\cite{DW1000_USER}.
+
+\begin{itemize}
+	\item Symmetrical Double Sided Two Way Ranging (SDSTWR).
+\end{itemize}
+
+SDSTWR is a special case of DSTWR where $T_{reply1}$ and $T_{reply2}$ are required to be equal. Then the time of flight, $T_{prop}$ can be calculated by \autoref{eq:SDSTWR}\cite{DW1000_USER}.
+
+\begin{equation}
+\label{eq:SDSTWR}
+T_{prop}=\frac{T_{round1} -T_{reply2} + T_{round2} - T_{reply1}}{4}
+\end{equation}
+
+SDSTWR has the advantage of low power consumption for micro-controller, since it requires only addition, subtraction and division by 4. However it has the disadvantage of long measuring time, since the $T_{reply1}$ and $T_{reply2}$ have to be the same, which means the greater value among these two has to be chosen.
+
+
+
+
+\section{Kalman Filter}
+\label{3_3}
+
+The positions of a moving mobile tag can be localized using the measured distances to anchor nodes as illustrated in \autoref{3_1}.
+But in the cases of, for example, some of the measurements are missing, or the measurements from different devices have different noise level, or the measurements are too noisy, the basic implementation of \autoref{3_1} would has difficulty to solve the localization problem. To tackle this difficulty, the extended Kalman filter is used in this thesis, which will be introduced in the \autoref{3_4}. In this section, the fundamental version of extended Kalman filter, i.e. the Kalman filter is introduced.
+
+Kalman filter (KF) is one of the well-known algorithms for stochastic estimation from noisy measurements.\cite{intr_kf} It is named after Rudolf E. Kalman.  Since it was introduced, KF has been numerously applied in technology area, such as autonomous navigation of vehicles and signal processing and robotic motion planning.
+
+KF substantially uses a series of observations over time to make better estimations about system states, compare to those base purely on one measurement. In a KF model, the current state ${\mathbf{x}}_{k}$ is developed from last state ${\mathbf{x}}_{k-1}$ with the state transition matrix ${\mathbf{A}}$, control-input vector ${\mathbf{u}_k}$, control-state-transition matrix ${\mathbf{B}}$ and process noise ${\mathbf{w}_k}$, as shown in \autoref{eq:KF_model1},
+
+\begin{equation}
+\label{eq:KF_model1}
+\mathbf{x}_k = \mathbf{A} \mathbf{x}_{k-1} + \mathbf{B} \mathbf{u}_k + \mathbf{w}
+\end{equation}
+
+and the potential observation ${\mathbf{z}}_{k}$ of the current state ${\mathbf{x}}_{k}$ can be with be help of the observation-state-transition matrix ${\mathbf{H}}_{k}$ and     observation noise ${\mathbf{v}}_{k}$, as shown in \autoref{eq:KF_model2},
+
+\begin{equation}
+\label{eq:KF_model2}
+\mathbf{z}_k = \mathbf{H}_k \mathbf{x}_k + \mathbf{v}_k
+\end{equation}
+
+The $\mathbf{w}_k$ and $\mathbf{v}_k$ in \autoref{eq:KF_model1} and \autoref{eq:KF_model2} are assumed to be Gaussian white noise with covariances $\mathbf{Q}_k$ and $\mathbf{R}_k$, i.e. $\mathbf{w}_k \sim \mathcal{N}\left(0, \mathbf{Q}_k\right)$ and $\mathbf{v}_k \sim \mathcal{N}\left(0, \mathbf{R}_k\right)$, which are independent distributed.
+
+The KF is an implementation a recursive estimator with the type of predictor-corrector.\cite{intr_kf} It contains two steps in each recursive, i.e. prediction and correction. 
+For simplicity, the following introduction about KF is about its discrete form, since this is the form used in this thesis. The prediction step projects the current estimates of state and error covariance over time to gain a priori estimation for the next time step. And the correction step uses the new obtained measurement as 'feedback' to correct the a priori estimation from last prediction step, and obtains a new improved estimation, known as a posteriori estimation.
+
+The mathematical equations for prediction step is illustrated in \autoref{eq:kf_pre1} and \autoref{eq:kf_pre2},
+
+\begin{equation}
+\label{eq:kf_pre1}
+\hat{\mathbf{x}}_{k}^{-} = \mathbf{A}\hat{\mathbf{x}}_{k-1} + \mathbf{B} \mathbf{u}_k 
+\end{equation}
+
+\begin{equation}
+\label{eq:kf_pre2}
+\mathbf{P}_{k}^{-} =  \mathbf{A} \mathbf{P}_{k-1} \mathbf{A}^\mathrm{T} + \mathbf{Q}_{k}
+\end{equation}
+
+where $\hat{\mathbf{x}}_{k}^{-}$ and $\mathbf{P}_{k}^{-}$ are the a priori estimation of state vector and error covariance at time step $k$, $\hat{\mathbf{x}}_{k-1}$ and $\mathbf{P}_{k-1}$ are the a posteriori estimation from last time step $k-1$, $\mathbf{A}$, $\mathbf{B}$, $\mathbf{u}_k$ and $\mathbf{Q}_{k}$ are the state-transition matrix, the control-input matrix, control-input vector and the covariance of the process noise at time step $k$.
+
+The mathematical equations for correction step is illustrated in \autoref{eq:kf_cor1}, \autoref{eq:kf_cor2} and \autoref{eq:kf_cor3},
+
+\begin{equation}
+\label{eq:kf_cor1}
+\mathbf{K}_{k} =  \mathbf{P}_k^{-}  \mathbf{H}^\mathrm{T} 
+ (\mathbf{H} \mathbf{P}_k^{-} \mathbf{H}^\mathrm{T} + \mathbf{R})^{-1}
+\end{equation}
+
+\begin{equation}
+\label{eq:kf_cor2}
+\hat{\mathbf{x}}_{k} = \hat{\mathbf{x}}_{k}^{-} + \mathbf{K}_k(\mathbf{z}_{k} - \mathbf{H}\hat{\mathbf{x}}_{k}^{-})
+\end{equation}
+
+\begin{equation}
+\label{eq:kf_cor3}
+\mathbf{P}_{k}=  (\mathbf{I} - \mathbf{K}_{k} \mathbf{H}) \mathbf{P}_k^{-} 
+\end{equation}
+
+where $\hat{\mathbf{x}}_{k}$ and $\mathbf{P}_{k}$ are the a posteriori estimations of the state vector and error covariance at time step $k$, which will be severed as a priori estimations for the next recursive at time step $k+1$. $\hat{\mathbf{K}}_{k}$ is the optimal Kalman gain. $H$ is the observation matrix which maps the current state vector into the observed vector. 
+$\mathbf{z}_{k}$ is the observation, i.e. the measurement vector. $R$ is the covariance of the observation noise. $I$ is a identity matrix.
+
+Note that the state-transition matrix $\mathbf{A}$, the control-input matrix $\mathbf{B}$ and the observation matrix $\mathbf{H}$ are applied into the equations with the matrix multiply operator, which means that they can only perform well when the transitions between states, inputs and observations are linear. However for the non-linear cases, which is required for this thesis, other variant of KF can be used, such as extended Kalman filter.
+
+\section{Extended Kalman Filter}
+\label{3_4}
+
+Extended Kalman Filter (EKF) is a non-linear version of KF, which means the state transition and observation-state-transition is not necessary to be linear function. In fact, the EKF uses differentiable functions, and   then linearizes via Taylor Expansion at the current estimate of the mean and covariance. 
+
+In comparision to \autoref{eq:KF_model1} and \autoref{eq:KF_model2}, the relations between current state,  its previour state and its potential observation are sa shown in \autoref{eq:EKF_model1} and \autoref{eq:EKF_model2},
+
+\begin{equation}
+\label{eq:EKF_model1}
+\mathbf{x}_{k} = f(\mathbf{x}_{k-1}, \mathbf{u}_{k}) + \mathbf{w}_{k}\\
+\end{equation}
+
+\begin{equation}
+\label{eq:EKF_model2}
+\mathbf{z}_{k} = h(\mathbf{x}_{k}) +\mathbf{v}_{k}
+\end{equation}
+
+where $f(\cdot)$ is the non-linear  differentiable function for state transition, and $h(\cdot)$  is the non-linear  differentiable function for observation-state transition. 
+
+
+The equations for prediction step of EKF are listed in \autoref{eq:ekf_pre1} and \autoref{eq:ekf_pre2},
+
+\begin{equation}
+\label{eq:ekf_pre1}
+\hat{\mathbf{x}}_{k}^{-} = f(\hat{\mathbf{x}}_{k-1}, \mathbf{u}_{k})  
+\end{equation}
+
+\begin{equation}
+\label{eq:ekf_pre2}
+\mathbf{P}_{k}^{-} =  \mathbf{F}_{k-1} \mathbf{P}_{k-1} \mathbf{F}_{k-1}^\mathrm{T} + \mathbf{Q}_{k}
+\end{equation}
+
+where $\mathbf{F}_{k-1}$ is the Jacobian matrix of $f(\cdot)$ with respect to $\hat{\mathbf{x}}_{k-1}$, as shown in \autoref{eq:JACO1}
+
+\begin{equation}
+\label{eq:ekf_cor1}
+{{\mathbf{F}_{k-1}}} = \left . \frac{\partial f}{\partial \mathbf{x} } \right \vert _{\hat{\mathbf{x}}_{k-1}}
+\end{equation}
+
+
+The mathematical equations for correction step is illustrated in \autoref{eq:ekf_cor1}, \autoref{eq:ekf_cor2} and \autoref{eq:ekf_cor3},
+
+\begin{equation}
+\label{eq:JACO1}
+\mathbf{K}_{k} =  \mathbf{P}_k^{-}  \mathbf{H}^\mathrm{T} 
+ (\mathbf{H} \mathbf{P}_k^{-} \mathbf{H}^\mathrm{T} + \mathbf{R})^{-1}
+\end{equation}
+
+\begin{equation}
+\label{eq:ekf_cor2}
+\hat{\mathbf{x}}_{k} = \hat{\mathbf{x}}_{k}^{-} + \mathbf{K}_k(\mathbf{z}_{k} - \mathbf{H}\hat{\mathbf{x}}_{k}^{-})
+\end{equation}
+
+\begin{equation}
+\label{eq:ekf_cor3}
+\mathbf{P}_{k}=  (\mathbf{I} - \mathbf{K}_{k} \mathbf{H}) \mathbf{P}_k^{-} 
+\end{equation}
+
+where $\mathbf{H}$ is the Jacobian matrix of $H(\cdot)$ with respect to $\hat{\mathbf{x}}_{k}^{-}$, as shown in \autoref{eq:JACO2}
+
+\begin{equation}
+\label{eq:JACO2}
+ {{\mathbf{H}}} = \left . \frac{\partial h}{\partial \mathbf{x} } \right \vert _{\hat{\mathbf{x}}_{k}^{-}}
+\end{equation}
+
+\vspace{5mm} %5mm vertical space
+\vspace{50mm} %5mm vertical space
