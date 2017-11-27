@@ -133,12 +133,19 @@
 % pause()
 
 %% test for delete random numbers of elements in each set
-z_all = randn(4,1000);
-            for kk = 1:size(z_all,2)  %<<<<<<<<<<<<<<<<<<<<NOT GOOD TODO: IMPROVE
-                num_NaN_in_each_column = randi([0 size(z_all,1)], 1,1);
-                index_NaN_in_each_column = randi([1 size(z_all,1)] ,1, num_NaN_in_each_column);
-                %figure;histogram(index_NaN_in_each_column, 4);
-                for ll = 1: size(index_NaN_in_each_column,2)
-                    z_all(index_NaN_in_each_column(ll),kk) = NaN;
-                end
-            end
+% z_all = randn(4,1000);
+%             for kk = 1:size(z_all,2)  %<<<<<<<<<<<<<<<<<<<<NOT GOOD TODO: IMPROVE
+%                 num_NaN_in_each_column = randi([0 size(z_all,1)], 1,1);
+%                 index_NaN_in_each_column = randi([1 size(z_all,1)] ,1, num_NaN_in_each_column);
+%                 %figure;histogram(index_NaN_in_each_column, 4);
+%                 for ll = 1: size(index_NaN_in_each_column,2)
+%                     z_all(index_NaN_in_each_column(ll),kk) = NaN;
+%                 end
+%             end
+            
+            %%
+sym dt px py
+ T = [1/2*dt^2, 0; 0, 1/2*dt^2; dt, 0; 0, dt]
+ p = [px, py]
+ w = T*p;
+ w*w'            
