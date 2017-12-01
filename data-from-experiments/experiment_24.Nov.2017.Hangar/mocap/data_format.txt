@@ -1,0 +1,6 @@
+
+column 2,  time
+column 4, x
+column 5, y
+column 3, use for alighment with MoCap
+column 6, z

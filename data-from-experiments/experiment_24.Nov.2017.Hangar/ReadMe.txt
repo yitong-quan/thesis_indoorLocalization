@@ -1,3 +1,3 @@
-UWB is 9 second faster than Assist and MoCap
+Assist is 9 seconds faster than UWB, FOR RECORDEDTIME_STAMPS
 
-Assist and MoCap are sync
+OR REVERSE?

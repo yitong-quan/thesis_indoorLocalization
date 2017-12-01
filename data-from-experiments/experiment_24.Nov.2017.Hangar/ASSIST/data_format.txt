@@ -1,0 +1,5 @@
+
+column 1, epoch time
+column 2, x
+column 3, y
+column 15, use for alighment with MoCap
