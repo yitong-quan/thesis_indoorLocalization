@@ -169,7 +169,7 @@ KF substantially uses a series of observations over time to make better estimati
 
 \begin{equation}
 \label{eq:KF_model1}
-\mathbf{x}_k = \mathbf{A} \mathbf{x}_{k-1} + \mathbf{B} \mathbf{u}_k + \mathbf{w}
+\mathbf{x}_k = \mathbf{A} \mathbf{x}_{k-1} + \mathbf{B} \mathbf{u}_k + \mathbf{w}_{k}
 \end{equation}
 
 and the potential observation ${\mathbf{z}}_{k}$ of the current state ${\mathbf{x}}_{k}$ can be with be help of the observation-state-transition matrix ${\mathbf{H}}_{k}$ and     observation noise ${\mathbf{v}}_{k}$, as shown in \autoref{eq:KF_model2},
@@ -286,5 +286,324 @@ where $\mathbf{H}$ is the Jacobian matrix of $H(\cdot)$ with respect to $\hat{\m
  {{\mathbf{H}}} = \left . \frac{\partial h}{\partial \mathbf{x} } \right \vert _{\hat{\mathbf{x}}_{k}^{-}}
 \end{equation}
 
-\vspace{5mm} %5mm vertical space
-\vspace{50mm} %5mm vertical space
+
+\section{Model Building with EKF}
+\label{3_5}
+
+
+One of the aims of this thesis is to localize the positions of the mobile tag in two dimensional space, 
+the state vector $\mathbf{x}$ of the target, i.e. mobile tag contains its positions ${p}_{x}$, ${p}_{y}$ 
+and the velocities $\dot{p}_{x}$, $\dot{p}_{y}$, in which the subscript $x$ and $y$ indicate their components
+in  $x$- and $y$-axes
+of a Cartesian coordinate system. 
+
+\begin{equation}
+\label{eq:state vector}
+ {{\mathbf{x}}} = [{p}_{x}, {p}_{y}, \dot{p}_{x}, \dot{p}_{y}]^{T}
+\end{equation}
+
+\noindent \textit{Transition Modelling}
+
+For the transition model, numerous motion models have been proposed, such as constant velocity
+model \cite{constant_velocity} and random walk \cite{random_walk}, the latter will be used in this thesis. In a random walk model, the velocity of the 
+mobile tag in a time interval between two
+estimates are assumed to be constant, and after each estimate the velocity will be changed by adding a random
+acceleration value. So the state  transition model can be illustrated in a mathematical way as \autoref{eq:ekf_pre1_concret},
+
+\begin{equation}
+\label{eq:ekf_pre1_concret}
+\mathbf{x}_{k} = 
+\begin{bmatrix}
+1 & 0 & dt & 0\\ 
+0 & 1 & 0 & dt\\ 
+0 & 0 & 1 & 0\\ 
+0 & 0 & 0 & 1
+\end{bmatrix}
+*
+\mathbf{x}_{k-1}
++
+\begin{bmatrix}
+\frac{1}{2}\cdot {dt}^2 & 0\\ 
+0 & \frac{1}{2}\cdot dt^2\\ 
+dt & 0\\ 
+0 & dt
+\end{bmatrix}
+*
+\begin{bmatrix}
+\ddot{p}_{x}\\ 
+\ddot{p}_{y}
+\end{bmatrix}
+\end{equation}
+
+where $\ddot{p}_{x}$ and $\ddot{p}_{y}$ are indicating the  accelerations   of the mobile tag in the $x-$ and $y-$axes, which will be generated as random value to simulate the random walking model.
+
+
+%%%%\begin{equation}
+%%%\label{eq:ekf_pre1_concret1}
+%%\mathbf{a} = [\ddot{p}_{x}, \ddot{p}_{y}]^{T}
+%\end{equation}
+ 
+ The \autoref{eq:ekf_pre1_concret} is the concrete form of
+ \autoref{eq:EKF_model1}, 
+where $\mathbf{u}_{k}$ is $\mathbf{0}$, and the $f(\cdot)$ in \autoref{eq:EKF_model1} is a linear function as the same as $\mathbf{A}$ in \autoref{eq:KF_model1}, 
+
+\begin{equation}
+\label{eq:ekf_pre1_concret_A}
+f(\cdot) = \mathbf{A} = 
+\begin{bmatrix}
+1 & 0 & dt & 0\\ 
+0 & 1 & 0 & dt\\ 
+0 & 0 & 1 & 0\\ 
+0 & 0 & 0 & 1
+\end{bmatrix}
+\end{equation}
+
+and the process noise $\mathbf{w}_k$ is simulated as the term cased by varying accelerations,
+
+\begin{equation}
+\label{eq:ekf_pre1_concret_w}
+\mathbf{w}_k = 
+\begin{bmatrix}
+\frac{1}{2}\cdot {dt}^2 & 0\\ 
+0 & \frac{1}{2}\cdot dt^2\\ 
+dt & 0\\ 
+0 & dt
+\end{bmatrix}
+*
+\begin{bmatrix}
+\ddot{p}_{x}\\ 
+\ddot{p}_{y}
+\end{bmatrix}
+\end{equation}
+
+which makes the $\mathbf{F}_{k-1}$  and $\mathbf{Q}_{k}$ in \autoref{eq:ekf_pre1} and \autoref{eq:ekf_pre2} into concrete form as followed,
+
+\begin{equation}
+\label{eq:ekf_pre1_concret_F}
+{{\mathbf{F}_{k-1}}} = \left . \frac{\partial f}{\partial \mathbf{x} } \right \vert _{\hat{\mathbf{x}}_{k-1}} = 
+\begin{bmatrix}
+1 & 0 & dt & 0\\ 
+0 & 1 & 0 & dt\\ 
+0 & 0 & 1 & 0\\ 
+0 & 0 & 0 & 1
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+\label{eq:ekf_pre1_concret_Q}
+\mathbf{Q}_k = \mathbf{w}_k*{\mathbf{w}_k}^T  = 
+\begin{bmatrix}
+\frac{1}{2}\cdot {dt}^2 & 0\\ 
+0 & \frac{1}{2}\cdot dt^2\\ 
+dt & 0\\ 
+0 & dt
+\end{bmatrix}
+*
+\begin{bmatrix}
+\ddot{p}_{x}\\ 
+\ddot{p}_{y}
+\end{bmatrix}
+*
+{
+\begin{bmatrix}
+\ddot{p}_{x}\\ 
+\ddot{p}_{y}
+\end{bmatrix}
+}^T
+*
+{
+\begin{bmatrix}
+\frac{1}{2}\cdot {dt}^2 & 0\\ 
+0 & \frac{1}{2}\cdot dt^2\\ 
+dt & 0\\ 
+0 & dt
+\end{bmatrix}
+}^T
+\end{equation}
+
+\noindent \textit{Observation Modelling}
+
+The observation model maps the observation space into 
+the state space, interpreting the relation between the 
+state vector $\mathbf{x}$ and its observation $\mathbf{z}$.
+Assume the a priori estimate of the state vector $\hat{\mathbf{x}}_{k}^{-}$ 
+at current$\hat{\mathbf{x}}_{k}^{-}$
+time step is $[\hat{p}_{x}, \hat{p}_{y}, \hat\dot{p}_{x}, \hat\dot{p}_{y}]^{T}$
+and one of the anchor nodes $i$ is located in known position
+$[{n}_{ix}, {n}_{iy}]$. According to two dimensional geometry, as illustrated in
+\autoref{fig:obs_dist},
+the observation $\mathbf{z}_{i}$ of this anchor node $i$, i.e. the distance betwwen the mobile tag 
+and this anchor node at this time step can be calculated as \autoref{eq: obs_dist},
+
+\begin{equation}
+9999999999999
+\end{equation}
+
+{fig:obs_dist} 1111111111111111111111111111111111111111111
+
+\autoref{eq: obs_dist} is the concrete form of \autoref{eq: EKF_model2}}, 
+only without the noise term $\mathbf{v}_k$. Note that \autoref{eq: obs_dist} 
+is a non-linear funtion, it is impossible of be processed in a KF. By ussing
+ EKF, as in \autoref{eq:JACO2}, the observation-state-transition matrix $\mathbf{H}$ can be obtained by
+ applying Jacobian, as illustrated in  \autoref{eq:JACO_concrete}
+
+\begin{equation}
+9999999999999
+\end{equation}
+
+For the covariance of observation noise $\mathbf{R}_k$,
+this thesis assumes the observations to each anchor nodes are independent,
+so the $\mathbf{R}_k$ can be assumed as a diagonal matrix, with 
+the variance $\mathbf{\sigma}_{ni}$ of each anchor node measurements in the main diagonal entries,
+
+\begin{equation}
+\label{eq:ekf_concret_Rk}
+9999999999999
+\end{equation}
+
+the way how $\mathbf{\sigma}_{ni}$ is determined will be described in 
+\autoref{5.1}}
+
+
+1
+
+\section{Self-Calibration Localization}
+\label{3_5}
+
+\section{Data Mitigation}
+\label{3_6}
+
+---------------------------------
+-----------------------------------
+11111111111111111111111111111111111111111
+111111111111111111111111111111111111111
+-------------------------------------
+
+\chapter{Hardware Improvement}
+\label{4}
+In this chapter the improvement of the hardware for the UWB communication system is presented.
+Firstly, the principle procedure of communication betwwen hardwares
+will be explained in \autoref{4_1}. Then, the improvements
+have been done in this thesis will be explained in \autoref{4_2}.
+Finally, the improvements result will be shown in \autoref{4_3}.
+
+
+
+\section{Communication Outlook}
+\label{4_1}
+The system contains one base station, one mobile tag and several anchor nodes.
+The mible tag is the target of the localization, whose 
+position is needed to be determined or trajectory 
+is needed to be recover.
+The anchor nodes are mounted in the enviroment facilities, with fixed positions.
+The base station is connected to a PC to receive commands and transer data.
+
+For the considering of energy saving, the initial state of 
+the mobile tag and the anchor nodes are in the sleeping mode,
+only when they receive wake_up message sent by the base station,
+ will they be in active mode and start to measure the
+ distances between the mobile tag and anchor nodes. 
+ The distances infomation will be then 
+ sent back to the base station for further processing.
+ After these procedure, the mobile tag and anchor nodes
+ will be back in sleep mode, untile the next wake_up
+ message comes.
+
+ \autoref{4_1} illustrates the communication procedure, 
+ 
+ Step 1, the base station sends the wake-up message to wake up the mobile tag and anchor nodes.
+ 
+ Step 2, knowing the mobile tag and anchor nodes are
+ awaked, the base station sends to the 
+ mobile tag a ID-message, which contains the IDs of the anchor
+ nodes that are needed to be connected with by the mobile tag.
+ 
+  Step 3, the tag sends
+ a blink-message to one specified anchor node, letting this 
+ node goes in to active mode, and the rest waked up nodes stay in the stand by mode. 
+ 
+Step 4, this in active mode anchor node sends a poll-message to the mobile tag, containing the local sending timestamp,
+ 
+Step 5, the mobile tag receives this poll-message, then sends out a respond-message. The poll-message receiving timestamp and respond-message seding timestamp are recorded in the tag,
+ 
+Step 6, the anchor node receives this respond-message, then sends out a final-message, containing the respond-message receiving timestamp and final-message seding timestamp. Afterwards, the anchor node goes directly into sleep mode.
+ 
+Step 7, the mobile tag receives this final-message, records the local receiving timestamp. Now the mobile tag has stored the timestamps of sending poll-message, receiving respond-message, sending final-message from the anchor node, and receiving poll-message, sending respond-message, receiving final-message from itself. With all this timestaps, the tag uses the Double Sided Two Way Ranging as mentioned in \autoref{{3_2_2}}, 
+to calculate its distance to this anchor node. And this distance will be store as 'distance1' in its local menmery.
+
+Aferwards, the mobile tag will sends
+ a blink-message to the second specified anchor node, and repeat the step 3 to 7 and stores 'distance2' and 'distance3' and so on, until all the nodes with the ID listed in ID-message from step 2 has been communicated by the mobile tag.
+
+Step 8, the mobile tag sends distance-message back to the base station, letting the base station to do the further data processing, for example distances calibration.
+
+The aboved mentioned eight steps for one set distances measuremnt. Ideally, after each set measuremnt, the distances from mobile tag to all the anchor nodes are obtained. But in reality, due to signal interfering and hardware errors, some distances will be missing.  
+
+
+
+
+\clearpage
+\section{Improvements}
+\label{4_2}
+
+
+\clearpage
+\section{Results}
+\label{4_3}
+
+After the what are discussded in last subsection have been done, the system's proformance is much better than before. In this subsection, the maximal sampling rates and the occurent probabilities of measuremnt data misising before and after improvementswill be discussed. From the experiments done with system before and after improvement, 4 sets of data are selected randaomly for this comparision. Each set of data contains the distances from the mobile tag to 5 anchor nodes, and the time stamps when these measurements are done. The data has the following structure,
+
+
+
+To obtain the maximal sampling rate, the mobile tag needs to be operate incessantly, whihc means tag needs to be waked up immediatly after going to sleep. To ensure this, during the experiment, the base station is sending out wake-up messages and the ID-message at relatively high rate, 10Hz, which is the highest value can be achieved by the software 'Hterm'. 
+
+shows the normalized histogram of time interval of the time stamps of measurements in 4 independent experiments.
+
+Although the shortest time interval value obtained is 1.2010 and 0.4690 second respectively by the system before and after improved, these value are rarely occured. So the average values, namely 2.8276 and 0.6753 second are better choice for calculating the maximal 
+sampling rate. Before system being improved, maximal 
+sampling rate before system has been improved $f_{before}$ is calculated as,
+
+\begin{equation}
+\label{eq:f_before}
+f_{before} = \frac{1}{2.8276 second} = 0.3537 Hz
+\end{equation}
+
+and maximal 
+sampling rate after system has been improved $f_{after}$ is calculated as,
+
+\begin{equation}
+\label{eq:f_after}
+f_{after} = \frac{1}{0.6753 second} = 1.4808 Hz
+\end{equation}
+
+Based on the value from \autoref{eq:f_before} and 
+\autoref{eq:f_after}, the maximal sampling rate has been
+improved from $0.3537 Hz$ to $1.4808 Hz$, inreased by 4 times.
+
+
+Due to interfering or timing issue as described in \autoref{4_2}, sometimes measurement data will be missing. And what is obtained in one distance measurement set contains not the distances to all the anchor nodes, an example of what a data set looks like in the reality experiment is illustrated in \autoref{tab:data_msiing}, where the first column is the time stamps in second counted from the beginning of the experiment, column 2 to 6 are the distance value to 5 anchor nodes in millimeter. The $\textbf{\textit{NaN}}$ in the table \autoref{tab:data_msiing} indicating the case where the distance measurement to a certain anchor node is not successfully obtained.
+
+
+
+\autoref{fig:num_meas_before} shows the normalized histogram of time interval of the time stamps of measurements in 4 independent experiments.
+
+
+The \textit{maximal sampling rate} indicates how fast the system can sample, i.e. how fast the system can obtain the distances between the mobile tag and the anchor nodes. It is obviors that the greater the \textit{maximal sampling rate} is, the better the system can  to receive the trajectory of the target or to localize the target.
+
+
+The \textit{occurrence probabilities of number of measurements obtained} is defined as the probabilities when distances infomation from mobile tag to a certain number of nodes can be required within one experiment. In ideal cases, the distances to all anchor nodes can be obtained at each sampling time, meaning the occurrence probability of $N$ measurements obtained is $1$, and  the occurrence probabilities of $N-1$, $N-2$... $N-N$ measurements obtained is $0$, where $N$ is the number of the total anchor nodes going to communicate with the mobile tag. But in reality, distance information to several nodes can not be obtained, due to reasons as explained in \autoref{4_2}. When the occurrence probabilities of number of higher measurements obtained is big, we say the system performs well. The system performs bad when the  occurrence probabilities of number of lower measurements obtained is big. For details please refer to \autoref{4_3_2}  
+
+in detail please refer to \autoref{4_3_2}.
+
+0- 1 4 6 8 12  13 
+1-2 3 5 7  15
+2-9 14
+3-10
+4-11  
+5-
+ 
+In the 15 samples from \autoref{{tab:data_msiing}}, samples $1$, $4$, $6$, $8$, $12$, $13$ contain  non $NaN$, that is to said these samples contains 5 measurements. Samples $2$, $3$, $5$, $7$, $15$,  contain  1 $NaN$, so these samples contains 4 measurements.  Samples $9$ and  $14$ contain 2 $NaN$, so these samples contains 3 measurements. Sample $10$ contains 2 measurements. Sample $11$ contains 1 measurement. So the occurrence probabilities of $5$, $4$, $3$, $2$, $1$, $0$ measurements obtained can be calculated as following,
+
+Using the aboved mentioned method for calculating occurrence probabilities, we can obtain the normalized histograms of obtained measurements number as shown in \autoref{fig:numMeasBefore} and \autoref{fig:numMeasAfter}, 
+
+\autoref{fig:numMeasBefore} is plotted based on the same 4 experiments data as the ones used in \autoref{4_3_1} obtained by system before being improved, while \autoref{fig:numMeasAfter} is obtained by system after being improved. It is easy to recognized that in \autoref{fig:numMeasAfter}, the occurrence probabilities for 3, 4 and 5 measurements are higher then the ones in \autoref{fig:numMeasBefore} , while occurrence probabilities for 0, 1 and 2 are lower.
+
