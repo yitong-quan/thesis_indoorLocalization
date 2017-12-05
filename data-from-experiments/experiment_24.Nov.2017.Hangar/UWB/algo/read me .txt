@@ -1,3 +1,3 @@
 in .m file 'read_file_gene_matr__with_timeStmp.m'
 threshold is set to be 500mm
-smaller than 500mm is truned tobe NaN
+smaller than 500mm is turned tobe NaN
