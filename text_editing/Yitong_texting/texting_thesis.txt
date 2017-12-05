@@ -3,6 +3,7 @@
 In this chapter, the theoretical foundations relevant to this thesis will be explained, which are xxx,xxx,xxxx........
 
 
+
 \section{Localization with Distances}
 \label{3_1}
 In Geometry, the position of a point can be determined by several methods, such as Trilateration and Triangulation. For location determination in this thesis, Trilateration is used, which can be described as followed:
@@ -607,3 +608,29 @@ Using the aboved mentioned method for calculating occurrence probabilities, we c
 
 \autoref{fig:numMeasBefore} is plotted based on the same 4 experiments data as the ones used in \autoref{4_3_1} obtained by system before being improved, while \autoref{fig:numMeasAfter} is obtained by system after being improved. It is easy to recognized that in \autoref{fig:numMeasAfter}, the occurrence probabilities for 3, 4 and 5 measurements are higher then the ones in \autoref{fig:numMeasBefore} , while occurrence probabilities for 0, 1 and 2 are lower.
 
+For getting a better system performance, modifications of the C code have been done, such as the timeing issue, sleeping mode option and so on. 
+Limit to the length of these thesis, not all the modifications will be mentioned here.
+
+
+-----------------------------------------------------------
+Motivation:
+
+The aim of this thesis is to reliease accurate localization of a mobile tag base on its distances to several anchor nodes, using the Ultra-wide band radio technology. The mobile tag and the anchor nodes are the same type of transceivers with different functionalities.
+
+
+-----------------------------------------------------------
+
+The communication procedure between tag and nodes is as followed:
+ At the beginning, the tag sends a blink-message at its state \textit{STATE_SEND_BLINK}. 
+ 
+ The node waits for this message after its state \textit{STATE_WAIT_BLINK_RECEIVE}, and check the content of the message once it receives one. If the message is the contains the right information, in this case, the ID of this corresponding node, this nodes will goes into a new state  \textit{STATE_POLL_TRANSMIT} and send out a poll-message. Here starts the DSTWR.
+ 
+ The tag checks for the received poll-message, and send out the respond-message.
+ 
+ The node checks for the received respond-message, and send out the final-message.
+ 
+ The tag receive the final-message, calculates the distance, and finish the DSTWR. As mentioned in \autoref{4_1}.
+ 
+ Here some real-time-counters (RTC) are set to prevent the tag and node from waiting in one state when the message was not received or when the message received could not pass the checking step. 
+
+ The count-down looper between for entering state \textit{STATE_POLL_TRANSMIT} in anchor node is vital
