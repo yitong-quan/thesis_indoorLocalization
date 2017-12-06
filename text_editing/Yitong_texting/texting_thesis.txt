@@ -634,3 +634,5 @@ The communication procedure between tag and nodes is as followed:
  Here some real-time-counters (RTC) are set to prevent the tag and node from waiting in one state when the message was not received or when the message received could not pass the checking step. 
 
  The count-down looper between for entering state \textit{STATE_POLL_TRANSMIT} in anchor node is vital
+ 
+ The real time counter in the tag is also important, a proper value should be set. When the value is to small, the tag could not receive the poll-message from the node and ea. 

@@ -207,6 +207,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         % process noise covariance Q
         G = [dt^2/2*eye(2);dt*eye(2)];
         sigma = 0.5;
+        Q_of_noise
         %since displacement cause by acceleration is G * sigma * randn(2,1) {acceleration is  sigma * randn(2,1)}
         Q = factor_Q * G * sigma^2 * G'; % I think the factor_Q should be deleted here.TODO: factor_Q^2 ???  factor_Q ???
         Q = Q *Q_affected_by_dt; % adjust Q by dt
