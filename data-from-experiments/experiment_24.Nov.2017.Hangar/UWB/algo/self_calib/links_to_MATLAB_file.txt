@@ -1,0 +1,6 @@
+for original calibration free please run the following file
+
+D:\Yitong\GitHub\thesis_indoorLocalization\Calibration-Free Localization\cali_free_lsqnonlin_importDistData.m
+
+or
+D:\Yitong\GitHub\thesis_indoorLocalization\data-from-experiments\experiment_12.Oct.2017.Hangar\record_of_HTerm\self_calibration_localization
