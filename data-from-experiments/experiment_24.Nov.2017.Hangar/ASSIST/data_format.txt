@@ -3,3 +3,5 @@ column 1, epoch time
 column 2, x
 column 3, y
 column 15, use for alighment with MoCap
+
+file '...since140000.mat' column 22, time stamp in seconcd since 14:00:00
