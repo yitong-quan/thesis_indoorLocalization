@@ -1,0 +1,56 @@
+clear
+%% calculate the translateion matrix R and T
+expNum = 3;
+
+node_UWB = importdata('..\UWB\output_algo\nodesPositionLaserOptimal\nodePo.mat');
+node_MoCap3 = importdata('..\mocap\nodespositionInMoCap3Nodes.mat');
+node_MoCap3 = node_MoCap3/1000; %unit mm to m
+plot(node_UWB(1,:),node_UWB(2,:),'*b');
+hold on;
+plot(node_MoCap3(1,:),node_MoCap3(2,:),'og');
+xlabel({'x / m'});
+ylabel({'y / m'});
+daspect([10,10,10]);
+
+% M0 = [ [cos(theta), -sin(theta); sin(theta), cos(theta)], [t1,t2]'];
+x0 = 1*rand(1,3); % x = [theta, t1, t2]
+options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','iter','MaxIterations',2000);
+[x,resnorm] = lsqnonlin(@myfun,x0,[],[],options);
+
+M = [ [cos(x(1)), -sin(x(1)); sin(x(1)), cos(x(1))], x(2:3)'];
+node_MoCap3_RT = M(:,[1,2]) * node_MoCap3 + M(:,end);
+plot(node_MoCap3_RT(1,:),node_MoCap3_RT(2,:),'x-r');
+
+legend('node UWB(orig)', 'node_MoCap3(orig)', 'node_MoCap3(RT)');
+% afterRT = R0 * nodes_optimal + t0;
+
+function F = myfun(M)
+node_UWB = importdata('..\UWB\output_algo\nodesPositionLaserOptimal\nodePo.mat');
+node_MoCap3 = importdata('..\mocap\nodespositionInMoCap3Nodes.mat');
+node_MoCap3 = node_MoCap3/1000; %unit mm to m
+afterRT = M(:,[1,2]) * node_MoCap3 + M(:,end);
+dif = afterRT - node_UWB;
+mis_dist = zeros(length(dif));
+for i = 1:length(mis_dist)
+    mis_dist(i) = norm(dif(:,i));
+end
+F = mis_dist;
+end
+
+figure;
+plot(nodes_true(1,:), nodes_true(2,:), '-or');
+hold on;
+plot(nodes_optimal(1,:), nodes_optimal(2,:), '-og');
+nodes_afterRT = M(:,[1,2]) * nodes_optimal + M(:,end);
+plot(nodes_afterRT(1,:), nodes_afterRT(2,:), '-ob');
+legend('true position(nodes)', 'estimated position before rotation(nodes)', 'estimated position after rotation(nodes)');
+daspect([10,10,10]);
+figure;
+plot(nodes_true(1,:), nodes_true(2,:), '-or');
+hold on;
+plot(x_optimal(1,[1:52]), x_optimal(2,[1:52]),'g-*', nodes_optimal(1,:), nodes_optimal(2,:),'-og');
+tagNodes_afterRT = M(:,[1,2]) * x_optimal + M(:,end);
+plot(tagNodes_afterRT(1,[1:52]), tagNodes_afterRT(2,[1:52]),'b-*', tagNodes_afterRT(1,[53:56]), tagNodes_afterRT(2,[53:56]),'b-o');
+legend('true position(nodes)', 'estimated position before rotation(tag)', 'estimated position before rotation(nodes)', 'estimated position after rotation(tag)', 'estimated position after rotation(nodes)');
+daspect([10,10,10]);
+M,resnorm
