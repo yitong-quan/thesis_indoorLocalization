@@ -3,18 +3,16 @@
 clear;
 
 %% import data
-expNum = 3; % <<---- also need to change the one in the 'myfun' below
+expNum = 2; % <<---- also need to change the one in the 'myfun' below
+path = '..\..\data\';
+
 switch expNum
     case 1
-        dat_t_dist = importdata('..\data_t_dist_p1_circle_t.mat');
+        dat_t_dist = importdata([path, 'data_t_dist_1circle_t.mat']);
+    case 2
+        dat_t_dist = importdata([path, 'data_t_dist_2_sq_t.mat']);
     case 3
-        dat_t_dist = importdata('..\data_t_dist_p3_circle_t.mat');
-    case 4
-        dat_t_dist = importdata('..\data_t_dist_p4_circle_t.mat');
-    case 5
-        dat_t_dist = importdata('..\data_t_dist_p5_acht_t.mat');
-    case 6
-        dat_t_dist = importdata('..\data_t_dist_p6_acht_slow_t.mat');
+        dat_t_dist = importdata([path, 'data_t_dist_3_sq_t.mat']);
     otherwise
         error('--------- please specify experimen number: expNum');
 end
@@ -46,7 +44,7 @@ for ij = 1:length(numNanMeas)
     end
 end    
 group_all = sorted_dist_data;
-data_for_opti = group0(1:40,:);
+data_for_opti = group0;% (1:40,:);
 myfun0 = @(x)parameterfun(x,data_for_opti); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< choose meas group 
 tag_num = size(data_for_opti,1); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
 nodes_num = size(data_for_opti,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num

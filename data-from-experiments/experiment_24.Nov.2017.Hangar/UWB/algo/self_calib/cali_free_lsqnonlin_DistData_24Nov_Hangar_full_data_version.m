@@ -4,6 +4,7 @@ close all;
 
 %% import data
 expNum = 3;
+path = '..\..\data\';
 switch expNum
     case 1
         dat_t_dist = importdata('..\data_t_dist_p1_circle_t.mat');

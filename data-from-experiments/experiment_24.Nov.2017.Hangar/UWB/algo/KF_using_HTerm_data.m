@@ -351,7 +351,7 @@ X = fillmissing(X,'previous',2);
     daspect([10,10,10]);
 %% plot position on map 
         % h = figure;
-        plot(X(1,:), X(2,:), 'ob');
+        plot(X(1,:), X(2,:), 'o-b');
         % load real positions
         %{
         % real_X = importdata('..\..\trajectory\goodTraj01\position01.mat'); 
