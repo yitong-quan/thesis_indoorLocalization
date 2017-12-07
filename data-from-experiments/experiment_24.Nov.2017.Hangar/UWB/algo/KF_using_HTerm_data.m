@@ -33,12 +33,13 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
             data = importdata('..\data\data_t_dist_2_sq_t.mat');
         case 3
             data = importdata('..\data\data_t_dist_3_sq_t.mat');
+            MoCap_data = importdata('..\..\mocap\afterRTtoUWB\cortex_json7_sq_RT2UWB.mat');
         otherwise
             warning('please specify the experiment number #')
     end
     
     nodes_Nums = 5;
-    
+    real_X = MoCap_data(:,[7,8])'; % unit mm to m 
     %% if 25ms40Hz mode are activated
     if ms25Hz40 == 1
         temp_data = nan(size(data,1)*nodes_Nums, size(data,2));
@@ -94,7 +95,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     measurements_data_noisy = sqrt(measurements_data_noisy.^2 - 1.20274960392966^2);
     %}
     
-    positionOfNodes = importdata('..\output_algo\nodesPositionByLaserOptimalBy\nodePo.mat');
+    positionOfNodes = importdata('..\output_algo\nodesPositionLaserOptimal\nodePo.mat');
     
     circle_center = [1.5;5.3]; %unit m % rough estimate
     circle_angle = [0:pi/50:2*pi];
@@ -352,6 +353,7 @@ X = fillmissing(X,'previous',2);
 %% plot position on map 
         % h = figure;
         plot(X(1,:), X(2,:), 'o-b');
+        plot(real_X(1,:), real_X(2,:));
         % load real positions
         %{
         % real_X = importdata('..\..\trajectory\goodTraj01\position01.mat'); 
