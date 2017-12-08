@@ -29,8 +29,10 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     switch experimentNumber
         case 1
             data = importdata('..\data\data_t_dist_1circle_t.mat');
+            MoCap_data = importdata('..\..\mocap\afterRTtoUWB\cortex_json2_circle_RT2UWB.mat');
         case 2
             data = importdata('..\data\data_t_dist_2_sq_t.mat');
+            MoCap_data = importdata('..\..\mocap\afterRTtoUWB\cortex_json6_sq_RT2UWB.mat');
         case 3
             data = importdata('..\data\data_t_dist_3_sq_t.mat');
             MoCap_data = importdata('..\..\mocap\afterRTtoUWB\cortex_json7_sq_RT2UWB.mat');
@@ -103,7 +105,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     circle_y = circle_center(2)+2.5*sin(circle_angle); %unit m
 
     %% initiation
-    x_0 = [circle_center', 0.1, 0.1]';
+    x_0 = [3.45, 7.12, 0.1, 0.1]';
     P_0 = eye(4, 4); % TODO, choose to be all one, a litle too big, but it should converge at the end if the KF work 
 
     % control-input model matrix(control matrix) B, control-input(control vector) is zero
@@ -329,14 +331,14 @@ X = fillmissing(X,'previous',2);
         case {0.1 0.11}
             plot(circle_center(1), circle_center(2), '*');
         case 1
-            plot(circle_center(1), circle_center(2), '*');
-            plot(circle_x, circle_y,'-');            
+%             plot(circle_center(1), circle_center(2), '*');
+%             plot(circle_x, circle_y,'-');            
         case 2
-            plot(circle_center(1), circle_center(2), '*');
-            plot(circle_x, circle_y,'-');
+%             plot(circle_center(1), circle_center(2), '*');
+%             plot(circle_x, circle_y,'-');
         case 3
-            plot(circle_center(1), circle_center(2), '*');
-            plot(circle_x, circle_y,'-');
+%             plot(circle_center(1), circle_center(2), '*');
+%             plot(circle_x, circle_y,'-');
         case 4
             plot(circle_center(1), circle_center(2), '*');
             plot(circle_x, circle_y,'-');
@@ -353,7 +355,7 @@ X = fillmissing(X,'previous',2);
 %% plot position on map 
         % h = figure;
         plot(X(1,:), X(2,:), 'o-b');
-        plot(real_X(1,:), real_X(2,:));
+        plot(real_X(1,:), real_X(2,:),'r');
         % load real positions
         %{
         % real_X = importdata('..\..\trajectory\goodTraj01\position01.mat'); 

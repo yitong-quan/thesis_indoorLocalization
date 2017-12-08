@@ -1,5 +1,5 @@
 
-column 2,  time
+column 2, time
 column 4, x
 column 5, y
 column 6, z
@@ -7,3 +7,5 @@ column 3, use for alighment with ASSIST
 
 column 7, x afterRTtoUWB
 column 8, y afterRTtoUWB
+
+column 9, timeStamp since 14:00:00 (s)
