@@ -1,3 +1,7 @@
 in .m file 'read_file_gene_matr__with_timeStmp.m'
 threshold is set to be 500mm
 smaller than 500mm is truned tobe NaN
+
+format : 
+1 column time stamp since 15:00:00, the same as ASSIST MoCap since 14:00:00, 2 computer diff from 1 hour
+rest are distances to nodes
