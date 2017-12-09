@@ -360,8 +360,8 @@ X = fillmissing(X,'previous',2);
     daspect([10,10,10]);
 %% plot position on map 
         % h = figure;
-        plot(X(1,:), X(2,:), '+g');
-        plot(real_X(1,:), real_X(2,:),'+r');
+        plot(X(1,:), X(2,:), 'o-b');
+        plot(real_X(1,:), real_X(2,:),'Xr');
         % load real positions
         %{
         % real_X = importdata('..\..\trajectory\goodTraj01\position01.mat'); 
@@ -381,16 +381,15 @@ X = fillmissing(X,'previous',2);
     estimated_posi_with_timeSt = [X; timeStamp'];
     % ----------- save(mat_str, 'estimated_posi_with_timeSt');
     
-    pause_time = 0.5*[time_diff; 2];
-    for j = 3:size(X,2) %1:size(X,2)-9 
-        h2 = plot(X(1,j-2:j), X(2,j-2:j), '-ob'); %h2 = plot(X(1,j:j+9), X(2,j:j+9), '-+r'); 
-        h3 = plot(real_X(1,j-2:j), real_X(2,j-2:j), '-ok');
+    pause_time = 0.2*[time_diff; 2];
+    for j = 5:size(X,2) %1:size(X,2)-9 
+        h2 = plot(X(1,j-4:j), X(2,j-4:j), '-+g'); %h2 = plot(X(1,j:j+9), X(2,j:j+9), '-+r'); 
+        h3 = plot(real_X(1,j-4:j), real_X(2,j-4:j), '-og')
         str_title = sprintf('experiment%d; factorQ: %d; factorR: %d; j: %d', experimentNumber, factor_Q, factor_R, j);
         title(str_title);
         % Fram(j-4) = getframe(gcf);
         pause(pause_time(j));
         delete(h2);
-        delete(h3);
     end
     % ----------- video_str = ['outliar_removed_video_ekf_experiment', num2str(experimentNumber), '.avi'];
     % ----------- video = VideoWriter(video_str);
