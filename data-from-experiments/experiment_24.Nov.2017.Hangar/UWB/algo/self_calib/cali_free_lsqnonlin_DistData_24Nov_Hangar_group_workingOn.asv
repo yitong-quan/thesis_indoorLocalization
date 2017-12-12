@@ -2,6 +2,7 @@
 clear;
 %% import data
 expNum = 2; % <<---- also need to change the one in the 'myfun' below
+factor1 = 100;
 path = '..\..\data\';
 
 switch expNum
@@ -43,13 +44,12 @@ for ij = 1:length(numNanMeas)
 end    
 
 resnorm_record = [];
-x_record = [];
+
 options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','iter','MaxIterations',2000);
 
-%% optimization
-
-group_all = sorted_dist_data;
-data_for_opti = group0(1:20,:); %dist_data ; % group_all; % (1:150,:); % group0;% (1:40,:);
+%% optimization Group0
+x_record0 = [];
+data_for_opti = group0; %dist_data ; % group_all; % (1:150,:); % group0;% (1:40,:);
 myfun0 = @(x)parameterfun(x,data_for_opti); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< choose meas group 
 tag_num = size(data_for_opti,1); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
 nodes_num = size(data_for_opti,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
@@ -57,17 +57,106 @@ x_num = tag_num + nodes_num;
 x0 = 10*(rand(2,x_num)-0.5);
 
 resnorm_last = inf;
-for ii = 1:5
+for ii = 1:7
     [x,resnorm] = lsqnonlin(myfun0,x0,[],[],options);
     resnorm_record = [resnorm_record; resnorm];
-    x_record = [x_record;x];
+    x_record0 = [x_record0;x];
     if resnorm < resnorm_last
         x_opt = x;
         resnorm_opt = resnorm;
         resnorm_last = resnorm_opt;
     end    
-    x0 = x + 7*(rand(size(x))-0.5);
+    x0 = x + 10*(rand(size(x))-0.5);
 end
+x_opt0 = x_opt;
+%%
+%% optimization Group1
+x_record1 = [];
+data_for_opti = [group0; group1]; %dist_data ; % group_all; % (1:150,:); % group0;% (1:40,:);
+myfun0 = @(x)parameterfun(x,data_for_opti); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< choose meas group 
+tag_num = size(data_for_opti,1); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
+nodes_num = size(data_for_opti,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
+x_num = tag_num + nodes_num;
+new_part_length = size(group1,1);
+
+x0 = [x_opt0, 10*(rand(2,new_part_length)-0.5)];
+
+resnorm_last = inf;
+for ii = 1:7
+    [x,resnorm] = lsqnonlin(myfun0,x0,[],[],options);
+    resnorm_record = [resnorm_record; resnorm];
+    x_record1 = [x_record1;x];
+    if resnorm < resnorm_last
+        x_opt = x;
+        resnorm_opt = resnorm;
+        resnorm_last = resnorm_opt;
+    end    
+    part0 =  x0(:,1:end-new_part_length) ;
+    part1 =  x0(:,end-new_part_length+1:end) ;
+    part0 = part0 + 10/factor1*(rand(size(part0))-0.5);
+    part1 = part1 + 10*(rand(size(part1))-0.5);
+    x0 = [part0, part1];
+end
+x_opt01 = x_opt;
+%%
+%% optimization Group2
+x_record2 = [];
+data_for_opti = [group0; group1;group2]; %dist_data ; % group_all; % (1:150,:); % group0;% (1:40,:);
+myfun0 = @(x)parameterfun(x,data_for_opti); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< choose meas group 
+tag_num = size(data_for_opti,1); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
+nodes_num = size(data_for_opti,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
+x_num = tag_num + nodes_num;
+new_part_length = size(group2,1);
+
+x0 = [x_opt01, 10*(rand(2,new_part_length)-0.5)];
+
+resnorm_last = inf;
+for ii = 1:15
+    [x,resnorm] = lsqnonlin(myfun0,x0,[],[],options);
+    resnorm_record = [resnorm_record; resnorm];
+    x_record2 = [x_record2;x];
+    if resnorm < resnorm_last
+        x_opt = x;
+        resnorm_opt = resnorm;
+        resnorm_last = resnorm_opt;
+    end    
+    part0 =  x0(:,1:end-new_part_length) ;
+    part1 =  x0(:,end-new_part_length+1:end) ;
+    part0 = part0 + 7/factor1*(rand(size(part0))-0.5);
+    part1 = part1 + 7*(rand(size(part1))-0.5);
+    x0 = [part0, part1];
+end
+x_opt012 = x_opt;
+%%
+%% optimization Group3
+x_record3 = [];
+data_for_opti = [group0; group1;group2;group3]; %dist_data ; % group_all; % (1:150,:); % group0;% (1:40,:);
+myfun0 = @(x)parameterfun(x,data_for_opti); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< choose meas group 
+tag_num = size(data_for_opti,1); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
+nodes_num = size(data_for_opti,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
+x_num = tag_num + nodes_num;
+new_part_length = size(group3,1);
+
+x0 = [x_opt01, 10*(rand(2,new_part_length)-0.5)];
+
+resnorm_last = inf;
+for ii = 1:15
+    [x,resnorm] = lsqnonlin(myfun0,x0,[],[],options);
+    resnorm_record = [resnorm_record; resnorm];
+    x_record3 = [x_record3;x];
+    if resnorm < resnorm_last
+        x_opt = x;
+        resnorm_opt = resnorm;
+        resnorm_last = resnorm_opt;
+    end    
+    part0 =  x0(:,1:end-new_part_length) ;
+    part1 =  x0(:,end-new_part_length+1:end) ;
+    part0 = part0 + 7/factor1*(rand(size(part0))-0.5);
+    part1 = part1 + 7*(rand(size(part1))-0.5);
+    x0 = [part0, part1];
+end
+x_opt0123 = x_opt;
+%%
 
 resnorm_opt
 opt_tag = x_opt(:,nodes_num+1:end);
@@ -80,20 +169,17 @@ for j = 1:nodes_num
 end
 %}
 
-node_po_by_laser = importdata('..\..\output_algo\nodesPositionLaserOptimal\nodePo.mat');
-myfun1 = @(x)parameterfun(x,node_po_by_laser);
-%%todo implement myfun1
-
 %% plot the best result
     figure;
     hold on;
     plot(opt_tag(1,:), opt_tag(2,:), 'b-*');
-    plot(opt_node(1,:), opt_node(2,:), 'rd');
+    plot(opt_node(1,:), opt_node(2,:), 'r-d');
     str = sprintf('experi: %d;   x num:%d;   resnorm %0.4e ', expNum, x_num, resnorm_opt);
     title(str);
-    xlabel('(m)');
-    ylabel('(m)');
     legend('Tag traj', 'Node');
+    plot(x_opt012(1,:), x_opt012(2,:),'r')
+    plot(x_opt01(1,:), x_opt01(2,:),'y')
+    plot(x_opt0(1,:), x_opt0(2,:),'c')
     daspect([10,10,10]);
     
     figure;
