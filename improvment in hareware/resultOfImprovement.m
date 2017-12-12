@@ -1,4 +1,4 @@
-beforeOrAfterOrNewest = 0; % before1 after0
+beforeOrAfterOrNewest = 1; % before1 after0
 modified = 0;
 
 NUM_X_MEAS = [];
@@ -6,7 +6,7 @@ NUM_MEAS = [];
 PROCENT = [];
 
 if beforeOrAfterOrNewest== 1
-    A = [2,3,3.1,5]; % 3.1
+    A = [2,3,4,5]; % 3.1
     path = 'before\';
 elseif beforeOrAfterOrNewest== 0
     A = [1,3,4,56];
@@ -15,11 +15,13 @@ else
     A = [1,2,3];
     path = 'newest\';
 end
- figure;
- title('hist time interval');
+%  figure;
+%  title('hist time interval');
  i = 1;
  Sum = [];
  NUMBR = [];
+ TIME_DIFF = [];
+ DIST_DATA = [];
 for expNum = A
     if beforeOrAfterOrNewest == 1 %before
         switch expNum
@@ -27,7 +29,7 @@ for expNum = A
                 dat_t_dist = importdata([path, 'data_t_dist_2.txt.mat']);
             case 3
                 dat_t_dist = importdata([path, 'data_t_dist_3.txt.mat']);
-            case 3.1
+            case 4
                 dat_t_dist = importdata([path, 'data_t_dist_3_1.txt.mat']);
                 if modified ==1
                     dat_t_dist =dat_t_dist+rand(size(dat_t_dist));
@@ -75,24 +77,36 @@ for expNum = A
     if modified ==1
         time_Diff = time_Diff/2;
     end
-    disp(min(time_Diff));
+    %disp(min(time_Diff));
     sum1 = sum(time_Diff);
     Sum = [Sum, sum1];
     numbe = length(time_Diff);
     NUMBR = [NUMBR, numbe];
-
-    disp(mean(time_Diff));
-%     figure;
-    subplot(2,2,i)
-    histogram(time_Diff,'Normalization','probability');
-%     title('hist time interval');
-    xlabel('time interval (s)');
-    ylabel('occurent percentage');
-    %title('normalized histogram');
-    i=i+1;
-     
+    TIME_DIFF = [TIME_DIFF; time_Diff];
+    
     dist_data = dat_t_dist(:,2:end); %dist_data = dat_t_dist(50:200,2:end);
     dist_data = dist_data/1000; % unit from mm to m
+    DIST_DATA = [DIST_DATA; dist_data];
+
+end    
+    %disp(mean(time_Diff));
+     figure;
+    %subplot(2,2,i)
+    histogram(TIME_DIFF,'Normalization','probability'); % , 'BinWidth',0.1
+%     title('hist time interval');
+    xlabel('time interval (s)');
+    ylabel('occurent rate');
+    xlim([0, 10]);
+    %title('normalized histogram');
+     figure;
+         numNan = sum(isnan(dist_data),2);
+    numMeas_each_set = size(dist_data,2) - numNan;
+    histogram(numMeas_each_set,'Normalization','probability');
+    xlim([-1 6]);
+    ylabel('occurent rate');
+    % title('hist useful numMeas');
+    xlabel('num of valid distance value in one measurement');
+
 %     
 %     numNan = sum(isnan(dist_data),2);
 %     numMeas_each_set = size(dist_data,2) - numNan;
@@ -107,7 +121,7 @@ for expNum = A
 %     
 %     histogram(numMeas_each_set,'Normalization','probability');
 %     xlim([-1 6]);
-%      ylabel('occurent percentage');
+%      ylabel('occurent rate');
 %     % title('hist useful numMeas');
 %     xlabel('num of useful measurements each set');
 %     i=i+1;
@@ -122,7 +136,7 @@ for expNum = A
 %     NUM_X_MEAS =[NUM_X_MEAS; num_x_meas]; %colunm:exper#; row:#012345meas
 %     NUM_MEAS = [NUM_MEAS; size(dist_data,1)];%colunm:exper#
 %     PROCENT = [PROCENT; procentage]; %colunm:exper#; row:#012345meas
-end
+
 
 % if beforeOrAfterOrNewest == 1
 %     save('before\NUM_X_MEAS.mat', 'NUM_X_MEAS');

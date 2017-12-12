@@ -11,5 +11,5 @@ e.CapSize = 20;
  
  legend('mean var, before', 'mean var, after')
  
- xlabel('num of usefule measurments each set');
+ xlabel('num of valid distance value in one measurement');
  ylabel('ratio to total');
