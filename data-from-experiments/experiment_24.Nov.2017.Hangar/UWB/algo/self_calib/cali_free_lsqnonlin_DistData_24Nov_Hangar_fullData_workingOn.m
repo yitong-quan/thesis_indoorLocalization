@@ -49,7 +49,7 @@ options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','i
 %% optimization
 
 group_all = sorted_dist_data;
-data_for_opti = group0(1:20,:); %dist_data ; % group_all; % (1:150,:); % group0;% (1:40,:);<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+data_for_opti = group0(1:5,:); %dist_data ; % group_all; % (1:150,:); % group0;% (1:40,:);<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 myfun0 = @(x)parameterfun(x,data_for_opti); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< choose meas group 
 tag_num = size(data_for_opti,1); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
 nodes_num = size(data_for_opti,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
@@ -102,12 +102,13 @@ opt_node_after_RRT = x_opt_after_RRT(:,1:nodes_num);
 %% plot the best result
     figure;
     hold on;
-    plot(opt_tag(1,:), opt_tag(2,:), 'b-*');
-    plot(opt_node(1,:), opt_node(2,:), 'rd');
-    plot(opt_tag_after_RRT(1,:), opt_tag_after_RRT(2,:), 'k-*');
-    plot(opt_node_after_RRT(1,:), opt_node_after_RRT(2,:), 'gd');
+    % plot(opt_tag(1,:), opt_tag(2,:), 'k-*');
+    % plot(opt_node(1,:), opt_node(2,:), 'gd');
+    plot(opt_tag_after_RRT(1,:), opt_tag_after_RRT(2,:), 'b-*');
+    plot(opt_node_after_RRT(1,:), opt_node_after_RRT(2,:), 'rd');
     str = sprintf('experi: %d;   x num:%d;   resnorm %0.4e ', expNum, x_num, resnorm_opt);
     title(str);
+    %  xlabel('(m)','FontSize',24,'FontWeight','bold');
     xlabel('(m)');
     ylabel('(m)');
     legend('Tag traj', 'Node');
