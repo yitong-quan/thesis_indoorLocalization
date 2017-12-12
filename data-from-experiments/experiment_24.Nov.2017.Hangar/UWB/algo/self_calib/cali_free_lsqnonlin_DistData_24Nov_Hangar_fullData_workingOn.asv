@@ -49,12 +49,13 @@ options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','i
 %% optimization
 
 group_all = sorted_dist_data;
-data_for_opti = group0(1:20,:); %dist_data ; % group_all; % (1:150,:); % group0;% (1:40,:);<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+data_for_opti = group0(1:20,:); %dist_data ; % group_all; % (1:150,:); % group0;% (1:40,:);
 myfun0 = @(x)parameterfun(x,data_for_opti); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< choose meas group 
 tag_num = size(data_for_opti,1); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
 nodes_num = size(data_for_opti,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
 x_num = tag_num + nodes_num;
 x0 = 10*(rand(2,x_num)-0.5);
+
 resnorm_last = inf;
 for ii = 1:7
     [x,resnorm] = lsqnonlin(myfun0,x0,[],[],options);
@@ -67,45 +68,44 @@ for ii = 1:7
     end    
     x0 = x + 7*(rand(size(x))-0.5);
 end
+
 resnorm_opt
 opt_tag = x_opt(:,nodes_num+1:end);
 opt_node = x_opt(:,1:nodes_num);
+
 %% RRT
-RRT0 = 10*(rand(1,4)-0.5); % M = [theta, t1, t2, reflectionAboutXaxis(1or0)]
+x0 = 10*(rand(1,4)-0.5); % M = [theta, t1, t2, reflectionAboutXaxis(1or0)]
 options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','iter','MaxIterations',2000);
 resnorm_last = inf;
 node_po_by_laser = importdata('..\..\output_algo\nodesPositionLaserOptimal\nodePo.mat'); % 2*5
 myfun1 = @(x)parameterfun1(x,node_po_by_laser, opt_node);
 for kk = 1:6
-    [rrt,resnorm] = lsqnonlin(myfun1,RRT0,[],[],options);
+    [x,resnorm] = lsqnonlin(@myfun1,x0,[],[],options);
     if resnorm < resnorm_last
-        rrt_opt = rrt;
+        x_opt = x;
         resnorm_opt = resnorm;
         resnorm_last = resnorm_opt;        
     end
 
 %% set next starting point   
-    RRT0 = rrt + 100*(rand(size(rrt))-0.5);
-    RRT0(end) = rand(1)-0.5; % for the reflection flag, randly evenly distr around + and -
+    x0 = x + 100*(rand(size(x))-0.5);
+    x0(end) = rand(1)-0.5; % for the reflection flag, randly evenly distr around + and -
 end
-        if rrt_opt(4) > 0
+        if x_opt(4) > 0
             reflection_x = 1;
         else
             reflection_x = -1;
         end
 Refle_martix = [1, 0; 0, reflection_x];
-Rota_matrix =  [cos(rrt_opt(1)), -sin(rrt_opt(1)); sin(rrt_opt(1)), cos(rrt_opt(1))];
-Transl_matrix = rrt_opt(2:3)';
-x_opt_after_RRT = Rota_matrix * Refle_martix* x_opt + Transl_matrix;
-opt_tag_after_RRT = x_opt_after_RRT(:,nodes_num+1:end);
-opt_node_after_RRT = x_opt_after_RRT(:,1:nodes_num);
+Rota_matrix =  [cos(x_opt(1)), -sin(x_opt(1)); sin(x_opt(1)), cos(x_opt(1))];
+Transl_matrix = x_opt(2:3)';
+data_self_calib_node_after_RRT = Rota_matrix * Refle_martix* data_self_calib_node + Transl_matrix;
+
 %% plot the best result
     figure;
     hold on;
     plot(opt_tag(1,:), opt_tag(2,:), 'b-*');
     plot(opt_node(1,:), opt_node(2,:), 'rd');
-    plot(opt_tag_after_RRT(1,:), opt_tag_after_RRT(2,:), 'k-*');
-    plot(opt_node_after_RRT(1,:), opt_node_after_RRT(2,:), 'gd');
     str = sprintf('experi: %d;   x num:%d;   resnorm %0.4e ', expNum, x_num, resnorm_opt);
     title(str);
     xlabel('(m)');
@@ -172,9 +172,10 @@ end
 Reflection_x_matrix = [1, 0; 0, reflection_x];
 afterRT = M(:,[1,2]) * Reflection_x_matrix * data_self_calib_node + M(:,end);
 dif = afterRT - node_po_hand_meas;
-F = zeros(length(dif));
-for i = 1:length(F)
-    F(i) = norm(dif(:,i));
+mis_dist = zeros(length(dif));
+for i = 1:length(mis_dist)
+    mis_dist(i) = norm(dif(:,i));
 end
+F = mis_dist;
 end
 

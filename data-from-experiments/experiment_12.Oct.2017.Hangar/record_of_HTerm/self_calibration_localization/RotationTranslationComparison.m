@@ -83,23 +83,12 @@ title(title_stri);
 
 
 %% optimazation used matrix
-% afterRT = R0 * nodes_optimal + t0;
+% afterRRT = Rota*Refl nodes_optimal + t0;
 function F = myfun(x)
-
 expNum = 3;
-
-%str_self_calib_node = ['results/remove dataSet with NaN element/exper', num2str(expNum), '_opt_node.mat'];
 str_self_calib_node = ['results/full data/exper', num2str(expNum), 'group0_opt_node.mat'];
 data_self_calib_node = importdata(str_self_calib_node);
 node_po_hand_meas = importdata('../nodePos_by_determineNodesPositionBaseOnDistToEachOthers.mat');
-%{
-% check for timeStampNeed_data_US
-diff=zeros(1,size(data_self_calib,2));
-for i = 1:size(data_self_calib,2)
-    diff(i) = data_self_calib(5,i) - data_US(4, timeStampNeed_data_US(i));
-end
-%}
-
 M = [ [cos(x(1)), -sin(x(1)); sin(x(1)), cos(x(1))], x(2:3)'];
 if x(4) > 0
     reflection_x = 1;
