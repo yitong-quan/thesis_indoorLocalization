@@ -636,3 +636,59 @@ The communication procedure between tag and nodes is as followed:
  The count-down looper between for entering state \textit{STATE_POLL_TRANSMIT} in anchor node is vital
  
  The real time counter in the tag is also important, a proper value should be set. When the value is to small, the tag could not receive the poll-message from the node and ea. 
+ 
+--------------------------------------------------------- 
+ Self-Calibration Localization
+ 
+The aim of self-calibration localization is to localize the anchor nodes andthe mobile tag based on distance data and part but not all the positions of anchor nodes. With this method, not all the positions of the anchor nodes are required for localization. This is suitable for the case, where not all the positions of the anchor nodes can be easily determined.
+
+The principle of self-calibration localization works as followed. Firstly, based on purely distance data, localize the anchor nodes and mobile tag in a floating coordinate frame. Afterwards,  transform the floating coordinate  frame into the global coordinate, with the help of the positions of some anchor nodes in the global coordinate.
+
+We now consider the task of localization in two dimensional Euclidean space. It is assumed that, there is no mirror symmetry between the positions of nodes. The network consists of $n$ anchor nodes and the trajectory of the mobile tag consist of $m$ discrete positions. This leads to $2n+2m$ variables in two dimensional Euclidean space. Assuming all the distances measurements between each $m$ positions of tag and $n$ nodes have been obtained, we have $n \cdot m$ known value. The degree of freedom ${M}$ of this localization problem can be calculated as: 
+
+
+After distances measurements are obtained, the Levenberg–Marquardt algorithm are chosen to solve the non-linear least square problem \autoref{eq:self-calib-nonlin} with an given initia guess. This solves the positions of the $n$ nodes and $m$ tag' trajectory point in a floating coordinate frame. To trasform this floating  coordinate frame into the global coordinate frame, the true positions of 3 nodes in the global coordinate frame are required (4 nodes' positions are in a 3 dimensional space). The trasformation matrix can be determined with optimazation methods, again Levenberg–Marquardt algorithm are chosen.
+
+It should be noticed that, the Levenberg–Marquardt algorithm can not ensure the global minimum can be found. In order to improve the chance to find the global minimum, this thesis proposes first to group data then optimize.
+
+
+The simulation is done with software MATLAB.
+
+In this experiment, a trajectory of a human is generated with the random walk model. In this model, the initial state $\mathbf{x}_{0}$ is as \autoref{eq:initial_state_traj}. Since the average  walking speed of human is 5 kilometres per hour\cite{walking_speed}, i.e. 1.4 meters per second, we chose this value for the initial velocity $\dot{p}$. With the relation as shown in \autoref{eq:rel_v}, one option for 
+$\mathbf{\dot{p}_{x}$ and $\mathbf{\dot{p}_{y}$ could be chosen as $1$ and $1$
+\begin{equation}
+\label{eq:rel_v}
+ {\mathbf{\dot{p}^2} = {\mathbf{\dot{p}_{x}^2} +{\mathbf{\dot{p}_{y}^2}
+\end{equation}
+
+\begin{equation}
+\label{eq:initial_state_traj}
+ {\mathbf{x}_{0}} = \begin{bmatrix}
+{p}_{x}\\ 
+{p}_{y}\\ 
+\dot{p}_{x}\\ 
+\dot{p}_{y}
+\end{bmatrix}
+=
+\begin{bmatrix}
+0\\ 
+0\\ 
+1\\ 
+1
+\end{bmatrix}
+\end{equation}.
+
+And the accelerations $\ddot{p}_{x}$, $\ddot{p}_{y}$ are randaomly changing value. The time intervals between each two consecutive points are always 0.5 second, which are close to the sampling rate of the UWB measure system in a real experiment. The genertated trajectory is shown in \autoref{fig:genertated_trajectory}.
+
+Four anchor nodes are located around the trajectory, as shown as red diamens in \autoref{fig:genertated_trajectory}. When choosing the locations of the nodes, it should be noticed that the nodes should be away from most of the tag's points for at least $2$ meters. Besides, it is also good when at least $3$ nodes are $2$ meters away from every tag's point. This is because of the 2-meters-error-range problem as discribed in (TODO, chapter calibration)\autoref{XXX}.
+
+Based on the known locations of the nodes and tag's trajectory, the exact distances between every node $i$ and every tag's points $j$ can be determined. These exact distances corrupted with noises $r_i$ leads to the simulated measurements data $d_{ij}$. The noise $r_i$ can be determined according to \autoref{XxX}(TODO, calibration, R matrix).
+
+(TODO: Q & R factor explain)
+
+With the simulated measurements data and the positions of the anchor nodes, now we can estimate the trajectory of the mobile tag. \autoref{fig:EKF_simu_best} and \autoref{fig:EKF_simu_worst} shows the best and the worst estimates from the EKF. The performance of the EKF is judged by the mismatch
+of the estimate positions to the true one. The mismatch is calculated as \autoref{eq:RMSE} with the form of Root-Mean-Sqaure error, also called RMSE.
+
+Where $n$ is the total number of points in the trajectory, $\mathbf{\hat p_i}$ is the estimate locations of these points from the output from EKF, $\mathbf{p_i}$ the true locations of these points and $\left \| \cdot \right \|$ is the Euclidean distance.
+
+(TODO: Q & R factor table RMSE)

@@ -127,7 +127,9 @@ for ii = 1:15
     x0 = [part0, part1];
 end
 x_opt012 = x_opt;
+
 %%
+%{
 % %% optimization Group3 only 2 measurements useless
 % x_record3 = [];
 % data_for_opti = [group0; group1;group2;group3]; %dist_data ; % group_all; % (1:150,:); % group0;% (1:40,:);
@@ -155,31 +157,62 @@ x_opt012 = x_opt;
 %     part1 = part1 + 7*(rand(size(part1))-0.5);
 %     x0 = [part0, part1];
 % end
+%}
 x_opt0123 = x_opt;
 %%
 
+%% RRT
+resnorm_rrt_last = inf;
+RRT0 = 10*(rand(1,4)-0.5); % M = [theta, t1, t2, reflectionAboutXaxis(1or0)]
+options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','iter','MaxIterations',2000);
+resnorm_last = inf;
+node_po_by_laser = importdata('..\..\output_algo\nodesPositionLaserOptimal\nodePo.mat'); % 2*5
+myfun1 = @(x)parameterfun1(x,node_po_by_laser, opt_node);
+for kk = 1:6
+    [rrt,resnorm_rrt] = lsqnonlin(myfun1,RRT0,[],[],options);
+    if resnorm_rrt < resnorm_rrt_last
+        rrt_opt = rrt;
+        resnorm_rrt_opt = resnorm_rrt;
+        resnorm_rrt_last = resnorm_rrt_opt;        
+    end
+
+%% set next starting point   
+    RRT0 = rrt + 100*(rand(size(rrt))-0.5);
+    RRT0(end) = rand(1)-0.5; % for the reflection flag, randly evenly distr around + and -
+end
+        if rrt_opt(4) > 0
+            reflection_x = 1;
+        else
+            reflection_x = -1;
+        end
+Refle_martix = [1, 0; 0, reflection_x];
+Rota_matrix =  [cos(rrt_opt(1)), -sin(rrt_opt(1)); sin(rrt_opt(1)), cos(rrt_opt(1))];
+Transl_matrix = rrt_opt(2:3)';
+x_opt_after_RRT = Rota_matrix * Refle_martix* x_opt + Transl_matrix;
+opt_tag_after_RRT = x_opt_after_RRT(:,nodes_num+1:end);
+opt_node_after_RRT = x_opt_after_RRT(:,1:nodes_num);
+%%
 resnorm_opt
 opt_tag = x_opt(:,nodes_num+1:end);
 opt_node = x_opt(:,1:nodes_num);
-%{
-for j = 1:nodes_num
-    for i = 1:x_num-nodes_num
-        opt_x_dist(j,i) = norm(opt_tag(:,i) - opt_node(:,j));
-    end
-end
-%}
 
 %% plot the best result
     figure;
     hold on;
-    plot(opt_tag(1,:), opt_tag(2,:), 'b-*');
-    plot(opt_node(1,:), opt_node(2,:), 'r-d');
+%     plot(opt_tag(1,:), opt_tag(2,:), 'b-*');
+%     plot(opt_node(1,:), opt_node(2,:), 'r-d');
+    plot(opt_tag_after_RRT(1,:), opt_tag_after_RRT(2,:), 'b-x');
+    plot(opt_node_after_RRT(1,:), opt_node_after_RRT(2,:), 'kd');
+    plot(node_po_by_laser(1,:), node_po_by_laser(2,:), 'ro');
     str = sprintf('experi: %d;   x num:%d;   resnorm %0.4e ', expNum, x_num, resnorm_opt);
     title(str);
-    legend('Tag traj', 'Node');
+        xlabel('(m)');
+    ylabel('(m)');
+    legend('Tag estimated', 'Node estimated', 'Node true');
     plot(x_opt012(1,:), x_opt012(2,:),'r')
     plot(x_opt01(1,:), x_opt01(2,:),'y')
     plot(x_opt0(1,:), x_opt0(2,:),'c')
+        set(gca,'fontsize',12)
     daspect([10,10,10]);
     
     figure;
@@ -225,4 +258,23 @@ end
     end
     %replace NaN with [] in the F (with 0 has been tried, not working)
     F(isnan(F)) = [];
+end
+%% optimazation used matrix
+% afterRRT = Rota*Refl nodes_optimal + t0;
+function F = parameterfun1(x,B, C) % B is the node_laser matrix: 2*5; C is the node_self_calib matrix: 2*5
+data_self_calib_node = C;
+node_po_hand_meas = B;
+M = [ [cos(x(1)), -sin(x(1)); sin(x(1)), cos(x(1))], x(2:3)'];
+if x(4) > 0
+    reflection_x = 1;
+else
+    reflection_x = -1;
+end    
+Reflection_x_matrix = [1, 0; 0, reflection_x];
+afterRT = M(:,[1,2]) * Reflection_x_matrix * data_self_calib_node + M(:,end);
+dif = afterRT - node_po_hand_meas;
+F = zeros(length(dif));
+for i = 1:length(F)
+    F(i) = norm(dif(:,i));
+end
 end

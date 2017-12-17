@@ -49,7 +49,8 @@ options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','i
 %% optimization
 
 group_all = sorted_dist_data;
-data_for_opti = group0(1:5,:); %dist_data ; % group_all; % (1:150,:); % group0;% (1:40,:);<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+index_ = [1,20, 40,60,80,100,120];
+data_for_opti = group0(1:4,:); %index_% dist_data ; % group_all; % (1:150,:); % group0;% (1:40,:);<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 myfun0 = @(x)parameterfun(x,data_for_opti); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< choose meas group 
 tag_num = size(data_for_opti,1); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
 nodes_num = size(data_for_opti,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num
@@ -71,17 +72,18 @@ resnorm_opt
 opt_tag = x_opt(:,nodes_num+1:end);
 opt_node = x_opt(:,1:nodes_num);
 %% RRT
+resnorm_rrt_last = inf;
 RRT0 = 10*(rand(1,4)-0.5); % M = [theta, t1, t2, reflectionAboutXaxis(1or0)]
 options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','iter','MaxIterations',2000);
 resnorm_last = inf;
 node_po_by_laser = importdata('..\..\output_algo\nodesPositionLaserOptimal\nodePo.mat'); % 2*5
 myfun1 = @(x)parameterfun1(x,node_po_by_laser, opt_node);
 for kk = 1:6
-    [rrt,resnorm] = lsqnonlin(myfun1,RRT0,[],[],options);
-    if resnorm < resnorm_last
+    [rrt,resnorm_rrt] = lsqnonlin(myfun1,RRT0,[],[],options);
+    if resnorm_rrt < resnorm_rrt_last
         rrt_opt = rrt;
-        resnorm_opt = resnorm;
-        resnorm_last = resnorm_opt;        
+        resnorm_rrt_opt = resnorm_rrt;
+        resnorm_rrt_last = resnorm_rrt_opt;        
     end
 
 %% set next starting point   
@@ -104,14 +106,17 @@ opt_node_after_RRT = x_opt_after_RRT(:,1:nodes_num);
     hold on;
     % plot(opt_tag(1,:), opt_tag(2,:), 'k-*');
     % plot(opt_node(1,:), opt_node(2,:), 'gd');
-    plot(opt_tag_after_RRT(1,:), opt_tag_after_RRT(2,:), 'b-*');
-    plot(opt_node_after_RRT(1,:), opt_node_after_RRT(2,:), 'rd');
+    plot(opt_tag_after_RRT(1,:), opt_tag_after_RRT(2,:), 'b-x');
+    plot(opt_node_after_RRT(1,:), opt_node_after_RRT(2,:), 'kd');
+    plot(node_po_by_laser(1,:), node_po_by_laser(2,:), 'ro');
     str = sprintf('experi: %d;   x num:%d;   resnorm %0.4e ', expNum, x_num, resnorm_opt);
     title(str);
     %  xlabel('(m)','FontSize',24,'FontWeight','bold');
     xlabel('(m)');
     ylabel('(m)');
-    legend('Tag traj', 'Node');
+    legend('Tag estimated', 'Node estimated', 'Node true');
+    set(gca,'fontsize',12)
+    
     daspect([10,10,10]);
     
     figure;

@@ -199,7 +199,7 @@ function [X, P, z_all] = KF_traj_noisy_meas_missing_data_within_each_set(factor_
         mis_pos = X(1:2,:) - real_X(1:2,:);
         area_of_map = (positionOfNodes(1,2) - positionOfNodes(1,1))^2 + (positionOfNodes(2,3) - positionOfNodes(2,1))^2;
         %mis_match = sum(mis_pos(1,:).^2 + mis_pos(2,:).^2) / size(X,2) / area_of_map;
-        mis_match = (sum(mis_pos(1,:).^2 + mis_pos(2,:).^2) / size(X,2) / area_of_map*140*140);
+        mis_match = sum(mis_pos(1,:).^2 + mis_pos(2,:).^2) / size(X,2) / area_of_map;
         str = sprintf('%0.20f misMatch   R %0.6f   Q %0.6f    sigma %0.3f    trajName %s    numNodes %d    MaxMeasMissedWithinSet%d', mis_match, factor_R, factor_Q, sigma, traj_name, nodes_Nums, MaxNumMeasMissedWithinSet);
         title(str);
         str = [str, '   .fig'];
