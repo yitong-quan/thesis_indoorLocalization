@@ -42,7 +42,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     
     nodes_Nums = 5;
     
-    near_idex = nearestpoint(data(:,1), MoCap_data(:,9));
+    near_idex = nearestpoint(data(:,1)+8.36253712625157, MoCap_data(:,9));
     MoCap_data_shrinked =[];
     for ih = near_idex
         MoCap_data_shrinked = [MoCap_data_shrinked; MoCap_data(ih,:)];

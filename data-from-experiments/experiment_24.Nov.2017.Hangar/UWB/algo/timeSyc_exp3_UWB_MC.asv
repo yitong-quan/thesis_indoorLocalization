@@ -1,0 +1,5 @@
+UWB_idx = [65,83,112,131,180];
+MC_idx = [74,97,122,146,193];
+data;
+UWB_ts = data(UWB_idx,1);
+MC_ts = data(MC_idx,1);
