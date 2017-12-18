@@ -680,7 +680,7 @@ $\mathbf{\dot{p}_{x}$ and $\mathbf{\dot{p}_{y}$ could be chosen as $1$ and $1$
 
 And the accelerations $\ddot{p}_{x}$, $\ddot{p}_{y}$ are randaomly changing value. The time intervals between each two consecutive points are always 0.5 second, which are close to the sampling rate of the UWB measure system in a real experiment. The genertated trajectory is shown in \autoref{fig:genertated_trajectory}.
 
-Four anchor nodes are located around the trajectory, as shown as red diamens in \autoref{fig:genertated_trajectory}. When choosing the locations of the nodes, it should be noticed that the nodes should be away from most of the tag's points for at least $2$ meters. Besides, it is also good when at least $3$ nodes are $2$ meters away from every tag's point. This is because of the 2-meters-error-range problem as discribed in (TODO, chapter calibration)\autoref{XXX}.
+Four anchor nodes are located around the trajectory, as shown as red diamens in \autoref{fig:genertated_trajectory}. When choosing the locations of the nodes, it should be noticed that the nodes should be away from most of the tag's points for at least $2$ meters. Besides, it is also good when at least $3$ nodes are $2$ meters away from every tag's point. This is because of the 2-meters-error-range problem as described in (TODO, chapter calibration)\autoref{XXX}.
 
 Based on the known locations of the nodes and tag's trajectory, the exact distances between every node $i$ and every tag's points $j$ can be determined. These exact distances corrupted with noises $r_i$ leads to the simulated measurements data $d_{ij}$. The noise $r_i$ can be determined according to \autoref{XxX}(TODO, calibration, R matrix).
 
@@ -692,3 +692,32 @@ of the estimate positions to the true one. The mismatch is calculated as \autore
 Where $n$ is the total number of points in the trajectory, $\mathbf{\hat p_i}$ is the estimate locations of these points from the output from EKF, $\mathbf{p_i}$ the true locations of these points and $\left \| \cdot \right \|$ is the Euclidean distance.
 
 (TODO: Q & R factor table RMSE)
+
+Aims
+
+The aim of this thesis is to realize accurance localization using the UWB ranging system built by \cite{Patrick}. To realize this aim, two main tasks are done, which are improvement of the ranging system, and implementations of  algorithms for localization.
+
+Structure of This Work
+
+This master thesis is present in the following structure.
+\autoref{3} explains the theoretical background knowledge, which includes trilateration, Ultra-wide Band (UWB), different type of range, extended Kalman filter (EKF) and self-calibration localization.
+\autoref{2} introduces some of the relative works.
+\autoref{4} explains the improvements for the ranging system have been made in this thesis based on the work of \cite{Patrick}, and evaluates the performance of the new system from the perspective of maximal sampling rate and data obtain rate.
+\autoref{5} explains the calibrations for the ranging system.
+\autoref{6} and \autoref{7} show the experiment results based on simulations and real-world experiments. This results include the performance of the implemented EKF, self-calibration localization from the perspective of the accurance of the localization.
+
+In this implementation of EKF, one observation contains only one valid distance measurement, instead of a whole measurements set. In other words, within one set of $5$ measurements, there are $5-NUM_{inv}$ EKF update, where $NUM_{inv}$ is the number of invalid distance data in this set.
+The time stamps of each this observation can not be exactly determined in the scope of this thesis. As described in\autoref{4_1}, for each set of measurements, all the $5$ distances value are sent back to the base station in one package, so the station can only generate one time stamp for all this $5$ measurements. Based on the current-time plot of one sampling cycle of the tag as shown in \autoref{fig:tag5node_after}, we assume that the distance to the $5th$ node is  generated at the time stamp of the end of the sampling cycle, which is roughly the receiving time stamp $t_{package}$ of the whole distances package. And the distance to the $4th$ node is  generated $25 ms% ealier before $t_{package}$. The distance to the $3th$ $2nd$ $1st$ nodes are  generated at time stameps $t_{package}-50ms$, $t_{package}-75ms$, $t_{package}-100ms$.
+
+(TODO, add algorithm of EKF2)
+
+The RMSE calulated by \autoref{eq:RMSE} is $XX$.
+(TODO, compare with the value frome EKF1, if the difference not big, can be explained by the velocities not high)
+(TODO, is the Q- R-factors the same as EKF1?)
+(TODO, is the R-factors smaller?, can be explained as followed: due to the fact that only one distance to one of the $5$ nodes is obtained fo the correction update, this distance value should be treated as a very importance infomation. For this reason, the noise variance for it can be adjust to a relatively smaller value.)
+(TODO: histogram of the mismatch, determine whether Gaussian or not)
+(TODO: plot of time diff, determine sampling rate)
+(TODO: when possible, do comparision with ASSIST)
+
+In the first implementation of EKF in \autoref{6_9_1}, if one of the distance  value contains high noise level, the EKF can still perform  well, as soon as the noise level of the other disatnce value in the same set is low. This is another story in the second  implementation, since each observation contains only one distance, high noise level would lead to poor estimate of this update. In this case, it is important to find out the measurements with great noise, i.e. outliers. 
+This thesis proposes a methed to find out these outliers, which is described in the \autoref{6_11}
