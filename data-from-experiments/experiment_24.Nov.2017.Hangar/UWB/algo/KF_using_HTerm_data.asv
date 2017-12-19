@@ -30,13 +30,15 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         case 1
             data = importdata('..\data\data_t_dist_1circle_t.mat');
             MoCap_data = importdata('..\..\mocap\afterRTtoUWB\cortex_json2_circle_RT2UWB.mat');
+            near_idex = nearestpoint(data(:,1)-1, MoCap_data(:,9));
         case 2
             data = importdata('..\data\data_t_dist_2_sq_t.mat');
             MoCap_data = importdata('..\..\mocap\afterRTtoUWB\cortex_json6_sq_RT2UWB.mat');
-            near_idex = nearestpoint(data(:,1)-10.2, MoCap_data(:,9));
+            near_idex = nearestpoint(data(:,1)-1.2, MoCap_data(:,9));
         case 3
             data = importdata('..\data\data_t_dist_3_sq_t.mat');
             MoCap_data = importdata('..\..\mocap\afterRTtoUWB\cortex_json7_sq_RT2UWB.mat');
+            %MoCap_data = importdata('..\output_algo\ekf\traj3_RRT_tag_Xreal.mat');
             near_idex = nearestpoint(data(:,1)+8.36253712625157, MoCap_data(:,9));
         otherwise
             warning('please specify the experiment number #')
@@ -45,12 +47,17 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     nodes_Nums = 5;
     
 %    near_idex = nearestpoint(data(:,1)+8.36253712625157, MoCap_data(:,9));
-    near_idex = nearestpoint(data(:,1)-0.125, MoCap_data(:,9));
+    %near_idex = nearestpoint(data(:,1)-0.125, MoCap_data(:,9));
     MoCap_data_shrinked =[];
     for ih = near_idex
         MoCap_data_shrinked = [MoCap_data_shrinked; MoCap_data(ih,:)];
     end
-    real_X = MoCap_data_shrinked(:,[7,8])'; % unit mm to m 
+    real_X_before_RRT = MoCap_data_shrinked(:,[7,8])'; % unit mm to m 
+    RRT_oo = [-0.07724, -0.25464, 0.049239];
+    M = [ [cos(RRT_oo(1)), -sin(RRT_oo(1)); sin(RRT_oo(1)), cos(RRT_oo(1))], RRT_oo(2:3)'];
+    real_X = M(:,[1,2]) * real_X_before_RRT + M(:,end);
+    
+    
     %% if 25ms40Hz mode are activated
     if ms25Hz40 == 1
         temp_data = nan(size(data,1)*nodes_Nums, size(data,2));
@@ -373,9 +380,11 @@ X = fillmissing(X,'previous',2);
         % calculate the mis_match of the estimation of EKF
         % TODO: how to determine the performance of the EKF, should P also be taken into account?
         mis_pos = X(1:2,:) - real_X(1:2,:);
+        mis_dist = sqrt(mis_pos(1,:).^2 + mis_pos(2,:).^2);
 %         area_of_map = (positionOfNodes(1,2) - positionOfNodes(1,1))^2 + (positionOfNodes(2,3) - positionOfNodes(2,1))^2;
 %         mis_match = sum(mis_pos(1,:).^2 + mis_pos(2,:).^2) / size(X,2) / area_of_map;
-        mis_match = sum(mis_pos(1,:).^2 + mis_pos(2,:).^2) / size(X,2) ;
+%        mis_match = sum(mis_pos(1,:).^2 + mis_pos(2,:).^2) / size(X,2) ;
+        mis_match = sum(mis_dist.^2) / size(X,2) ;
         RMSD_  = sqrt(mis_match);
         %str = sprintf('%0.20f RMSD   R %0.3f   Q %0.3f    sigma %0.3f    trajName %s    numNodes %d    MaxMeasMissedWithinSet%d', RMSD_, factor_R, factor_Q, sigma, traj_name, nodes_Nums, MaxNumMeasMissedWithinSet);
         str = sprintf('%0.20f RMSD, R %0.3f, Q %0.3f, sigma %0.3f, experimentNumber %d', RMSD_, factor_R, factor_Q, sigma, experimentNumber);
@@ -405,6 +414,7 @@ X = fillmissing(X,'previous',2);
     % ----------- writeVideo(video, Fram)
     % ----------- close(video)
     
+    figure; histogram(mis_dist);
     fig_str = ['traj_recovered_ekf_experiment',  num2str(experimentNumber), '.fig'];
     % ----------- savefig(h, fig_str);
     
