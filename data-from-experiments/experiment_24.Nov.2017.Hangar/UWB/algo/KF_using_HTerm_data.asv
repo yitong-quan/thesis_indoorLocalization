@@ -30,11 +30,10 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         case 1
             data = importdata('..\data\data_t_dist_1circle_t.mat');
             MoCap_data = importdata('..\..\mocap\afterRTtoUWB\cortex_json2_circle_RT2UWB.mat');
-            near_idex = nearestpoint(data(:,1)-1, MoCap_data(:,9));
         case 2
             data = importdata('..\data\data_t_dist_2_sq_t.mat');
             MoCap_data = importdata('..\..\mocap\afterRTtoUWB\cortex_json6_sq_RT2UWB.mat');
-            near_idex = nearestpoint(data(:,1)-1.2, MoCap_data(:,9));
+            near_idex = nearestpoint(data(:,1)-10.2, MoCap_data(:,9));
         case 3
             data = importdata('..\data\data_t_dist_3_sq_t.mat');
             MoCap_data = importdata('..\..\mocap\afterRTtoUWB\cortex_json7_sq_RT2UWB.mat');
@@ -46,7 +45,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     nodes_Nums = 5;
     
 %    near_idex = nearestpoint(data(:,1)+8.36253712625157, MoCap_data(:,9));
-    %near_idex = nearestpoint(data(:,1)-0.125, MoCap_data(:,9));
+    near_idex = nearestpoint(data(:,1)-0.125, MoCap_data(:,9));
     MoCap_data_shrinked =[];
     for ih = near_idex
         MoCap_data_shrinked = [MoCap_data_shrinked; MoCap_data(ih,:)];
