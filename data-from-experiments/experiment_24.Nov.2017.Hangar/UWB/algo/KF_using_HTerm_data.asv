@@ -96,7 +96,6 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     title('time diff between measurement-sets')
     
     if remove_outlier_meas == 1
-        outlier_meas_index = [68,4;69,1;123,5;229,5;282,4];
         idx_outlier_meas = sub2ind(size(measurements_data_noisy), outlier_meas_index(:,2), outlier_meas_index(:,1));
         measurements_data_noisy(idx_outlier_meas) = NaN;
     else
