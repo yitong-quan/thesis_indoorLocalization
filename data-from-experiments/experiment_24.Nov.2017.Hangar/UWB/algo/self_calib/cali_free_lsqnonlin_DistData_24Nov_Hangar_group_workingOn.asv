@@ -1,7 +1,7 @@
 %% x(nodes, tag)
 clear;
 %% import data
-expNum = 1; % <<---- also need to change the one in the 'myfun' below
+expNum = 3; % <<---- also need to change the one in the 'myfun' below
 factor1 = 100;
 path = '..\..\data\';
 
@@ -209,7 +209,7 @@ opt_node_after_RRT = x_opt_after_RRT(:,1:nodes_num);
         xlabel('(m)');
     ylabel('(m)');
     legend('Tag estimated', 'Node estimated', 'Node true');
-    % plot(x_opt_after_RRT(1,:), x_opt_after_RRT(2,:),'k')
+    plot(opt_tag_after_RRT(1,:), x_opt012(2,:),'r')
     plot(x_opt012(1,:), x_opt012(2,:),'r')
     plot(x_opt01(1,:), x_opt01(2,:),'y')
     plot(x_opt0(1,:), x_opt0(2,:),'c')

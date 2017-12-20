@@ -3,7 +3,7 @@
 clear;
 
 %% import data
-expNum = 1; % <<---- also need to change the one in the 'myfun' below
+expNum = 3; % <<---- also need to change the one in the 'myfun' below
 switch expNum
     case 1
         dat_t_dist = importdata('..\data_t_dist_p1_circle_t.mat');
