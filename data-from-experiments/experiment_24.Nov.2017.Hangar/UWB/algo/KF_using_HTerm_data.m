@@ -22,24 +22,31 @@ or 100, for missing with a pattern, 1st, 2nd, 3rd, 4th, 1st, 2nd, 3rd...
 function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumber) %, measurements_missing, MaxNumMeasMissedWithinSet, traj_name
     format longG
     %% flag of remove_outlier_measurements
-    remove_outlier_meas = 0; 
+    remove_outlier_meas = 1; 
     %% flag of using 25ms40Hz method
     ms25Hz40 = 0;     
+    %% RRT
+    RRT = 1;
     %% import and process original-data
     switch experimentNumber
         case 1
             data = importdata('..\data\data_t_dist_1circle_t.mat');
             MoCap_data = importdata('..\..\mocap\afterRTtoUWB\cortex_json2_circle_RT2UWB.mat');
             near_idex = nearestpoint(data(:,1)-1, MoCap_data(:,9));
+            RRT_oo = [113.020896838943        -0.259574835362515        0.0678477520020548];
         case 2
             data = importdata('..\data\data_t_dist_2_sq_t.mat');
             MoCap_data = importdata('..\..\mocap\afterRTtoUWB\cortex_json6_sq_RT2UWB.mat');
             near_idex = nearestpoint(data(:,1)-1.2, MoCap_data(:,9));
+            RRT_oo = [-0.0775624574281473        -0.254508229572838        0.0491643222229634];
         case 3
             data = importdata('..\data\data_t_dist_3_sq_t.mat');
+            % data = data(48:133,:);
+            data = data(1:133,:);
             MoCap_data = importdata('..\..\mocap\afterRTtoUWB\cortex_json7_sq_RT2UWB.mat');
             %MoCap_data = importdata('..\output_algo\ekf\traj3_RRT_tag_Xreal.mat');
             near_idex = nearestpoint(data(:,1)+8.36253712625157, MoCap_data(:,9));
+            RRT_oo = [94.2060204573235       -0.0905438612565538       -0.0867144876697838];
         otherwise
             warning('please specify the experiment number #')
     end
@@ -52,10 +59,15 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     for ih = near_idex
         MoCap_data_shrinked = [MoCap_data_shrinked; MoCap_data(ih,:)];
     end
-    real_X_before_RRT = MoCap_data_shrinked(:,[7,8])'; % unit mm to m 
-    RRT_oo = [-0.07724, -0.25464, 0.049239];
-    M = [ [cos(RRT_oo(1)), -sin(RRT_oo(1)); sin(RRT_oo(1)), cos(RRT_oo(1))], RRT_oo(2:3)'];
-    real_X = M(:,[1,2]) * real_X_before_RRT + M(:,end);
+    real_X_before_RRT = MoCap_data_shrinked(:,[7,8])'; % unit mm to m
+    if RRT == 1
+        real_X_before_RRT = MoCap_data_shrinked(:,[7,8])'; % unit mm to m
+        % RRT_oo = [-0.07724, -0.25464, 0.049239];
+        M = [ [cos(RRT_oo(1)), -sin(RRT_oo(1)); sin(RRT_oo(1)), cos(RRT_oo(1))], RRT_oo(2:3)'];
+        real_X = M(:,[1,2]) * real_X_before_RRT + M(:,end);
+    else
+        real_X = real_X_before_RRT;
+    end
     
     
     %% if 25ms40Hz mode are activated
@@ -67,7 +79,8 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
                 row_temp_data = (ji-1)*5+nodeName;
                 
                 temp_data(row_temp_data,nodeName+1) = data(ji,nodeName+1);
-                temp_data(row_temp_data,1) = data(ji,1) - (4-shift)*1/40;
+                % temp_data(row_temp_data,1) = data(ji,1) - (4-shift)*1/40;
+                temp_data(row_temp_data,1) = data(ji,1) - (5-shift)*0.030;
             end
         end
         temp_data(1,:) = temp_data(1,:) + 0.1;
@@ -96,7 +109,8 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     title('time diff between measurement-sets')
     
     if remove_outlier_meas == 1
-        outlier_meas_index = [68,4;69,1;123,5;229,5;282,4];
+        % outlier_meas_index = [68,4;69,1;229,5;282,4];
+        outlier_meas_index = [18,2;76,5];
         idx_outlier_meas = sub2ind(size(measurements_data_noisy), outlier_meas_index(:,2), outlier_meas_index(:,1));
         measurements_data_noisy(idx_outlier_meas) = NaN;
     else
@@ -122,7 +136,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     circle_y = circle_center(2)+2.5*sin(circle_angle); %unit m
 
     %% initiation
-    x_0 = [3.45, 7.12, 0.1, 0.1]';
+    x_0 = [3.7,6.7, 0, -0.14]';
     P_0 = eye(4, 4); % TODO, choose to be all one, a litle too big, but it should converge at the end if the KF work 
 
     % control-input model matrix(control matrix) B, control-input(control vector) is zero
@@ -325,7 +339,8 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     plot(std_RESIDUAL, '-g');
     hold on;
     plot(mad_RESIDUAL, '-b');
-    title('std(RESIDUAL) v.s. mad(RESIDUAL)');
+    str_ti = sprintf('Q %f  R %f  ', factor_Q, factor_R);
+    title(str_ti);
     legend('std', 'mad');
     std_minus_mad = std_RESIDUAL - mad_RESIDUAL;
     subplot(2,1,2);
@@ -418,15 +433,8 @@ X = fillmissing(X,'previous',2);
     figure; histogram(mis_dist);
     fig_str = ['traj_recovered_ekf_experiment',  num2str(experimentNumber), '.fig'];
     % ----------- savefig(h, fig_str);
-    
-    
-    
-
-
 
 end
-
-
     %% function
     function [IND, D] = nearestpoint(x,y,m)
         % NEARESTPOINT - find the nearest value in another vector

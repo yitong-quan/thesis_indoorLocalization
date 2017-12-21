@@ -3,9 +3,9 @@ clear
 %% calculate the translateion matrix R and T
 figure;
 
-tag_uwb = importdata('..\UWB\output_algo\ekf\traj2_Xestimated.mat');
+tag_uwb = importdata('..\UWB\output_algo\ekf\traj1_Xestimated.mat');
 tag_uwb = tag_uwb([1,2],:);
-tag_mc = importdata('..\UWB\output_algo\ekf\Xreal_RRT_nodeOnly\traj2RRT_nodesOnly_Xreal.mat');
+tag_mc = importdata('..\UWB\output_algo\ekf\Xreal_RRT_nodeOnly\traj1RRT_nodesOnly_Xreal.mat');
 
 plot(tag_uwb(1,:),tag_uwb(2,:),'ob');
 hold on;
@@ -20,7 +20,7 @@ options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','i
 resnorm_last = inf;
 RESNORM = [];
 x_last = x0;
-for ii = 1:10
+for ii = 1:20
     [x,resnorm] = lsqnonlin(@myfun,x0,[],[],options);
     
     if resnorm < resnorm_last
@@ -44,9 +44,9 @@ figure; plot(RESNORM, '-*');
 RESNORM
 
 function F = myfun(xx)
-tag_uwb = importdata('..\UWB\output_algo\ekf\traj2_Xestimated.mat');
+tag_uwb = importdata('..\UWB\output_algo\ekf\traj1_Xestimated.mat');
 tag_uwb = tag_uwb([1,2],:);
-tag_mc = importdata('..\UWB\output_algo\ekf\Xreal_RRT_nodeOnly\traj2RRT_nodesOnly_Xreal.mat');
+tag_mc = importdata('..\UWB\output_algo\ekf\Xreal_RRT_nodeOnly\traj1RRT_nodesOnly_Xreal.mat');
 
 M = [ [cos(xx(1)), -sin(xx(1)); sin(xx(1)), cos(xx(1))], xx(2:3)'];
 %afterRT = M(:,[1,2]) * node_MoCap3 + M(:,end);
