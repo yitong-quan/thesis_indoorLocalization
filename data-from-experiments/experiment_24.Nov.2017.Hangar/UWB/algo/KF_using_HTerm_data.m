@@ -413,7 +413,7 @@ X = fillmissing(X,'previous',2);
     estimated_posi_with_timeSt = [X; timeStamp'];
     % ----------- save(mat_str, 'estimated_posi_with_timeSt');
     
-    pause_time = 0.5*[time_diff; 2];
+    pause_time = 0.3*[time_diff; 2];
     for j = 3:size(X,2) %1:size(X,2)-9 
         h2 = plot(X(1,j-2:j), X(2,j-2:j), '-ob'); %h2 = plot(X(1,j:j+9), X(2,j:j+9), '-+r'); 
         h3 = plot(real_X(1,j-2:j), real_X(2,j-2:j), '-ok');
