@@ -1,7 +1,7 @@
 %% x(nodes, tag)
 clear;
 %% import data
-expNum = 2; % <<---- also need to change the one in the 'myfun' below
+expNum = 3; % <<---- also need to change the one in the 'myfun' below
 path = '..\..\data\';
 
 switch expNum
@@ -50,7 +50,7 @@ options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','i
 
 group_all = sorted_dist_data;
 index_ = [1,20, 40,60,80,100,120];
-data_for_opti = group0(1:4,:); %index_% dist_data ; % group_all; % (1:150,:); % group0;% (1:40,:);<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+data_for_opti = dist_data; % group0(1:4,:); %index_% dist_data ; % group_all; % (1:150,:); % group0;% (1:40,:);<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 myfun0 = @(x)parameterfun(x,data_for_opti); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< choose meas group 
 tag_num = size(data_for_opti,1); %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< tag_num
 nodes_num = size(data_for_opti,2); %<<<<<<<<<<<<<<<<<<<<<<<<<<<< set nodes_num

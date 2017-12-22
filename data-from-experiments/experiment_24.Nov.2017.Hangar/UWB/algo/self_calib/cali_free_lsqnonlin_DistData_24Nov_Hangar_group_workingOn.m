@@ -1,7 +1,7 @@
 %% x(nodes, tag)
 clear;
 %% import data
-expNum = 1; % <<---- also need to change the one in the 'myfun' below
+expNum = 3; % <<---- also need to change the one in the 'myfun' below
 factor1 = 100;
 path = '..\..\data\';
 
@@ -170,7 +170,7 @@ RRT0 = 10*(rand(1,4)-0.5); % M = [theta, t1, t2, reflectionAboutXaxis(1or0)]
 options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','iter','MaxIterations',2000);
 resnorm_last = inf;
 node_po_by_laser = importdata('..\..\output_algo\nodesPositionLaserOptimal\nodePo.mat'); % 2*5
-myfun1 = @(x)parameterfun1(x,node_po_by_laser, opt_node);
+myfun1 = @(x)parameterfun1(x,node_po_by_laser, opt_node); % use nodes to optimal
 for kk = 1:6
     [rrt,resnorm_rrt] = lsqnonlin(myfun1,RRT0,[],[],options);
     if resnorm_rrt < resnorm_rrt_last
@@ -194,6 +194,21 @@ Transl_matrix = rrt_opt(2:3)';
 x_opt_after_RRT = Rota_matrix * Refle_martix* x_opt + Transl_matrix;
 opt_tag_after_RRT = x_opt_after_RRT(:,nodes_num+1:end);
 opt_node_after_RRT = x_opt_after_RRT(:,1:nodes_num);
+
+%% indexes order recover
+tag_3nod_length = size(group0,1)+size(group1,1)+size(group2,1); % with distances to at least 3 nodes
+opt_tag_right_order = zeros(2,size(dat_t_dist,1));
+for iii = 1:tag_3nod_length
+    opt_tag_right_order(:,idx(iii)) = opt_tag_after_RRT(:,iii);
+end
+opt_tag_after_RRT_grouped_order = opt_tag_after_RRT;
+opt_tag_after_RRT = opt_tag_right_order;
+%% remove 00 from opt_tag_after_RRT
+XX = opt_tag_after_RRT(1,:);
+YY = opt_tag_after_RRT(2,:);
+XX(XX==0) =[];
+YY(YY==0) =[];
+opt_tag_after_RRT = [XX;YY];
 
 
 %% plot the best result
