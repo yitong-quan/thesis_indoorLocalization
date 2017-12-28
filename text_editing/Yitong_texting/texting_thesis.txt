@@ -721,3 +721,28 @@ The RMSE calulated by \autoref{eq:RMSE} is $XX$.
 
 In the first implementation of EKF in \autoref{6_9_1}, if one of the distance  value contains high noise level, the EKF can still perform  well, as soon as the noise level of the other disatnce value in the same set is low. This is another story in the second  implementation, since each observation contains only one distance, high noise level would lead to poor estimate of this update. In this case, it is important to find out the measurements with great noise, i.e. outliers. 
 This thesis proposes a methed to find out these outliers, which is described in the \autoref{6_11}
+
+
+----------------------------------------------------------------------
+measurement analysis
+
+The distance measurement system performs linearly when the distacne is longer  than two meters \cite{Patrick}. When the diatance between the tag and the node is longer than two meters, the linear relation betwen the distance measurement value $d_{measured}$ and the true distance $d_{true}$ can be expressed as \autoref{eq:dist_linear},
+
+\begin{equation}
+\label{eq:dist_linear}
+d_{measured} = a_1 \cdot d_{true} + a_2;,
+\end{equation}
+
+where $a_1$ and $a_2$ are the system parameters to 
+be determined. These two parameters  depend greatly on the system, i.e. the tag and the node.
+Since there is only one tag in use, these parameters only depend on the node. It is  assumed, the influence of other factors to these two parameters are neglactable, such as temperature and humminity. When the disatnce is shorter than two meters, the relation between $d_{measured}$ and $d_{true}$ is polynomial\cite{Patrick}.
+
+In this chapter explains and analysis the system calibration, i.e. determines the $a_1$ and $a_2$  of each node.
+
+section1 +++++++++++++++++++
+
+The data for system calibration is collected in the grass field far away from buildings. Such experiment enviroment can reduce the chance of occurrence of mulipath-propagation, caused by the reflections from walls and metals. Meanwhile, to reduce the reflections from the ground, the tag and the nodes are place on the top of wooden sticks 1.2 meters above the ground. \autoref{fig:meas_calibration} shows this setup.
+
+The value for $d_{true}$ have been chosen as 3, 4, 5, 6, 8 meters. For each node with each these distance value, (TODO, number of measurements) measurements have been obtained.
+
+
