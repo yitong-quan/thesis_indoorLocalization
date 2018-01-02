@@ -743,6 +743,16 @@ section1 +++++++++++++++++++
 
 The data for system calibration is collected in the grass field far away from buildings. Such experiment enviroment can reduce the chance of occurrence of mulipath-propagation, caused by the reflections from walls and metals. Meanwhile, to reduce the reflections from the ground, the tag and the nodes are place on the top of wooden sticks 1.2 meters above the ground. \autoref{fig:meas_calibration} shows this setup.
 
-The value for $d_{true}$ have been chosen as 3, 4, 5, 6, 8 meters. For each node with each these distance value, (TODO, number of measurements) measurements have been obtained.
+The value for $d_{true}$ have been chosen as 3, 4, 5, 6, 8 meters. For each node with each these distance value, (TODO, number of measurements) measurements have been obtained. Due to the existence of the outliers among the measurement data, (TODO, trimmean and mad) are use to calculate the mean value  and variances of the measurements. (TODO, explain trimmean and mad). 
+The mean value  and variances of the measurements obtained are listed as \autoref{tab:mean_var_calib}.
+The normalized histograms of the measurements are shown as \autoref{fig:mean_calib}. 
+
+(TODO: explain the histograms)Now we discuss whether these measurements value follow gaussian distribution, heavy tail at the end(can be explained as the reflections), heavy tail at the beginning(can not be explained).  (TODO: z-test results)
+
+(TODO: add table {tab:mean_var_calib})
+
+(TODO: add figures {fig:mean_calib})
+
+
 
 
