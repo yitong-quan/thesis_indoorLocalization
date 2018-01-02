@@ -63,7 +63,7 @@ else
             K_k = P_minus * H' / (H * P_minus * H' + R_); %<<< R_ >change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             %<<< add Z_e >change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             residual = z - eval(subs( subs(Z_e, x_m, x_minus), N_x_n, positionOfNodes)); % <<<<<<wikipedia<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            residual_sum = sum(residual)/length(residual);
+            residual_sum = sum(residual);
             residual_sum_array = [residual_sum_array, residual_sum];
             x_estimated = x_minus + K_k * (residual); % <<<<<<wikipedia<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             x_estimated_array = [x_estimated_array, x_estimated];
@@ -71,8 +71,9 @@ else
         end
                     
             %K(:, :, i) = K_k;
-            inv_residual_sum_array = 1./(residual_sum_array);
-            X(:, i) = sum(x_estimated_array .* inv_residual_sum_array) / sum(inv_residual_sum_array)  ;
-            P(:, :, i)  = sum(P(:, :, i)  .* inv_residual_sum_array) / sum(inv_residual_sum_array)  ;
+            residual_sum_array
+            X(:, i) = x_estimated_array .* inv(residual_sum_array) /  ;
+            
+            P(:, :, i) = vpa((eye(length(x_0)) - K_k * H) * P_minus);
     end
 end    
