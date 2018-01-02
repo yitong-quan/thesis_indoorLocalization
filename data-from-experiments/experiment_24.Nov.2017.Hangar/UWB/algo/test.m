@@ -66,6 +66,7 @@ else
             residual_sum = sum(residual)/length(residual);
             residual_sum_array = [residual_sum_array, residual_sum];
             x_estimated = x_minus + K_k * (residual); % <<<<<<wikipedia<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            P = vpa((eye(length(x_0)) - K_k * H) * P_minus);
             x_estimated_array = [x_estimated_array, x_estimated];
             P_array = [P_array, P];
         end
