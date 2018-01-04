@@ -13,7 +13,6 @@
 %% mitigation weighted linear combiation
 %% measurement update
 R = R_all;
-
 Z_e = Z_e_all;
 H_symbolic = H_all_symbolic;
 % remove the measurement data with NaN
@@ -98,3 +97,48 @@ else    % z_length = 4 or 5
             P(:, :, i)  = sum(P(:, :, i)  .* inv_residual_sum_array) / sum(inv_residual_sum_array)  ;
     end
 end    
+
+%{
+                for nn = 0 : createNaNnum
+                    idxNaN = 	combnk(1:z_length, nn); % size #combinations * nn
+                    numCombinations = size(idxNaN,1) ;
+                    P_array = zeros(4,4,numCombinations); % initial P_array
+                    for idxNaN_i = 1:numCombinations % #combinations
+                        z = z_orig;
+                        if numCombinations > 1
+                            z(idxNaN(idxNaN_i)) = nan; % elements with idx all turn into NaN
+                            k = length(z);
+                            while k >= 1
+                                if isnan(z(k)) % if no measurements are coming
+                                    z(k) =[];
+                                    Z_e(k) = [];
+                                    H_symbolic(k,:) = [];
+                                    R(k,:) = []; R(:,k) = [];
+                                end
+                                k = k-1;
+                            end
+                        end
+                        H = vpa(eval(subs( subs(H_symbolic, x_m, x_minus), N_x_n, positionOfNodes))); %<<<change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        
+                        R_ = R * R_affected_by_dt; % adjust R by dt
+                        R_ = R_ * meas_trust_factor; % adjust R by steps of ignored update due to missing measurements
+                        
+                        K_k = P_minus * H' / (H * P_minus * H' + R_); %<<< R_ >change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        %<<< add Z_e >change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        residual = z - eval(subs( subs(Z_e, x_m, x_minus), N_x_n, positionOfNodes)); % <<<<<<wikipedia<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                        residual_sum = sum(residual)/length(residual);
+                        residual_sum_array = [residual_sum_array, residual_sum];
+                        x_estimated = x_minus + K_k * (residual); % <<<<<<wikipedia<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                        P = vpa((eye(length(x_0)) - K_k * H) * P_minus);
+                        x_estimated_array = [x_estimated_array, x_estimated];
+                        P_array(:,:,idxNaN_i) = P;
+                    end
+                    
+                    %K(:, :, i) = K_k;
+                    inv_residual_sum_array = 1./(residual_sum_array);
+                    % X(:, i) = sum(x_estimated_array .* inv_residual_sum_array) / sum(inv_residual_sum_array)  ;
+                    X(:, i) = x_estimated_array * inv_residual_sum_array' / sum(inv_residual_sum_array)  ;
+                    % P(:, :, i)  = sum(P_array  .* inv_residual_sum_array) / sum(inv_residual_sum_array)  ;
+                    P(:, :, i)  = P_array * inv_residual_sum_array' / sum(inv_residual_sum_array)  ;
+                end
+}%

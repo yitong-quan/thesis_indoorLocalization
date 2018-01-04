@@ -46,8 +46,8 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
             RRT_oo = [-0.0775624574281473        -0.254508229572838        0.0491643222229634];
         case 3
             data = importdata('..\data\data_t_dist_3_sq_t.mat');
-            data = data(48:133,:);
-            % data = data(1:133,:);
+            % data = data(48:133,:);
+            data = data(48:133,:); % (1:133,:);
             MoCap_data = importdata('..\..\mocap\afterRTtoUWB\cortex_json7_sq_RT2UWB.mat');
             %MoCap_data = importdata('..\output_algo\ekf\traj3_RRT_tag_Xreal.mat');
             near_idex = nearestpoint(data(:,1)+8.36253712625157, MoCap_data(:,9));
@@ -231,8 +231,8 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     for i = 2:size(measurements_data_noisy,2)
         %% time update
         % sampling time interval        
-        % dt = timeStamp(i) - timeStamp(i-1);
-        dt = timeStamp(i) - timeStamp(i-counterJumpMeasLess);
+        dt = timeStamp(i) - timeStamp(i-1);
+        dt = timeStamp(i) - timeStamp(i-);
 %         time_now = timeStamp(i);
 %         dt = time_now - time_last;
         % adjust Q R by dt (0.91s is a threshold)
@@ -255,9 +255,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         
         % x_minus= A * X(:, i - 1); %  + B * u; % for motion update, when no measurements are coming at all 
         x_minus= A * x_estimated; 
-        % P_minus = vpa(A * P(:, :, i-1) * A' + Q);
-        P_minus = vpa(A * P(:, :, i-counterJumpMeasLess) * A' + Q);
-        
+        P_minus = vpa(A * P(:, :, i-1) * A' + Q);
         
         %% measurement update
         if mitigation_linear_comb == 1
@@ -281,10 +279,9 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
             
             z_length = length(z);
             if z_length < 2
-                counterJumpMeasLess = counterJumpMeasLess +1;
                 continue
+                
             elseif z_length <= 3
-                counterJumpMeasLess = 1;
                 meas_trust_factor = 1;
                 %             time_last = time_now;
                 H = vpa(eval(subs( subs(H_symbolic, x_m, x_minus), N_x_n, positionOfNodes))); %<<<change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -307,7 +304,6 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
                 %K(:, :, i) = K_k;
                 numCombinations= 1;
             else    % z_length = 4 or 5
-                counterJumpMeasLess = 1;
                 z_orig = z;
                 Z_e_orig = Z_e;
                 H_symbolic_orig = H_symbolic;
