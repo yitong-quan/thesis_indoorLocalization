@@ -24,13 +24,10 @@ nodesNumber = 5;
             distances2all_abs= distances2all_abs(:,section); % (48:133,:); %(134:218,:)  
             real_X = real_X(:,section);
             X = X(:,section);
+            RESIDUAL = RESIDUAL(:,section);
             positionOfNodes = positionOfNodes;
             real_X = real_X; 
             
-%             MoCap_data = importdata('..\..\mocap\afterRTtoUWB\cortex_json7_sq_RT2UWB.mat');
-%             %MoCap_data = importdata('..\output_algo\ekf\traj3_RRT_tag_Xreal.mat');
-%             near_idex = nearestpoint(data(:,1)+8.36253712625157, MoCap_data(:,9));
-%             RRT_oo = [94.2060204573235       -0.0905438612565538       -0.0867144876697838];
         otherwise
             warning('please specify the experiment number #')
     end
@@ -39,32 +36,42 @@ nodesNumber = 5;
 % make circles
 string =sprintf('experiment %d', experimentNumber);
 figure; title(string);hold on; % axis square; axis tight;
+subplot(1,2,1);hold on;
 plot(positionOfNodes(1,:), positionOfNodes(2,:), 'd');
 plot(real_X(1,:), real_X(2,:), 'r-+');
 plot(X(1,:), X(2,:), 'b-+');
-
-%plot(circle_center(1,:), circle_center(2,:), '*');
+subplot(1,2,2);hold on;
+abs_RESIDUAL = abs(RESIDUAL);
+plot(abs_RESIDUAL','c+');
 
 for j = 1:size(distances2all_abs, 2)
     % h_1 = plot(traj(1,j), traj(2,j), 'ro'); %hold on;
+    subplot(1,2,2);hold on;
+    abs_RESIDUAL_J = abs_RESIDUAL(:,j);
+    abs_RESIDUAL_J(isnan(abs_RESIDUAL_J)) = [];
+    if size(abs_RESIDUAL_J,1) == 0
+        continue
+    end
+    plot(j,abs_RESIDUAL_J,'go');
+    plot(j,mean(abs_RESIDUAL_J),'b^');
+    plot(j,std(abs_RESIDUAL_J),'rp');
     if nodesNumber == 5
         for i = 1 : size(positionOfNodes, 2)
+            subplot(1,2,1);hold on;
             h(i) = plotCircle(positionOfNodes(1, i), positionOfNodes(2, i), ...
                 distances2all_abs(i, j), 0*pi, 2*pi); % 0, 2*pi); %
-            %plotCircle(positionOfNodes(1, i), positionOfNodes(2, i), distances2all_abs(i, 1), 0, 2*pi);
-            %hold on;
         end
-%         h(3) = plotCircle(positionOfNodes(1, 3), positionOfNodes(2, 3), ...
-%             distances2all_abs(3, j), (i+4)*pi/2, (i+5)*pi/2+pi/6); % (i+2)*pi/2, (i+3)*pi/2);
     end
     axis square; axis tight;
     xlim([-4 6]); ylim([-1 11]);  
     daspect([10,10,10]);
     string =sprintf('j %d, experiment %d', j, experimentNumber);
     title(string);
-    pause(0.15);
+        subplot(1,2,1);hold on;
     h1 = plot(real_X(1,j), real_X(2,j), 'ro');
     h2 = plot(X(1,j), X(2,j), 'bo');
+    pause(0.15);
+
     delete(h); 
     delete(h1);
     delete(h2);

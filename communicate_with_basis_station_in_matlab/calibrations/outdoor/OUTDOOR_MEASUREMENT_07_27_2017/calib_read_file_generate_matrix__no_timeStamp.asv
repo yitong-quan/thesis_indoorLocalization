@@ -70,7 +70,7 @@ for jjj = 1:size(M,2)
             data(end,jjj) = mad(C);        
         end
         % str_title = sprintf('0x%d. trimmean:%f,  mad:%f', jjj, data(end-1,jjj), data(end,jjj));
-        str_title = sprintf('0x%d. mean:%.1f,  std:%.1f', jjj, data(end-1,jjj), data(end,jjj));
+        str_title = sprintf('0x%d. mean:%.f,  mad:%f', jjj, data(end-1,jjj), data(end,jjj));
         % subplot(2,ceil(size(M,2)/2),jjj); histogram(C, min(C):1:max(C));title(str_title);
 %         subplot(2,ceil(size(M,2)/2),jjj); histogram(C,7,'Normalization','probability');
 %         title(str_title);
@@ -80,10 +80,8 @@ for jjj = 1:size(M,2)
 %         norm = 10*normpdf(x,data(end-1,jjj),(data(end,jjj)));
 %         plot(x,norm)
 % subplot(2,ceil(size(M,2)/2),jjj); histfit(C,7);
-histfit(C,30);
+histfit(C,7);
 title(str_title);
-xlabel('x (mm)');
-ylabel('y (number)');
 %xlim([4000,4800]);
 set(gca,'FontSize',12)
 figure;

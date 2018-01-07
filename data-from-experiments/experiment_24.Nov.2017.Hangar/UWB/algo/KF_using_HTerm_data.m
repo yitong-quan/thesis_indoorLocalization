@@ -58,7 +58,7 @@ function [X, P, z_all, RMSD_] = KF_using_HTerm_data(factor_Q, factor_R, experime
             RRT_oo = [-0.0775624574281473        -0.254508229572838        0.0491643222229634];
         case 3
             data = importdata('..\data\data_t_dist_3_sq_t.mat');
-            % data = data(222:288,:); % (48:133,:); %(134:218,:)  
+            data = data;%(134:218,:);%(48:133,:); %(222:288,:); %  %(134:218,:)  
             if ms25Hz40 == 1
                 data = Hz40_data_transf(data, nodes_Nums);                
             end
