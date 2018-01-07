@@ -19,17 +19,21 @@ or 100, for missing with a pattern, 1st, 2nd, 3rd, 4th, 1st, 2nd, 3rd...
     %  5     2
     %    1  3  ]
 %%
-function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumber) %, measurements_missing, MaxNumMeasMissedWithinSet, traj_name
+function [X, P, z_all, RMSD_] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumber) %, measurements_missing, MaxNumMeasMissedWithinSet, traj_name
     format longG
     %% flag of remove_outlier_measurements
     remove_outlier_meas = 0; 
-   %% mitigation weighted linear combiation
-    mitigation_linear_comb = 1;    
+    %% mitigation weighted linear combiation
+    mitigation_linear_comb = 0;    
+    %% flag of using 25ms40Hz method
+    ms25Hz40 = 1;     
     if remove_outlier_meas && mitigation_linear_comb == 1
         error(':::::>remove_outlier_meas && mitigation_linear_comb == 1');
     end
-    %% flag of using 25ms40Hz method
-    ms25Hz40 = 0;     
+    if ms25Hz40 && mitigation_linear_comb == 1
+        error(':::::>ms25Hz40 && mitigation_linear_comb == 1');
+    end    
+
     %% RRT
     RRT = 1;
     %% import and process original-data
@@ -46,8 +50,8 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
             RRT_oo = [-0.0775624574281473        -0.254508229572838        0.0491643222229634];
         case 3
             data = importdata('..\data\data_t_dist_3_sq_t.mat');
-            % data = data(48:133,:);
-            data = data(48:133,:); % (1:133,:);
+            data = data(48:133,:);
+            % data = data(1:133,:);
             MoCap_data = importdata('..\..\mocap\afterRTtoUWB\cortex_json7_sq_RT2UWB.mat');
             %MoCap_data = importdata('..\output_algo\ekf\traj3_RRT_tag_Xreal.mat');
             near_idex = nearestpoint(data(:,1)+8.36253712625157, MoCap_data(:,9));
@@ -74,6 +78,21 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         real_X = real_X_before_RRT;
     end
     
+    function data_40Hz = Hz40_data_transf(data)
+        temp_data = nan(size(data,1)*nodes_Nums, size(data,2));
+        for ji = 1:size(data,1)
+            for nodeName = 1:nodes_Nums %1:5
+                shift = nodeName-1; %0;4
+                row_temp_data = (ji-1)*5+nodeName;
+                
+                temp_data(row_temp_data,nodeName+1) = data(ji,nodeName+1);
+                % temp_data(row_temp_data,1) = data(ji,1) - (4-shift)*1/40;
+                temp_data(row_temp_data,1) = data(ji,1) - (5-shift)*0.03;
+            end
+        end
+        % temp_data(1,:) = temp_data(1,:) + 0.1;
+        data = temp_data;
+    end
     
     %% if 25ms40Hz mode are activated
     if ms25Hz40 == 1
@@ -85,14 +104,15 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
                 
                 temp_data(row_temp_data,nodeName+1) = data(ji,nodeName+1);
                 % temp_data(row_temp_data,1) = data(ji,1) - (4-shift)*1/40;
-                temp_data(row_temp_data,1) = data(ji,1) - (5-shift)*0.030;
+                temp_data(row_temp_data,1) = data(ji,1) - (5-shift)*0.03;
             end
         end
-        temp_data(1,:) = temp_data(1,:) + 0.1;
+        % temp_data(1,:) = temp_data(1,:) + 0.1;
         data = temp_data;
     else
         % do nothing
     end
+    
     %% process data
     timeStamp = data(:,1); % unit second
     time_diff = diff(timeStamp);
@@ -231,8 +251,8 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
     for i = 2:size(measurements_data_noisy,2)
         %% time update
         % sampling time interval        
-        dt = timeStamp(i) - timeStamp(i-1);
-        dt = timeStamp(i) - timeStamp(i-);
+        % dt = timeStamp(i) - timeStamp(i-1);
+        dt = timeStamp(i) - timeStamp(i-counterJumpMeasLess);
 %         time_now = timeStamp(i);
 %         dt = time_now - time_last;
         % adjust Q R by dt (0.91s is a threshold)
@@ -255,7 +275,9 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
         
         % x_minus= A * X(:, i - 1); %  + B * u; % for motion update, when no measurements are coming at all 
         x_minus= A * x_estimated; 
-        P_minus = vpa(A * P(:, :, i-1) * A' + Q);
+        % P_minus = vpa(A * P(:, :, i-1) * A' + Q);
+        P_minus = vpa(A * P(:, :, i-counterJumpMeasLess) * A' + Q);
+        
         
         %% measurement update
         if mitigation_linear_comb == 1
@@ -279,9 +301,10 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
             
             z_length = length(z);
             if z_length < 2
+                counterJumpMeasLess = counterJumpMeasLess +1;
                 continue
-                
             elseif z_length <= 3
+                counterJumpMeasLess = 1;
                 meas_trust_factor = 1;
                 %             time_last = time_now;
                 H = vpa(eval(subs( subs(H_symbolic, x_m, x_minus), N_x_n, positionOfNodes))); %<<<change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -304,6 +327,7 @@ function [X, P, z_all] = KF_using_HTerm_data(factor_Q, factor_R, experimentNumbe
                 %K(:, :, i) = K_k;
                 numCombinations= 1;
             else    % z_length = 4 or 5
+                counterJumpMeasLess = 1;
                 z_orig = z;
                 Z_e_orig = Z_e;
                 H_symbolic_orig = H_symbolic;
@@ -505,8 +529,8 @@ X = fillmissing(X,'previous',2);
     daspect([10,10,10]);
 %% plot position on map 
         % h = figure;
-        plot(X(1,:), X(2,:), '+g');
-        plot(real_X(1,:), real_X(2,:),'+r');
+        plot(X(1,:), X(2,:), '+-g');
+        plot(real_X(1,:), real_X(2,:),'+-r');
         % load real positions
         %{
         % real_X = importdata('..\..\trajectory\goodTraj01\position01.mat'); 
@@ -532,17 +556,17 @@ X = fillmissing(X,'previous',2);
     estimated_posi_with_timeSt = [X; timeStamp'];
     % ----------- save(mat_str, 'estimated_posi_with_timeSt');
     
-    pause_time = 0.3*[time_diff; 2];
-    for j = 3:size(X,2) %1:size(X,2)-9 
-        h2 = plot(X(1,j-2:j), X(2,j-2:j), '-ob'); %h2 = plot(X(1,j:j+9), X(2,j:j+9), '-+r'); 
-        h3 = plot(real_X(1,j-2:j), real_X(2,j-2:j), '-ok');
-        str_title = sprintf('experiment%d; factorQ: %d; factorR: %d; j: %d', experimentNumber, factor_Q, factor_R, j);
-        title(str_title);
-        % Fram(j-4) = getframe(gcf);
-        pause(pause_time(j));
-        delete(h2);
-        delete(h3);
-    end
+%     pause_time = 0.3*[time_diff; 2];
+%     for j = 3:size(X,2) %1:size(X,2)-9 
+%         h2 = plot(X(1,j-2:j), X(2,j-2:j), '-ob'); %h2 = plot(X(1,j:j+9), X(2,j:j+9), '-+r'); 
+%         h3 = plot(real_X(1,j-2:j), real_X(2,j-2:j), '-ok');
+%         str_title = sprintf('experiment%d; factorQ: %d; factorR: %d; j: %d', experimentNumber, factor_Q, factor_R, j);
+%         title(str_title);
+%         % Fram(j-4) = getframe(gcf);
+%         pause(pause_time(j));
+%         delete(h2);
+%         delete(h3);
+%     end
     % ----------- video_str = ['outliar_removed_video_ekf_experiment', num2str(experimentNumber), '.avi'];
     % ----------- video = VideoWriter(video_str);
     % ----------- open(video)
@@ -550,6 +574,7 @@ X = fillmissing(X,'previous',2);
     % ----------- close(video)
     
     figure; histogram(mis_dist);
+    title('histogram(mis dist)');
     fig_str = ['traj_recovered_ekf_experiment',  num2str(experimentNumber), '.fig'];
     % ----------- savefig(h, fig_str);
 

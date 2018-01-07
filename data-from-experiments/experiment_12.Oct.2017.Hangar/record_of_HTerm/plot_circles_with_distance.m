@@ -7,11 +7,11 @@
 experiment = 4; % [1.1 1 2 3 4]
 
 nodesNumber = 5;
-circle_center  = importdata('circleCenterPos_by_determineCircleCenterPositionBaseOnDistToEachOthers.mat');
-circle_center = 1000* circle_center;
-circle_angle = [0:pi/50:2*pi];
-circle_x = (circle_center(1)+1000 *2.5*cos(circle_angle)); %unit mm
-circle_y = ( circle_center(2)+1000 *2.5*sin(circle_angle)); %unit mm
+% circle_center  = importdata('circleCenterPos_by_determineCircleCenterPositionBaseOnDistToEachOthers.mat');
+% circle_center = 1000* circle_center;
+% circle_angle = [0:pi/50:2*pi];
+% circle_x = (circle_center(1)+1000 *2.5*cos(circle_angle)); %unit mm
+% circle_y = ( circle_center(2)+1000 *2.5*sin(circle_angle)); %unit mm
 
 switch experiment
     case 1.1
@@ -28,7 +28,7 @@ switch experiment
         warning('please specify the experiment number #')
 end 
     
-    positionOfNodes = importdata('nodePos_by_determineNodesPositionBaseOnDistToEachOthers.mat');
+positionOfNodes = importdata('nodePos_by_determineNodesPositionBaseOnDistToEachOthers.mat');
 
 % change the unit from m to mm
 positionOfNodes = positionOfNodes*1000;
