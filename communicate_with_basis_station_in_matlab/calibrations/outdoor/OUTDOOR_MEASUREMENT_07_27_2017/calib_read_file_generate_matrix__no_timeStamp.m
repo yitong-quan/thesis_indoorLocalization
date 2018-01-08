@@ -80,7 +80,7 @@ for jjj = 1:size(M,2)
 %         norm = 10*normpdf(x,data(end-1,jjj),(data(end,jjj)));
 %         plot(x,norm)
 % subplot(2,ceil(size(M,2)/2),jjj); histfit(C,7);
-histfit(C,30);
+histfit(C,7); %,'birnbaumsaunders');
 title(str_title);
 xlabel('x (mm)');
 ylabel('y (number)');

@@ -753,6 +753,12 @@ The normalized histograms of the measurements are shown as \autoref{fig:mean_cal
 
 (TODO: add figures {fig:mean_calib})
 
+------------------------------------------------------------------
+
+Introduction
+
+Nowadays the continuous rise of interest towards indoor localization can be observed. Many innovative applications require real-time accurate indoor position information, such as tracking goods in warehouses, guiding people in exhibitions, shoping malls, hospitals and airports. However, due to Non Line of Sight(NLOS) and multipath propagations casued by the obstacles and walls, it is a sticky task to provide precise position information inside buildings. This makes the UWB a very interest option for such indoor scenario, thanks for its good capability of penetrating through  obstacles of indoor enviroment\cite{UWB_penetrating}. Even with this advantage of UWB, the above mentioned unwanted propagations can not be completely eliminated. Besides, other problems, such as measurement data missing and unable to require the positions of anchor nodes, also makes it difficul to localize a moving target without extrat help, such as EKF and calibration-free localization algorithms.
+
 
 
 
