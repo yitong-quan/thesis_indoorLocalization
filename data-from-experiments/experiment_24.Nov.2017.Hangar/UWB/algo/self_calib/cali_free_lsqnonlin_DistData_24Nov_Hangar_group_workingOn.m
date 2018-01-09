@@ -9,9 +9,10 @@ switch expNum
     case 1
         dat_t_dist = importdata([path, 'data_t_dist_1circle_t.mat']);
     case 2
-        dat_t_dist = importdata([path, 'data_t_dist_2_sq_t.mat']);
+        dat_t_dist = imp6ortdata([path, 'data_t_dist_2_sq_t.mat']);
     case 3
         dat_t_dist = importdata([path, 'data_t_dist_3_sq_t.mat']);
+        dat_t_dist=dat_t_dist(48:133,:);
     otherwise
         error('--------- please specify experimen number: expNum');
 end
