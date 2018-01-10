@@ -90,16 +90,16 @@ for expNum = A
 
 end    
     %disp(mean(time_Diff));
-     figure;
-    %subplot(2,2,i)
-    edges = [0:0.1:10];
-    histogram(TIME_DIFF,edges,'Normalization','probability'); % , 'BinWidth',0.1
-%     title('hist time interval');
-    xlabel('time interval (s)');
-    ylabel('occurent rate');
-    xlim([0, 10]);
-    %title('normalized histogram');
-     figure;
+%      figure;
+%     %subplot(2,2,i)
+%     edges = [0:0.1:10];
+%     histogram(TIME_DIFF,edges,'Normalization','probability'); % , 'BinWidth',0.1
+% %     title('hist time interval');
+%     xlabel('time interval (s)');
+%     ylabel('occurent rate');
+%     xlim([0, 10]);
+%     %title('normalized histogram');
+%      figure;
          numNan = sum(isnan(dist_data),2);
     numMeas_each_set = size(dist_data,2) - numNan;
     histogram(numMeas_each_set,'Normalization','probability');
