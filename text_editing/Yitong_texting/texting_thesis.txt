@@ -759,6 +759,39 @@ Introduction
 
 Nowadays the continuous rise of interest towards indoor localization can be observed. Many innovative applications require real-time accurate indoor position information, such as tracking goods in warehouses, guiding people in exhibitions, shoping malls, hospitals and airports. However, due to Non Line of Sight(NLOS) and multipath propagations casued by the obstacles and walls, it is a sticky task to provide precise position information inside buildings. This makes the UWB a very interest option for such indoor scenario, thanks for its good capability of penetrating through  obstacles of indoor enviroment\cite{UWB_penetrating}. Even with this advantage of UWB, the above mentioned unwanted propagations can not be completely eliminated. Besides, other problems, such as measurement data missing and unable to require the positions of anchor nodes, also makes it difficul to localize a moving target without extrat help, such as EKF and calibration-free localization algorithms.
 
+----------------------------------------
+structure:
+
+1. Introduction:
+
+2. Theoretical background:
+	In this chapter, the theoretical foundations relevant to this thesis will be explained, which are localization
+	with distances, UWB based distance measurement, EKF and calibration-free localization.
+	
+3. Literature review:
+	In this chapter, the related works will be explained.
+	
+4. UWB System Improvement:
+	In this chapter, the working principle of the UWB disatnces measurement system\cite{Patrick} will be introduced. Then the improvement of this system will be explained. 
+	
+	end: 
+	With these increased sampling rate and data obtained rate, the new system are now able to localize a moving taget with a human walking speed. 
+	
+	In the next chapters, 3 different  algorithms were built and used the system collected measurements data for localizaton. Based on the output of the localizaton results, the performance of the new system is again evaluated.
+	
+5. System measurement calibration:	
+	In this chapter, the system calibration procedure is explained and the calibration is discussed.
+	
+6. Localization algorithms:
+	In this chapter, 3 localization algorithms based of distance measurements were built and demonstrated. 
+	
+7. Experiment:
+	In this chapter, experiments based on simulation and based on real world data will be shown and discussed.  
+			setup
+			results
+	
+ 
+
 
 
 
