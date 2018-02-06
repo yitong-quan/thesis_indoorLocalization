@@ -2,19 +2,19 @@ clear all; close all;
 Xini = [0,0,0.8,0.8]'; %[0,0,1.0,1.0]'; %[0,0,1.4,1.4]';
 % X = Xini; pdata(:,1) = Xini;
 %dt = 0.025; % (2/3) /4; %% 0.3;
-sampleNum = 300; %30;
+sampleNum = 3000; %30;
 %A = [1,0,dt,0;0,1,0,dt;0,0,1,0;0,0,0,1];
 % G = [dt^2/2*eye(2);dt*eye(2)];
 sigma = 0.5; % 3.5;
 TrialNum = 0;
 LastTrialNum = 0;
 %w = randn(2,1,sampleNum);
-NumberOfTraj = 1000;
+NumberOfTraj = 600;
 allData = zeros(4, sampleNum + 1);
-
-while sigma <= 0.5
+GoodTrajFound = 0;
+while GoodTrajFound == 0
     fprintf('sigma=%f \n ', sigma);
-    GoodTrajFound = 0;
+    
     for j = 1:NumberOfTraj
         if GoodTrajFound == 1   
             break
@@ -37,20 +37,20 @@ while sigma <= 0.5
             G = [dt^2/2*eye(2);dt*eye(2)];
             X = A * X + G * sigma * randn(2,1);
             % if ( X(1) > 10 || X(1) < -10 || X(2) > 10 || X(2) < -10)
-            if ( X(1) > 3 || X(1) < -3 || X(2) > 3 || X(2) < -3)
+            if ( X(1) > 7 || X(1) < -7 || X(2) > 7 || X(2) < -7)
                 break
             end
             if  X(1) > 2.5
-                X(3)=X(3) - 0.5*(X(1) - 2.5);
+                X(3)=X(3) - 0.1*(X(1) - 2.5);
             end
-                        if  X(1) < -2.5
-                X(3)=X(3) - 0.5*(X(1) + 2.5);
+            if  X(1) < -2.5
+                X(3)=X(3) - 0.1*(X(1) + 2.5);
             end
             if  X(2) > 2.5
-                X(4)=X(4) - 0.5*(X(2) - 2.5);
+                X(4)=X(4) - 0.1*(X(2) - 2.5);
             end
-                        if  X(2) < -2.5
-                X(4)=X(4) - 0.5*(X(2) + 2.5);
+            if  X(2) < -2.5
+                X(4)=X(4) - 0.1*(X(2) + 2.5);
             end
             pdata(:,i) = X;
             if i == sampleNum
@@ -66,9 +66,9 @@ while sigma <= 0.5
         %break
         end
     end
-    sigma = sigma + 0.1;
+    %sigma = sigma + 0.1;
 end    
 data =allData(5:8,:);
 data = data(:,2:end);
-data_t_dist = [timestamp;data]
+data_t_dist = [timestamp;data];
 % save('posivelodata2.mat', 'pdata');

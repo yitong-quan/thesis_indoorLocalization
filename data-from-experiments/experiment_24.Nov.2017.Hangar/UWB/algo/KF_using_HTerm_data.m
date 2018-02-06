@@ -24,7 +24,7 @@ function [X, P, z_all, RMSD_] = KF_using_HTerm_data(factor_Q, factor_R, experime
     %% flag of remove_outlier_measurements
     remove_outlier_meas = 0; 
     %% mitigation weighted linear combiation
-    mitigation_linear_comb = 0;    
+    mitigation_linear_comb = 1;    
     %% flag of using 25ms40Hz method
     ms25Hz40 = 0;     
     if remove_outlier_meas && mitigation_linear_comb == 1
@@ -42,6 +42,7 @@ function [X, P, z_all, RMSD_] = KF_using_HTerm_data(factor_Q, factor_R, experime
     switch experimentNumber
         case 1
             data = importdata('..\data\data_t_dist_1circle_t.mat');
+            data = data(152:218,:); % 88:148 % 18:83
             if ms25Hz40 == 1
                 data = Hz40_data_transf(data, nodes_Nums);
             end
@@ -58,11 +59,26 @@ function [X, P, z_all, RMSD_] = KF_using_HTerm_data(factor_Q, factor_R, experime
             RRT_oo = [-0.0775624574281473        -0.254508229572838        0.0491643222229634];
         case 3
             data = importdata('..\data\data_t_dist_3_sq_t.mat');
-            data = data;%(134:218,:);%(48:133,:); %(222:288,:); %  %(134:218,:)  
+            data = data(48:133,:);%(134:218,:);%(48:133,:); %(222:288,:); 
             if ms25Hz40 == 1
-                data = Hz40_data_transf(data, nodes_Nums);                
+                data = Hz40_data_transf(data, nodes_Nums);
             end
-
+            
+            MoCap_data = importdata('..\..\mocap\afterRTtoUWB\cortex_json7_sq_RT2UWB.mat');
+            %MoCap_data = importdata('..\output_algo\ekf\traj3_RRT_tag_Xreal.mat');
+            near_idex = nearestpoint(data(:,1)+8.36253712625157, MoCap_data(:,9));
+            RRT_oo = [94.2060204573235       -0.0905438612565538       -0.0867144876697838];
+        case 5 % simulation
+            real_x_t = importdata('..\..\..\..KalmanFilter\KF_traj\EKF_25ms40Hz\25ms_40HzSamplingRate\1state_space1_good.mat');
+            real_x = real_x_t(2:end,:);
+            real_x(2,:) = real_x(2,:) + 3;
+            t = real_X(1,:);
+            positionOfNodes = importdata('..\output_algo\nodesPositionLaserOptimal\nodePo.mat');
+            data = data;%(134:218,:);%(48:133,:); %(222:288,:); %  %(134:218,:)
+            if ms25Hz40 == 1
+                data = Hz40_data_transf(data, nodes_Nums);
+            end
+            
             MoCap_data = importdata('..\..\mocap\afterRTtoUWB\cortex_json7_sq_RT2UWB.mat');
             %MoCap_data = importdata('..\output_algo\ekf\traj3_RRT_tag_Xreal.mat');
             near_idex = nearestpoint(data(:,1)+8.36253712625157, MoCap_data(:,9));
@@ -159,7 +175,10 @@ function [X, P, z_all, RMSD_] = KF_using_HTerm_data(factor_Q, factor_R, experime
     circle_y = circle_center(2)+2.5*sin(circle_angle); %unit m
 
     %% initiation
-    x_0 = [3.7,6.7, 0, -0.14]';
+    x_0 = [3.66,6.74, 0, -0.14]';
+        if experimentNumber == 1
+            x_0 = [3.86,4.14, -0.1, -0.3]';
+        end
     P_0 = eye(4, 4); % TODO, choose to be all one, a litle too big, but it should converge at the end if the KF work 
 
     % control-input model matrix(control matrix) B, control-input(control vector) is zero
@@ -571,7 +590,7 @@ X = fillmissing(X,'previous',2);
     % ----------- writeVideo(video, Fram)
     % ----------- close(video)
     
-    figure; histogram(mis_dist);
+    figure; hhh=histogram(mis_dist);
     title('histogram(mis dist)');
     fig_str = ['traj_recovered_ekf_experiment',  num2str(experimentNumber), '.fig'];
     % ----------- savefig(h, fig_str);

@@ -1,26 +1,28 @@
 %% x(nodes, tag)
 clear;
 %% import data
-expNum = 3; % <<---- also need to change the one in the 'myfun' below
+expNum = 2; % <<---- also need to change the one in the 'myfun' below
 factor1 = 100;
 path = '..\..\data\';
 
 switch expNum
-    case 1
-        dat_t_dist = importdata([path, 'data_t_dist_1circle_t.mat']);
-    case 2
-        dat_t_dist = imp6ortdata([path, 'data_t_dist_2_sq_t.mat']);
-    case 3
-        dat_t_dist_all = importdata('25ms_40HzSamplingRate\measurements_data_noisy.mat');
+        case 2
+        dat_t_dist_all = importdata('25ms_40HzSamplingRate\2_t_dist_state_for_calib.mat');
         b = [1:5:size(dat_t_dist_all,2)];
-        dat_t_dist= dat_t_dist_all(:,b);
-        dat_t_dist=dat_t_dist(:,1:100);
+        dat_t_dist= dat_t_dist_all(:,1:6);
+        real_X = dat_t_dist_all(:,7:end);
+        real_X = real_X';
+    case 3
+        dat_t_dist_all = importdata('25ms_40HzSamplingRate\1_t_dist_state_for_calib.mat');
+        b = [1:5:size(dat_t_dist_all,2)];
+        dat_t_dist= dat_t_dist_all(:,1:6);
+        real_X = dat_t_dist_all(:,7:end);
+        real_X = real_X';
     otherwise
         error('--------- please specify experimen number: expNum');
 end
 dist_data = dat_t_dist(:,2:end); %dist_data = dat_t_dist(50:200,2:end);
 dist_data = dist_data; % unit from mm to m
-dist_data = dist_data';
 %% sort data according to #nan, and sepereate into groups 012345
 [numNanMeas,idx]=sort(sum(isnan(dist_data),2));
 sorted_dist_data=dist_data(idx,:);
@@ -61,7 +63,7 @@ x_num = tag_num + nodes_num;
 x0 = 10*(rand(2,x_num)-0.5);
 
 resnorm_last = inf;
-for ii = 1:7
+for ii = 1:3
     [x,resnorm] = lsqnonlin(myfun0,x0,[],[],options);
     resnorm_record = [resnorm_record; resnorm];
     x_record0 = [x_record0;x];
@@ -86,7 +88,7 @@ new_part_length = size(group1,1);
 x0 = [x_opt0, 10*(rand(2,new_part_length)-0.5)];
 
 resnorm_last = inf;
-for ii = 1:7
+for ii = 1:2
     [x,resnorm] = lsqnonlin(myfun0,x0,[],[],options);
     resnorm_record = [resnorm_record; resnorm];
     x_record1 = [x_record1;x];
@@ -115,7 +117,7 @@ new_part_length = size(group2,1);
 x0 = [x_opt01, 10*(rand(2,new_part_length)-0.5)];
 
 resnorm_last = inf;
-for ii = 1:7
+for ii = 1:2
     [x,resnorm] = lsqnonlin(myfun0,x0,[],[],options);
     resnorm_record = [resnorm_record; resnorm];
     x_record2 = [x_record2;x];
@@ -221,23 +223,85 @@ opt_tag_after_RRT = [XX;YY];
 %     plot(opt_tag(1,:), opt_tag(2,:), 'b-*');
 %     plot(opt_node(1,:), opt_node(2,:), 'r-d');
     plot(opt_tag_after_RRT(1,:), opt_tag_after_RRT(2,:), 'b-x');
-    plot(opt_node_after_RRT(1,:), opt_node_after_RRT(2,:), 'kd');
+    plot(real_X(1,:), real_X(2,:), 'r');
+    plot(opt_node_after_RRT(1,:), opt_node_after_RRT(2,:), 'bd');
     plot(node_po_by_laser(1,:), node_po_by_laser(2,:), 'ro');
     str = sprintf('experi: %d;   x num:%d;   resnorm %0.4e ', expNum, x_num, resnorm_opt);
     title(str);
         xlabel('(m)');
     ylabel('(m)');
-    legend('Tag estimated', 'Node estimated', 'Node true');
+    legend('Tag estimated', 'Tag true', 'Node estimated', 'Node true');
     % plot(x_opt_after_RRT(1,:), x_opt_after_RRT(2,:),'k')
-    plot(x_opt012(1,:), x_opt012(2,:),'r')
-    plot(x_opt01(1,:), x_opt01(2,:),'y')
-    plot(x_opt0(1,:), x_opt0(2,:),'c')
+%     plot(x_opt012(1,:), x_opt012(2,:),'r')
+%     plot(x_opt01(1,:), x_opt01(2,:),'y')
+%     plot(x_opt0(1,:), x_opt0(2,:),'c')
         set(gca,'fontsize',12)
     daspect([10,10,10]);
     
     figure;
     plot(resnorm_record);
     title('resnorm record')
+    
+    mis_pos = opt_tag_after_RRT(1:2,:) - real_X(1:2,:);
+    mis_dist = sqrt(mis_pos(1,:).^2 + mis_pos(2,:).^2);
+    mis_match = sum(mis_dist.^2) / size(opt_tag_after_RRT,2) ;
+    RMSD_  = sqrt(mis_match);
+    
+    figure;
+    subplot(1,3,1);histogram(mis_pos(1,:));
+    subplot(1,3,2);histfit(mis_pos(1,:));
+    subplot(1,3,3);histfit(mis_pos(1,:),7,'rayleigh'); title('mis pos x');
+    
+        figure; 
+    subplot(1,3,1);histogram(mis_pos(2,:));
+    subplot(1,3,2);histfit(mis_pos(2,:));
+    subplot(1,3,3);histfit(mis_pos(2,:),7,'rayleigh'); title('mis pos y');
+    
+    figure; 
+    subplot(1,3,1);histogram(mis_dist);
+    subplot(1,3,2);histfit(mis_dist);
+    subplot(1,3,3);histfit(mis_dist,7,'rayleigh'); title('mis dist');
+%% compare the velocity
+xy_diff = diff(opt_tag_after_RRT,1,2);
+t_diff = diff(dat_t_dist_all(:,1))';
+velocity_x = xy_diff(1,:)./t_diff;
+velocity_y = xy_diff(2,:)./t_diff;
+
+real_velocity = real_X(3:4,1:end-1);
+mis_v_x = velocity_x - real_velocity(1,:);
+mis_v_y = velocity_y - real_velocity(2,:);
+mis_v_sum = sqrt(mis_v_x.^2 + mis_v_y.^2);
+
+    figure;
+    subplot(1,3,1);histogram(mis_v_x);
+    subplot(1,3,2);histfit(mis_v_x);
+    subplot(1,3,3);histfit(mis_v_x,7,'rayleigh'); title('mis vel x');
+    
+        figure; 
+    subplot(1,3,1);histogram(mis_v_y);
+    subplot(1,3,2);histfit(mis_v_y);
+    subplot(1,3,3);histfit(mis_v_y,7,'rayleigh'); title('mis vel y');
+    
+    figure; 
+    subplot(1,3,1);histogram(mis_v_sum);
+    subplot(1,3,2);histfit(mis_v_sum);
+    subplot(1,3,3);histfit(mis_v_sum,7,'rayleigh'); title('mis vel sum');
+    
+    % test results[lillietest(po_x,po_y,dist,v_x,v_y,v_sum)...
+    %               jbtest(po_x,po_y,dist,v_x,v_y,v_sum)]
+    test_normal = NaN(2,6);
+    test_normal(1,1) = lillietest(mis_pos(1,:));
+    test_normal(1,2) = lillietest(mis_pos(2,:));
+    test_normal(1,3) = lillietest(mis_dist);
+    test_normal(1,4) = lillietest(mis_v_x);
+    test_normal(1,5) = lillietest(mis_v_y);
+    test_normal(1,6) = lillietest(mis_v_sum);
+        test_normal(2,1) = jbtest(mis_pos(1,:));
+    test_normal(2,2) = jbtest(mis_pos(2,:));
+    test_normal(2,3) = jbtest(mis_dist);
+    test_normal(2,4) = jbtest(mis_v_x);
+    test_normal(2,5) = jbtest(mis_v_y);
+    test_normal(2,6) = jbtest(mis_v_sum);
 
 %% parafun including meas data
 % A is the matrix of true meas marix

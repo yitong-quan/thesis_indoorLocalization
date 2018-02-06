@@ -1,0 +1,34 @@
+%% exp3
+work_space_ekf_n = importdata('..\3_1_workspace_0.001_1.mat'); % all
+real_v_x = diff(real_X(1,:))./time_diff';
+real_v_y = diff(real_X(2,:))./time_diff';
+diff_v_x_wlcr = X(3,1:end-1)- real_v_x;
+diff_v_y_wlcr = X(4,1:end-1)- real_v_y;
+X_n = work_space_ekf_n.X;
+diff_v_x_n = X_n(3,1:end-1)- real_v_x;
+diff_v_y_n = X_n(4,1:end-1)- real_v_y;
+an = timeStamp - min(timeStamp);
+figure; plot(an(1:end-1), diff_v_x_wlcr,'m');
+hold on;plot(an(1:end-1), diff_v_x_n,'k');
+title('diff v x')
+figure; plot(an(1:end-1), diff_v_y_wlcr,'m');
+hold on;plot(an(1:end-1), diff_v_y_n,'k');
+title('diff v y')
+
+%% exp1
+% work_space_ekf_n = importdata('..\1_workspace_0.001_1.mat'); % all
+% real_v_x = diff(real_X(1,:))./time_diff';
+% real_v_y = diff(real_X(2,:))./time_diff';
+% diff_v_x_wlcr = X(3,1:end-1)- real_v_x;
+% diff_v_y_wlcr = X(4,1:end-1)- real_v_y;
+% X_n = work_space_ekf_n.X(:,152:218);
+% diff_v_x_n = X_n(3,1:end-1)- real_v_x;
+% diff_v_y_n = X_n(4,1:end-1)- real_v_y;
+% figure; plot(an(1:end-1), diff_v_x_wlcr,'m');
+% hold on;plot(an(1:end-1), diff_v_x_n,'k');
+% title('diff v x')
+% figure; plot(an(1:end-1), diff_v_y_wlcr,'m');
+% hold on;plot(an(1:end-1), diff_v_y_n,'k');
+% title('diff v x')
+
+

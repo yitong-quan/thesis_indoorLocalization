@@ -1,0 +1,28 @@
+In sharp contrast to the capability of obtaining centimeterlevel
+accuracy of positioning under clear sky view, GPS fails to
+perform under indoor environment as its signal power levels
+are not sufficient for indoor applications [7]. Nonetheless,
+indoor GPS could be established through the deployment of
+pseudolites; GPS signal transmitters which enhance the signal
+availability as well as replace the GPS satellite constellation for
+indoor applications. 
+
+The
+ability of the UWB technology to provide non-line-of-sight
+(NLOS) positioning is another advantage that the UWB system
+has over the indoor GPS system.
+
+The GPS provides world-wide coverage to allow its users to
+obtain position information through its optimum satellite 
+constellation. The satellites are arranged in such a way that at
+any location and point of time, the GPS receiver could receive
+signals from 4 to 11 satellites. In other words, the satellite
+constellation allows up to 7 satellites to be in view for 80% of
+the time,
+
+For indoor GPS, multipath error is the
+dominant error source, where multipath could be a result from
+buildings as well as the surfaces of the indoor infrastructures.
+
+
+

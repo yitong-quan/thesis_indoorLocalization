@@ -1,7 +1,7 @@
 %% x(nodes, tag)
-clear;
+%clear;
 %% import data
-expNum = 3; % <<---- also need to change the one in the 'myfun' below
+expNum = 1; % <<---- also need to change the one in the 'myfun' below
 path = '..\..\data\';
 
 switch expNum
