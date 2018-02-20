@@ -86,3 +86,43 @@ figure;histo_MC2 = histogram(vel_diff_EKF_MC2,'Normalization','probability')
 hold on;histo_MC1 = histogram(vel_diff_EKF_MC1,'Normalization','probability')
 hold on;histo_LWCR = histogram(vel_diff_EKF_LWCR,'Normalization','probability')
 hold on;histo_OM = histogram(vel_diff_OM,'Normalization','probability')
+
+
+%% 
+clear
+EKF_LWCR_data = importdata('3_1_workspace_0.001_1_weighted.mat');
+EKF_SM = importdata('3_1_workspace_0.0008_6.5536_40Hz.mat');
+EKF_MM = importdata('3_1_workspace_0.001_1.mat');
+OM = importdata('3_1_group_results_workspace.mat');
+real_X = EKF_MM.real_X;
+OM_X =OM.opt_tag_after_RRT;
+figure; plot(OM_X(1,:),OM_X(2,:),'-*')
+EKF_MM_X =EKF_MM.X;
+EKF_SM_X =EKF_SM.X;
+EKF_LWCR_X =EKF_LWCR_data.X;
+EKF_MM_mis_pos =EKF_MM.mis_pos;
+EKF_SM_mis_pos =EKF_SM.mis_pos;
+EKF_LWCR_mis_pos =EKF_LWCR.mis_pos;
+EKF_LWCR_mis_pos =EKF_LWCR_data.mis_pos;
+OM_mis_pos =OM_X-real_X(1:2,1:82);
+figure; hold on;
+histo_MC1 = histogram(EKF_MM_mis_pos(1,:),'Normalization','probability')
+histo_MC2 = histogram(EKF_SM_mis_pos(1,:),,'Normalization','probability')
+histo_MC2 = histogram(EKF_SM_mis_pos(1,:),'Normalization','probability')
+histo_OM = histogram(OM_mis_pos(1,:),'Normalization','probability')
+delete(histo_OM)
+histo_LWCR = histogram(EKF_LWCR_mis_pos(1,:),'Normalization','probability')
+real_X_for_OM = real_X;
+real_X_for_OM(:,3) =[];
+real_X_for_OM = real_X;
+real_X_for_OM(:,63) =[];
+real_X_for_OM(:,57) =[];
+real_X_for_OM(:,35) =[];
+real_X_for_OM(:,3) =[];
+OM_mis_pos =OM_X-real_X_for_OM;
+histo_OM = histogram(OM_mis_pos(1,:),'Normalization','probability')
+figure; hold on;
+histo_MC1 = histogram(EKF_MM_mis_pos(2,:),'Normalization','probability')
+histo_MC2 = histogram(EKF_SM_mis_pos(2,:),'Normalization','probability')
+histo_OM = histogram(OM_mis_pos(2,:),'Normalization','probability')
+histo_LWCR = histogram(EKF_LWCR_mis_pos(2,:),'Normalization','probability')
