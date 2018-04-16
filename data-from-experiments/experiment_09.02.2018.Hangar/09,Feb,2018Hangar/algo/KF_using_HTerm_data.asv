@@ -432,8 +432,7 @@ plot(STD_MINUS_MAD','-+');
     ylabel('y (m)');
     
             hold on;
-%{            
-%% ignore this part, it is used to calculate the errors(diff betwwen the estimates and true positions) of different choises of Q_ R_factors
+%% plot position on map 
         % h = figure;
         %plot(X(1,:), X(2,:), '+-g');
 
