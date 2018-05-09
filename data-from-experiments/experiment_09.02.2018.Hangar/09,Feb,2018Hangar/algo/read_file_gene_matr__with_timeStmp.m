@@ -1,4 +1,4 @@
-%% output: data_t_dist : (1.time, 2.3.4.5...dist of nodes used)
+%% output: data_t_dist : (1. column: time, 2.3.4.5...distance of nodes used)
 %% Pseudocode 
 %{ 
 read i_th line >> content
@@ -17,19 +17,13 @@ experimentNum = experiNumber;
 
 switch experimentNum
     case 111
-       string = 'all_t';  
-    case 1
-        string = 'data_all';  
-    case 2
-        string = '2_sq_t';        
-    case 3
-        string = '3_sq_t';            
+       string = 'all_t';  % string is the prefix of the name of the file you going to read
     otherwise
         warning('please specify the experiment number #')
         return
 end
-path = '..\';
-str = [path, string, ' - Copy_refined.log'];
+path = '..\'; % swith path
+str = [path, string, ' - Copy_refined.log']; % string is the full name of the file you going to read
 fileID = fopen(str);  
 
 %{
@@ -47,7 +41,6 @@ time_format = '^[0-9]+:[0-9]+:[0-9]+\.[0-9]+';
 i = 0; % package index
 tline = fgetl(fileID); % format char
 while ischar(tline)
-    % disp('!');disp(tline);disp('!');
     if ~isempty(tline)
         if regexp(tline, time_format) == 1 % begin with 'time_format'
             i = i+1;
@@ -55,7 +48,7 @@ while ischar(tline)
             package(i).ID = [];
             package(i).dist = [];
         else
-            A = textscan(tline,'%s %c %d'); % '0x1C1C' ',' '235'
+            A = textscan(tline,'%s %c %d'); % for example: '0x1C1C' ',' '235'
             ID = [A{1,1}];
             dist = [A{1,3}];
             package(i).ID = [package(i).ID ID];
@@ -76,7 +69,7 @@ disp('ID used are followed: ');
 disp(package(1).ID);
 if length(package(1).ID) < 5
     warning('Warning. package#<5, not all the nodes are used, please change code and add in a column to the coresponding ndoes')
-    %base on the nodes used, add up columns for data 'from' nonused nodes
+    % base on the nodes used, add up columns for data 'from' nonused nodes
 	data_t_dist = [data_t_dist(:,1:2)  nan(length(data_t_dist),1) data_t_dist(:,3:end)];
 end    
 
