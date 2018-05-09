@@ -1,3 +1,10 @@
+main functions: 
+	'KF_using_HTerm_data.m' -- to recover the trajectory of the tag, based on known information of nodes' postions
+	'cali_free_lsqnonlin_DistData_2018_Hangar_fullData_workingOn.m'  -- to recover the the trajectory of the tag and the positions of the node simutanously
+
+
+
+
 Order of running files to output trajectroy from distance data from HTerm recorded .log files.
 
 copy the original 'XXX.log' file, so another file 'XXX - Copy.log' is generated.
