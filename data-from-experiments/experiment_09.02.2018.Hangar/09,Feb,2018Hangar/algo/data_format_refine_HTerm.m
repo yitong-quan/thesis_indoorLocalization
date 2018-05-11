@@ -3,7 +3,8 @@
 % unexpected new lines and unexpected time stamps between the distance 
 % data  from different nodes
 % This file refines the .txt file by deleted the unwanted lines and 
-% unexpected time stamps by judging if time_interval < 0.3 of not.
+% unexpected time stamps by judging if time_interval < 0.3 of not. < 0.3
+% the time stamp is merged
 %% pseudocode
 %{
 % import_file;

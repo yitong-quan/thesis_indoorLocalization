@@ -1,12 +1,12 @@
 %%
 openfig('output\3_RRT\3_after_RRT.fig');
 ws_3 = importdata('output\3_RRT\3_ekf_last_3_loops_after_rrt_work_space.mat');
-X = ws_3.X;
-data = ws_3.data;
+X = ws_3.X; % KF output trajectory (format: x-; y- position; x- ; y- velocities)
+data = ws_3.data; % timestamps and distance matrix data from HTerm 
 data = data(1:end-1,:);
 timeStamp = ws_3.timeStamp;
-time_diff = ws_3.time_diff;
-j = 3;
+time_diff = ws_3.time_diff; % time gap between each two adjacent sample s
+j = 3; % number of adjacent points of trajectory shown in video
 h2 = plot(X(1,j-2:j), X(2,j-2:j), '-ob'); %h2 = plot(X(1,j:j+9), X(2,j:j+9), '-+r');
 h3 = plot(X(1,j), X(2,j), '-*b');
             frm_num = 0;

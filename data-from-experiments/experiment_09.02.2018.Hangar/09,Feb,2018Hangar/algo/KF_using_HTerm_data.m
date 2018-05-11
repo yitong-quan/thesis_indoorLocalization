@@ -27,7 +27,7 @@ function [X, P, z_all, RMSD_] = KF_using_HTerm_data(factor_Q, factor_R, experime
     %% mitigation weighted linear combiation
     mitigation_linear_comb = 1;    
     %% flag of using 25ms40Hz method
-    ms25Hz40 = 0;     
+    ms25Hz40 = 0;   % all measurement as a whole  
     % remove_outlier_meas && mitigation_linear_comb cannot be true
     if remove_outlier_meas && mitigation_linear_comb == 1
         error(':::::>remove_outlier_meas && mitigation_linear_comb == 1');
@@ -44,6 +44,7 @@ function [X, P, z_all, RMSD_] = KF_using_HTerm_data(factor_Q, factor_R, experime
     %% import and preprocess original-data
     switch experimentNumber
         case 3
+            % input generated matlab file
             data = importdata('..\data_last_3_loops.mat');
             %data = data(1:10,:);
             data(:,1) = data(:,1) - data(1,1); % remove useless data
@@ -464,6 +465,7 @@ plot(STD_MINUS_MAD','-+');
  
     pause_time = 1*[time_diff; 2];
 %% video making
+%{
     j = 9;
     for tt = 0:0.001:data(end,1) 
             h2 = plot(X(1,j-2:j), X(2,j-2:j), '-ob');
@@ -484,7 +486,7 @@ plot(STD_MINUS_MAD','-+');
     open(video)
     writeVideo(video, Fram)
     close(video)
-    
+ %}   
     figure; hhh=histogram(mis_dist);
     title('histogram(mis dist)');
     fig_str = ['traj_recovered_ekf_experiment',  num2str(experimentNumber), '.fig'];

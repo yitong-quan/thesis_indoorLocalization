@@ -1,4 +1,5 @@
 %% output: data_t_dist : (1. column: time, 2.3.4.5...distance of nodes used)
+% output matlab code with given format 1. column: time, 2.3.4.5...distance of nodes used
 %% Pseudocode 
 %{ 
 read i_th line >> content

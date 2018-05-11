@@ -56,14 +56,14 @@ options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','i
 group_all = sorted_dist_data;
 index_ = [1,20, 40,60,80,100,120];
 % data_for_opti: here different combination can be chosen for optimoptions
-data_for_opti = dist_data; % group0(1:4,:); %index_% dist_data ; % group_all; % (1:150,:); % group0;% (1:40,:);<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+data_for_opti = dist_data; % index_% dist_data ; % group_all; % (1:150,:); % group0
 myfun0 = @(x)parameterfun(x,data_for_opti); % pass parameters using anonymous functions
 tag_num = size(data_for_opti,1); % number of tags positions
 nodes_num = size(data_for_opti,2); % number of nodes in use
 x_num = tag_num + nodes_num; % number of total unkown variables
 x0 = 10*(rand(2,x_num)-0.5); % random guess of initial value for these unkown variables
 resnorm_last = inf;
-for ii = 1:20 % multiple times for optimations and choose one the best results
+for ii = 1:10 % multiple times for optimations and choose one the best results
     [x,resnorm] = lsqnonlin(myfun0,x0,[],[],options); % outpu the optimized positions and the squared 2-norm of the residual  
     resnorm_record = [resnorm_record; resnorm];
     x_record = [x_record;x];
@@ -78,7 +78,7 @@ resnorm_opt
 opt_tag = x_opt(:,nodes_num+1:end); % best guess of tags trajectory
 opt_node = x_opt(:,1:nodes_num); % best guess of nodes' positions
 
-%% RRT: reflection-rotation-translation
+%% RRT: reflection(mirror)-rotation-translation (calculated using only node position)
 % transform the coordinate of the best guesses oboved into the one used in 'KF_using_HTerm_data.m'
 resnorm_rrt_last = inf;
 RRT0 = 10*(rand(1,4)-0.5); % RRT0 = [theta, t1, t2, reflectionAboutXaxis(1or0)]
@@ -88,7 +88,7 @@ resnorm_last = inf;
 % import the positions of nodes determined by 'determineNodesPositionBaseOnDistToEachOthers.m' 
 node_po_by_laser = importdata('..\..\output_algo\nodesPositionLaserOptimal\nodePo.mat'); % 2*5
 myfun1 = @(x)parameterfun1(x,node_po_by_laser, opt_node); % pass parameters using anonymous functions
-for kk = 1:20 % multiple times for optimations and choose one the best results
+for kk = 1:10 % multiple times for optimations and choose one the best results
     [rrt,resnorm_rrt] = lsqnonlin(myfun1,RRT0,[],[],options);
     if resnorm_rrt < resnorm_rrt_last
         rrt_opt = rrt;

@@ -1,3 +1,9 @@
+%% this file can be ignored, it is realizes the same functionality 
+%  of the 'cali_free_lsqnonlin_DistData_2018_Hangar_fullData_workingOn.m'.
+%  this file is only for the use of visual comparision.
+%  detail comments please refere to
+%  'cali_free_lsqnonlin_DistData_2018_Hangar_fullData_workingOn.m'.
+
 data_read = importdata('output\calibration_free_workspace_3.mat'); 
 opt_node_ = data_read.opt_node_after_RRT;
 %% plot nodes
@@ -9,7 +15,7 @@ plot(opt_node_(1,4),opt_node_(2,4),'s');
 plot(opt_node_(1,5),opt_node_(2,5),'p');
 daspect([10,10,10]);
 %%%%%%%% 3.3, 0.1
-%% mark distances
+%% mark distances between nodes on the plot
 dist_nodes12 = norm(opt_node_(:,1)-opt_node_(:,2));
 text(0.5*(opt_node_(1,1)+opt_node_(1,2)),...
     0.5*(opt_node_(2,1)+opt_node_(2,2)),num2str(dist_nodes12));
@@ -32,7 +38,7 @@ options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','i
 resnorm_last = inf;
 node_po_by_laser = [dist_nodes23,0; 0,0]; % 2*2
 myfun1 = @(x)parameterfun1(x,node_po_by_laser, opt_node_(:,2:3));
-for kk = 1:60
+for kk = 1:1%60
     [rrt,resnorm_rrt] = lsqnonlin(myfun1,RRT0,[],[],options);
     if resnorm_rrt < resnorm_rrt_last
         rrt_opt = rrt;
