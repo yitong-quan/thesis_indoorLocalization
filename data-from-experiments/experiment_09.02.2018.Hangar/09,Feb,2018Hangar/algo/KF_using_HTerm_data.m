@@ -425,6 +425,7 @@ figure;
 plot(STD_MINUS_MAD','-+');
 %}
 %% plot positions of anchore nodes
+    figure;
     haha = plot(positionOfNodes(1,:), positionOfNodes(2,:), 'rd');
     %str_title = sprintf('experiment%d; factorQ: %d; factorR: %d', experimentNumber, factor_Q, factor_R);
     %title(str_title);
@@ -432,7 +433,8 @@ plot(STD_MINUS_MAD','-+');
     xlabel('x (m)');
     ylabel('y (m)');
     
-            hold on;
+            hold on; 
+            plot(X(1,:), X(2,:), '+-g');
 %{            
 %% ignore this part, it is used to calculate the errors(diff betwwen the estimates and true positions) of different choises of Q_ R_factors
         % h = figure;
@@ -461,6 +463,8 @@ plot(STD_MINUS_MAD','-+');
     %mat_str = ['estimated_posi_with_timeSt_EKF_experi',  num2str(experimentNumber), '.mat'];
     %estimated_posi_with_timeSt = [X; timeStamp'];
     % ----------- save(mat_str, 'estimated_posi_with_timeSt');
+    figure; hhh=histogram(mis_dist);
+    title('histogram(mis dist)');
 %}    
  
     pause_time = 1*[time_diff; 2];
@@ -487,9 +491,8 @@ plot(STD_MINUS_MAD','-+');
     writeVideo(video, Fram)
     close(video)
  %}   
-    figure; hhh=histogram(mis_dist);
-    title('histogram(mis dist)');
-    fig_str = ['traj_recovered_ekf_experiment',  num2str(experimentNumber), '.fig'];
+
+    % fig_str = ['traj_recovered_ekf_experiment',  num2str(experimentNumber), '.fig'];
     % ----------- savefig(h, fig_str);
 
 end

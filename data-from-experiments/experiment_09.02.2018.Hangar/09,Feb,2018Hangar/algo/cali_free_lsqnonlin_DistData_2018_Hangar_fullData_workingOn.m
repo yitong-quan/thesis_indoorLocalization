@@ -63,7 +63,7 @@ nodes_num = size(data_for_opti,2); % number of nodes in use
 x_num = tag_num + nodes_num; % number of total unkown variables
 x0 = 10*(rand(2,x_num)-0.5); % random guess of initial value for these unkown variables
 resnorm_last = inf;
-for ii = 1:10 % multiple times for optimations and choose one the best results
+for ii = 1:1 % multiple times for optimations and choose one the best results
     [x,resnorm] = lsqnonlin(myfun0,x0,[],[],options); % outpu the optimized positions and the squared 2-norm of the residual  
     resnorm_record = [resnorm_record; resnorm];
     x_record = [x_record;x];
@@ -86,9 +86,10 @@ options = optimoptions(@lsqnonlin,'Algorithm','levenberg-marquardt','Display','i
 resnorm_last = inf;
 
 % import the positions of nodes determined by 'determineNodesPositionBaseOnDistToEachOthers.m' 
-node_po_by_laser = importdata('..\..\output_algo\nodesPositionLaserOptimal\nodePo.mat'); % 2*5
+node_po_by_laser = importdata('output\3_RRT\3_opt_node_after_RRT_.mat');
+% node_po_by_laser = importdata('..\..\output_algo\nodesPositionLaserOptimal\nodePo.mat'); % 2*5
 myfun1 = @(x)parameterfun1(x,node_po_by_laser, opt_node); % pass parameters using anonymous functions
-for kk = 1:10 % multiple times for optimations and choose one the best results
+for kk = 1:1 % multiple times for optimations and choose one the best results
     [rrt,resnorm_rrt] = lsqnonlin(myfun1,RRT0,[],[],options);
     if resnorm_rrt < resnorm_rrt_last
         rrt_opt = rrt;

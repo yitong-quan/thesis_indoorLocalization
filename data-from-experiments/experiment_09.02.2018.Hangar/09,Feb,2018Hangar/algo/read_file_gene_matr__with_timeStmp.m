@@ -16,9 +16,9 @@ read i_th line >> content
 function read_file_gene_matr__with_timeStmp(experiNumber)
 experimentNum = experiNumber;
 
-switch experimentNum
-    case 111
-       string = 'all_t';  % string is the prefix of the name of the file you going to read
+switch experimentNum     
+    case 1
+        string = 'data_all'; % string is the prefix of the name of the file you going to read
     otherwise
         warning('please specify the experiment number #')
         return
