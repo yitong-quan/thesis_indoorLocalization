@@ -1,0 +1,6 @@
+22.05.2017:
+Line 328, Tag_main(). go deep in to see why there will be delay when more than one node are used.
+
+
+26.05.2017 UWB-Localization-1.0_Tag\external-libraries\drivers\src\DWM1000.c Line 2342 RTC_start(5000) is it necessary
+		Line 1809 DWM1000_get_rx_timestamp_40bit() can be used to send the final timestamp together with the package to the base and printed out in Hterm

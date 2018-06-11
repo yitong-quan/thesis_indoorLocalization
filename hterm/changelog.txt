@@ -1,0 +1,199 @@
+Version 0.8.1 (24.11.2008)
+==========================
+
+- Menu entry to clear all counters and windows at once
+- Function to disconnect if window focus gets lost and reconnect when it is regained
+- Allow sending of empty inputline if 'Send on enter' is active
+- New inputline datatype 'Command (CMD)'
+	- wait-Command to pause transfer
+	- dtr/rts command to set status lines
+- Set linebreak depending on pause between received data blocks
+- Fixed bug that prevented 'Send on enter' from being stored in config
+
+
+Version 0.8.0 (12.11.2008)
+==========================
+
+- SequenceManager overview and editor
+- Dialog to edit 'Newline At' and 'Send on enter' database
+- Arrows at inputline to indicate scrolling option
+
+
+Version 0.7.1 (01.10.2008)
+==========================
+
+- bugfixes
+  - jumping toolbars
+  - focus lost on baudrate input
+  - all packets marked with receive error
+  - tab traversal ordering
+  - many more
+- default filenames for logs and config files
+- improved Linux compatibility
+
+
+Version 0.7.0 (02.09.2008)
+==========================
+
+- switched to new, completely customizable graphical interface
+- ported application to linux-operating-system
+
+
+Version 0.6.5 (14.07.2006)
+==========================
+
+- Config file format changed to XML. Not compatible with old configurations!
+- Mousewheel scroll fixed
+- CTS flow control added
+- ASend without connection crash fixed
+- Autonomous scanning for (newly) connected comports
+- Scrolled mousewheel lines adept to system settings
+- Save output state now saved
+- Save output CSV seperator adjustable (s.help)
+- Updated About dialog to check in license.txt for usage details
+- 'Newline At' and 'Send on Enter' now adjustable (s.help)
+- Help updated with detailed config file explanation
+
+
+Version 0.6.3 (17.04.2006)
+==========================
+
+- autoload of 'hterm.cfg' if in same directory like executable
+- about dialog modified
+- send on enter: added stx/etx, null, custom (see help: custom_*)
+- ascii-only mode of outputbox now has less space between characters
+- ruler in ascii-only mode now in steps of 5
+- ruler start adjustable (see help: ruler_start)
+- tooltips added fr most buttons (see help: tooltip_*)
+- change hostory depth via cfg-file (see help: max_inputline_history)
+- completely new save output options for multiple formats
+- completely new inputline with new shortcuts
+- inputline gets focus after button clicks (only if connected)
+- outputbox extensions with timestamps, selected bytes/timespan display
+- autosend dialog for files and inputline. Repetitions and delay adjustable
+- better names for same labels
+- many many small bugfixes
+
+
+Version 0.6.1 (15.09.2005)
+==========================
+
+- toolbars and inputbox can be hidden
+- ruler in output windows
+- newline trigger every x chars
+
+
+Version 0.6 (30.06.2005)
+==========================
+
+- completely new output windows with:
+  - faster drawing
+  - no more lags on resize/format change
+  - can handle a few dozen to several hundred mb without problems
+  - autoscroll switch
+  - switch to show newline chars or not
+  - no more problems with newline chars shown sometimes
+  - advanced selection by mouse
+  - copy to clipboard in all formats (right mouse)
+  - new scrolling keys (see help)
+- check for transmission errors and mark them (i.e frame or parity error)
+- bit mask to mask bit 8 up to 5 in the receive window (options menu)
+- comport list refresh ('R' button)
+- comport interface bugfixes
+- bug fixed with save cfg when no format selected
+- input line format checkbox now works as supposed
+- changed format checkbox order to a more logical one
+
+
+Version 0.5.8 (26.05.2005)
+==========================
+
+- completely new (faster) comport interface routines
+- new comport auto-detection using the registry
+- fixed wrong init of DTR and RTS lines
+- fixed bug that blocked dos-programs sometimes
+- fixed lots of memory leaks
+
+
+Version 0.5.7 (07.04.2005)
+==========================
+
+- added history to inputline (last 20 lines saved)
+- fixed low baudrate crash completely (hope so :)
+- renamed RLSD to more common DCD
+- some minor gui changes
+- changed auto comport detection method to work correctly
+- fixed bug that outgoing status lines are undefined at startup
+
+
+Version 0.5.6 (30.03.2005)
+==========================
+
+- increased button size once more
+- shows only available com ports without config file
+- changes input line format according to cursor position
+- fixed send file loosing bytes and improved speed a bit
+
+
+Version 0.5.5 (26.03.2005)
+==========================
+
+- completely new input line: now supports multiple formats in one line!
+- long closing time for low baud rates fixed
+- increased button height
+- moved some gui elements to other groups
+- transmitted chars counter added
+- show loaded config file in window title bar
+- helpfile pdf can now be loaded from Help/Open help (unzip it in app directory)
+- added space (#32) to send on enter box
+- current parity mode now shown in status line
+
+
+Version 0.5.3 (17.03.2005)
+==========================
+
+- recieving while sending a file is now possible
+- added send file status window with abort option
+- RTS and DTR status lines can be saved to file
+- optimized com port access
+- some minor fixes
+
+
+Version 0.5.2 (14.03.2005)
+==========================
+
+- added 'Always on top' to options menu
+- fixed send file bug (stopped at EOF)
+
+
+Version 0.5.1 (07.03.2005)
+==========================
+
+- current working directroy is now saved in config file
+- window size and position is saved in config file
+- 'Load output' option added to menu 'Options'
+- connect status saved in config file (read help for details!)
+- customizable list of newline characters included
+
+
+Version 0.5 (03.03.2005)
+========================
+
+- 'send file', DTR and RTS now greyed out when not connected
+- graphic error when making the window very small fixed
+- added current connection parameters to the status line
+- message added if a connection parameter is not supported by the hardware
+- 'show last ... chars' now works for input and output window
+- automatically searchs the closest supported baudrate within +/-600 baud
+- when connecting and one (or more) parameter is not supported you will
+  get a message which one
+- when showing ascii only it is now possible to switch to a normal terminal 
+  mode (menu: options/default style on ascii),(new default)
+- when resizing the window the input and output window now resize both
+- problem with comports over 9 fixed
+
+
+Version 0.4 (14.02.2005)
+========================
+
+- first public version
