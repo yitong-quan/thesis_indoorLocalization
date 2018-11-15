@@ -1,2 +1,0 @@
-mis_histfit simulation: 
-	C:\Users\Yitong\Documents\GitHub\thesis_indoorLocalization\KalmanFilter\KF_traj\EKF_25ms40Hz\25ms_40HzSamplingRate\mis_match

@@ -1,3 +1,0 @@
-[submodule "external-libraries"]
-	path = external-libraries
-	url = https://gitlab.com/emp-rf/tableFinder-libraries.git
